@@ -876,6 +876,26 @@ td.num,th.num{
   }
 }
 
+
+/* Controle de Gastos v1 — segundo aplicativo, mesma base financeira */
+#fixas > .card,
+#variaveis > .card{margin-top:0}
+#fixas .expense-table-pane,
+#variaveis .expense-table-pane{display:block!important}
+.expense-app-note{
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  color:var(--muted);
+  font-size:9px;
+}
+@media(max-width:700px){
+  #resumo .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:430px){
+  #resumo .grid4{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -883,14 +903,7 @@ td.num,th.num{
 <aside class="sidebar">
 <div class="brand"><div><b>Controle de Gastos</b></div></div>
 <div class="navlabel">Navegação</div>
-<div class="tabs">
-<button class="tab active" data-tab="geral">Visão Geral</button>
-<button class="tab" data-tab="despesas">Despesas</button>
-<button class="tab" data-tab="receitas">Receitas</button>
-<button class="tab" data-tab="parcelas">Parcelas</button>
-<button class="tab" data-tab="investimentos">Investimentos</button>
-<button class="tab" data-tab="config">Configuração / Importação</button>
-</div>
+<div class="tabs"><button class="tab active" data-tab="resumo">Resumo</button><button class="tab" data-tab="fixas">Despesas Fixas</button><button class="tab" data-tab="variaveis">Despesas Variáveis</button><button class="tab" data-tab="parcelas">Parcelas</button><button class="tab" data-tab="config">Configuração / Importação</button></div>
 </aside>
 <div class="content-shell">
 <header class="topbar"><div class="topbar-inner">
@@ -900,64 +913,11 @@ td.num,th.num{
 <main>
 <div class="notice warn" id="noDataNotice"><b>Primeiro acesso:</b> vá em “Configuração / Importação” para carregar seus dados.</div>
 <div class="workspace-head">
-<div><h1 id="pageTitle">Visão Geral</h1><p id="pageSubtitle"></p></div>
+<div><h1 id="pageTitle">Resumo</h1><p id="pageSubtitle"></p></div>
 <div class="page-period-side"><div class="page-period-row"><button class="btn page-add-variable hidden" id="btnTopAddVariable" type="button">+ Adicionar despesa variável</button><button class="btn page-add-variable hidden" id="btnTopAddInstallment" type="button">+ Adicionar parcela</button><div class="periodbar"><select id="periodPreset"><option value="current">Mês atual</option><option value="3">Últimos 3 meses</option><option value="6">Últimos 6 meses</option><option selected="" value="12">Últimos 12 meses</option><option value="year">Ano atual</option><option value="custom">Período personalizado</option><option value="all">Histórico completo</option></select><input class="hidden" id="periodStart" min="2022-05" type="month"/><input class="hidden" id="periodEnd" min="2022-05" type="month"/></div></div><div class="period-summary" id="periodSummary" style="margin-top:4px;text-align:right">—</div></div>
 </div>
-<section id="geral">
-<div class="grid4">
-<div class="card kpi">
-<label>Média de receitas • últimos 3 meses</label>
-<strong id="gMediaReceita3">—</strong>
-<small id="gMediaReceita3Sub">—</small>
-</div>
-<div class="card kpi">
-<label>Média de despesas • últimos 3 meses</label>
-<strong id="gMediaDespesa3">—</strong>
-<small>Fixas + variáveis + parcelas</small>
-</div>
-<div class="card kpi">
-<label>Parcelas a pagar no futuro</label>
-<strong id="gParcelasFuturo">—</strong>
-<small>A partir do próximo mês</small>
-</div>
-<div class="card kpi">
-<label>Patrimônio</label>
-<strong id="gPat">—</strong>
-<small id="gPatData">—</small>
-<small id="gPatMetaStatus">—</small>
-</div>
-</div>
-<div class="card chart-card section">
-<div class="chart-head">
-<div><h3>Consolida resultados</h3><p>Receitas e despesas consolidadas em linhas; a sobra mensal aparece como coluna translúcida ao fundo.</p></div>
-</div>
-<div class="chart-wrap tall"><canvas id="chartConsolidado"></canvas></div>
-</div>
-<div class="grid3 section">
-<div class="card chart-card"><div class="chart-head"><div><h3>Gastos fixos</h3><p>Evolução mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartFixosOverview"></canvas></div></div>
-<div class="card chart-card"><div class="chart-head"><div><h3>Gastos variáveis</h3><p>Evolução mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartVariaveisOverview"></canvas></div></div>
-<div class="card chart-card"><div class="chart-head"><div><h3>Parcelas</h3><p>Comprometimento mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartParcelasOverview"></canvas></div></div>
-</div>
-<div class="card chart-card section">
-<div class="chart-head">
-<div><h3>Alocação de capital</h3><p>Evolução dos componentes do patrimônio e do total.</p></div>
-</div>
-<div class="chart-wrap tall"><canvas id="chartCapital"></canvas></div>
-</div>
-</section>
-<section class="hidden" id="despesas">
-<div class="filterbar"><div class="filter-group"><select id="expenseTypeFilter"><option value="all">Fixas + variáveis</option><option value="fixas">Somente fixas</option><option value="variaveis">Somente variáveis</option></select><select id="expenseCategoryFilter"><option value="all">Todas as categorias</option></select></div></div>
-<div class="grid4">
-<div class="card kpi"><label>Fixas • mês</label><strong id="dFixas">—</strong></div>
-<div class="card kpi"><label>Variáveis • mês</label><strong id="dVariaveis">—</strong></div>
-<div class="card kpi"><label>Total • mês</label><strong id="dTotal">—</strong></div>
-<div class="card kpi"><label>Média no período</label><strong id="dMedia">—</strong></div>
-</div>
-<div class="grid2 section">
-<div class="card chart-card"><div class="chart-head"><div><h3>Evolução das despesas</h3><p>Fixas e variáveis por mês.</p></div></div><div class="chart-wrap"><canvas id="chartDespesasEvolucao"></canvas></div></div>
-<div class="card chart-card"><div class="chart-head"><div><h3>Composição por categoria</h3><p>Total no período selecionado.</p></div></div><div class="chart-wrap"><canvas id="chartDespesasCategoria"></canvas></div></div>
-</div>
-<div class="expense-table-switcher section"><div class="expense-table-switcher-head"><div><h3>Lançamentos de despesas</h3><p>Alterne entre gastos fixos e variáveis na mesma área.</p></div><div class="expense-table-toggle"><button class="active" data-expense-table-view="fixas" type="button">Gastos Fixos</button><button class="" data-expense-table-view="variaveis" type="button">Gastos Variáveis</button></div></div><div class="card fixed-month-card expense-table-pane" id="expenseFixedPane">
+<section id="resumo"><div class="grid4"><div class="card kpi"><label>Média de despesas fixas • últimos 3 meses</label><strong id="gMediaFixas3">—</strong><small>Média mensal</small></div><div class="card kpi"><label>Média de despesas variáveis • últimos 3 meses</label><strong id="gMediaVariaveis3">—</strong><small>Média mensal</small></div><div class="card kpi"><label>Média de parcelas • últimos 3 meses</label><strong id="gMediaParcelas3">—</strong><small>Média mensal</small></div><div class="card kpi"><label>Parcelas a pagar no futuro</label><strong id="gParcelasFuturo">—</strong><small>A partir do próximo mês</small></div></div><div class="grid3 section"><div class="card chart-card"><div class="chart-head"><div><h3>Gastos fixos</h3><p>Evolução mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartFixosOverview"></canvas></div></div><div class="card chart-card"><div class="chart-head"><div><h3>Gastos variáveis</h3><p>Evolução mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartVariaveisOverview"></canvas></div></div><div class="card chart-card"><div class="chart-head"><div><h3>Parcelas</h3><p>Comprometimento mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartParcelasOverview"></canvas></div></div></div></section>
+<section class="hidden" id="fixas"><div class="card fixed-month-card expense-table-pane" id="expenseFixedPane">
 <div class="fixed-month-head">
 <div>
 <h3>Gastos Fixos</h3>
@@ -1016,7 +976,7 @@ td.num,th.num{
 </div>
 <div class="form-actions"><button class="btn green" id="btnSaveFixed">Salvar</button><button class="btn secondary" id="btnCancelFixed">Cancelar</button></div>
 </div>
-</div><div class="card expense-table-pane hidden" id="expenseVariablePane">
+</div></section><section class="hidden" id="variaveis"><div class="card expense-table-pane" id="expenseVariablePane">
 <div class="chart-head"><div><h3>Gastos Variáveis</h3><p>Lançamentos do período selecionado. Use os filtros no cabeçalho das colunas.</p></div><span class="table-filter-count" id="varTableCount"></span></div>
 <div class="wrap table-scroll-10"><table class="compact-data-table table-variaveis"><thead><tr><th><span class="excel-th"><span>Data</span><button aria-label="Filtrar Data" class="excel-filter-btn" data-field="data" data-table-filter="variaveis" type="button">▾</button></span></th><th><span class="excel-th"><span>Descrição</span><button aria-label="Filtrar Descrição" class="excel-filter-btn" data-field="descricao" data-table-filter="variaveis" type="button">▾</button></span></th><th><span class="excel-th"><span>Categoria</span><button aria-label="Filtrar Categoria" class="excel-filter-btn" data-field="categoria" data-table-filter="variaveis" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Valor</span><button aria-label="Filtrar Valor" class="excel-filter-btn" data-field="valor" data-table-filter="variaveis" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentVariaveis"></tbody></table></div>
 <div class="inline-editor hidden" id="varForm">
@@ -1029,31 +989,8 @@ td.num,th.num{
 </div>
 <div class="form-actions"><button class="btn green" id="btnSaveVariable">Salvar</button><button class="btn secondary" id="btnCancelVariable">Cancelar</button></div>
 </div>
-</div></div>
-</section>
-<section class="hidden" id="receitas">
-<div class="filterbar"><div class="filter-group"><select id="incomePersonFilter"><option value="all">Todas as pessoas</option></select></div></div>
-<div class="grid4">
-<div class="card kpi"><label>Igor • mês</label><strong class="soft-blue" id="rIgor">—</strong></div>
-<div class="card kpi"><label>Vitória • mês</label><strong class="soft-pink" id="rVitoria">—</strong></div>
-<div class="card kpi"><label>Total • mês</label><strong id="rTotal">—</strong></div>
-<div class="card kpi"><label>Média no período</label><strong id="rMedia">—</strong></div>
-</div>
-<div class="grid2 section">
-<div class="card chart-card"><div class="chart-head"><div><h3>Receitas mensais</h3><p>Igor em azul e Vitória em rosa pastel.</p></div></div><div class="chart-wrap"><canvas id="chartReceitas"></canvas></div></div>
-<div class="card chart-card"><div class="chart-head"><div><h3>Composição da receita</h3><p>Participação percentual pela média do período selecionado.</p></div></div><div class="chart-wrap"><canvas id="chartReceitasDonut"></canvas></div></div>
-</div>
-<div class="card section monthly-record-card" id="revenueMonthCard"><div class="fixed-month-head"><div><h3>Receitas do mês</h3><p id="revMonthSubtitle">Acompanhe e atualize as receitas do mês.</p></div><div class="fixed-month-actions"><div class="fixed-month-nav"><button aria-label="Mês anterior" id="revMonthPrev" type="button">‹</button><input id="revMonthPicker" min="2022-05" type="month"/><button aria-label="Mês seguinte" id="revMonthNext" type="button">›</button></div><button class="btn secondary" id="btnReplicateRevenue" type="button">Replicar para o mês seguinte</button><button class="btn green" id="btnOpenRevenue">Adicionar receita</button></div></div><div class="fixed-month-kpis"><div class="fixed-mini-kpi"><span>Total do mês</span><strong id="revMonthTotal">—</strong><small id="revMonthCount">—</small></div><div class="fixed-mini-kpi"><span>Igor</span><strong id="revMonthIgor">—</strong><small>receitas no mês</small></div><div class="fixed-mini-kpi"><span>Vitória</span><strong id="revMonthVitoria">—</strong><small>receitas no mês</small></div><div class="fixed-mini-kpi"><span>Média por lançamento</span><strong id="revMonthAverage">—</strong><small>no mês selecionado</small></div></div><div class="fixed-table-toolbar"><div class="table-period-note">Use os filtros no cabeçalho das colunas.</div><span class="table-filter-count" id="revTableCount"></span></div><div class="wrap table-scroll-10"><table class="compact-data-table table-receitas"><thead><tr><th><span class="excel-th"><span>Pessoa</span><button aria-label="Filtrar Pessoa" class="excel-filter-btn" data-field="pessoa" data-table-filter="receitas" type="button">▾</button></span></th><th><span class="excel-th"><span>Descrição</span><button aria-label="Filtrar Descrição" class="excel-filter-btn" data-field="descricao" data-table-filter="receitas" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Valor</span><button aria-label="Filtrar Valor" class="excel-filter-btn" data-field="valor" data-table-filter="receitas" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentReceitas"></tbody></table></div><div class="inline-editor hidden" id="revForm">
-<div class="context-title" id="revFormTitle">Adicionar nova receita</div>
-<div class="formgrid">
-<div class="field hidden"><label>Data</label><input id="cRevDate" type="date"/></div>
-<div class="field"><label>Pessoa</label><select id="cRevPerson"></select></div>
-<div class="field"><label>Descrição</label><input id="cRevDesc" maxlength="20" placeholder="Ex.: Salário"/></div>
-<div class="field"><label>Valor (R$)</label><input class="money-input" id="cRevValue" inputmode="decimal" placeholder="0,00"/></div>
-</div>
-<div class="form-actions"><button class="btn green" id="btnSaveRevenue">Salvar</button><button class="btn secondary" id="btnCancelRevenue">Cancelar</button></div>
-</div></div>
-</section>
+</div></section>
+
 <section class="hidden" id="parcelas">
 <div class="filterbar"><div class="filter-group"><select id="installmentCategoryFilter"><option value="all">Todas as categorias</option></select></div></div>
 <div class="grid4">
@@ -1082,84 +1019,10 @@ td.num,th.num{
 </div>
 </div>
 </section>
-<section class="hidden" id="investimentos">
-<div class="grid5">
-<div class="card kpi"><label>Igor • aplicações</label><strong id="iIgorApl">—</strong></div>
-<div class="card kpi"><label>Vitória • aplicações</label><strong id="iVitApl">—</strong></div>
-<div class="card kpi"><label>Previdência</label><strong id="iPrev">—</strong></div>
-<div class="card kpi"><label>FGTS total</label><strong id="iFgts">—</strong></div>
-<div class="card kpi"><label>Patrimônio total</label><strong id="iTotal">—</strong></div>
-</div>
-<div class="grid3 section">
-<div class="card kpi"><label>Patrimônio sem FGTS</label><strong id="iSemFgts">—</strong></div>
-<div class="card kpi"><label>Meta sem FGTS</label><strong id="iMeta">—</strong></div>
-<div class="card kpi"><label>Diferença para meta</label><strong id="iGap">—</strong></div>
-</div>
-<div class="card chart-card section">
-<div class="chart-head"><div><h3>Alocação de capital ao longo do tempo</h3><p>Evolução histórica da composição patrimonial.</p></div><span class="pill">Histórico</span></div>
-<div class="chart-wrap tall"><canvas id="chartInvestAllocation"></canvas></div>
-</div>
-<div class="grid4 section">
-<div class="card kpi"><label>Total no fim</label><strong id="projEndTotal">—</strong></div>
-<div class="card kpi"><label>Sem FGTS no fim</label><strong id="projEndSem">—</strong></div>
-<div class="card kpi"><label>Meta no fim</label><strong id="projEndMeta">—</strong></div>
-<div class="card kpi"><label>Diferença p/ meta</label><strong id="projEndGap">—</strong></div>
-</div>
-<div class="card chart-card section">
-<div class="chart-head"><div><h3>Projeção patrimonial</h3><p>Histórico real desde mai/2022, continuação projetada e Meta sem FGTS mensal.</p></div><span class="pill">Real + projeção + meta</span></div>
-<div class="chart-wrap tall"><canvas id="chartProjectionDetail"></canvas></div>
-</div>
-<div class="card section">
-<div class="chart-head"><div><h3>Premissas da projeção</h3><p>Ajuste os parâmetros utilizados na projeção.</p></div><span class="pill">Premissas</span></div>
-<div class="projection-form">
-<div class="field"><label>Rentabilidade aplicações (% a.m.)</label><input class="money-input" id="projRentApl" inputmode="decimal"/></div>
-<div class="field"><label>Rentabilidade Previdência/FGTS (% a.m.)</label><input class="money-input" id="projRentPrev" inputmode="decimal"/></div>
-<div class="field"><label>Aporte Previdência Igor</label><input class="money-input" id="projPrevIgor" inputmode="decimal"/></div>
-<div class="field"><label>Aporte FGTS Igor</label><input class="money-input" id="projFgtsIgor" inputmode="decimal"/></div>
-<div class="field"><label>Aporte FGTS Vitória</label><input class="money-input" id="projFgtsVit" inputmode="decimal"/></div>
-<div class="field"><label>Aporte Aplicações Igor</label><input class="money-input" id="projAplIgor" inputmode="decimal"/></div>
-<div class="field"><label>Aporte Aplicações Vitória</label><input class="money-input" id="projAplVit" inputmode="decimal"/></div>
-<div class="field"><label>Horizonte da projeção</label>
-<select id="projHorizon">
-<option value="24">2 anos</option>
-<option value="60">5 anos</option>
-<option value="120">10 anos</option>
-<option value="180">15 anos</option>
-<option value="240">20 anos</option>
-</select>
-</div>
-</div>
-<div class="form-actions"><button class="btn green" id="btnSaveProjection">Salvar premissas</button><button class="btn secondary" id="btnResetProjection">Restaurar premissas padrão</button></div>
-</div>
-<div class="card section monthly-record-card" id="investmentMonthCard"><div class="fixed-month-head"><div><h3>Investimentos do mês</h3><p id="invMonthSubtitle">Acompanhe e atualize a composição patrimonial do mês.</p></div><div class="fixed-month-actions"><div class="fixed-month-nav"><button aria-label="Mês anterior" id="invMonthPrev" type="button">‹</button><input id="invMonthPicker" min="2022-05" type="month"/><button aria-label="Mês seguinte" id="invMonthNext" type="button">›</button></div><button class="btn secondary" id="btnReplicateInvestment" type="button">Replicar para o mês seguinte</button><button class="btn green" id="btnOpenInvestment">Adicionar registro</button></div></div><div class="fixed-month-kpis"><div class="fixed-mini-kpi"><span>Patrimônio total</span><strong id="invMonthTotal">—</strong><small>soma dos componentes</small></div><div class="fixed-mini-kpi"><span>Sem FGTS</span><strong id="invMonthSem">—</strong><small>no mês selecionado</small></div><div class="fixed-mini-kpi"><span>FGTS total</span><strong id="invMonthFgts">—</strong><small>no mês selecionado</small></div><div class="fixed-mini-kpi"><span>Registros</span><strong id="invMonthCount">—</strong><small>componentes no mês</small></div></div><div class="fixed-table-toolbar"><div class="table-period-note">Use os filtros no cabeçalho das colunas.</div><span class="table-filter-count" id="invTableCount"></span></div><div class="wrap table-scroll-10"><table class="compact-data-table table-investimentos"><thead><tr><th><span class="excel-th"><span>Componente</span><button aria-label="Filtrar Componente" class="excel-filter-btn" data-field="descricao" data-table-filter="investimentos" type="button">▾</button></span></th><th><span class="excel-th"><span>Classe</span><button aria-label="Filtrar Classe" class="excel-filter-btn" data-field="classe" data-table-filter="investimentos" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Saldo</span><button aria-label="Filtrar Saldo" class="excel-filter-btn" data-field="valor" data-table-filter="investimentos" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentInvestimentos"></tbody></table></div><div class="inline-editor hidden" id="invForm">
-<div class="context-title" id="invFormTitle">Adicionar novo registro de investimento</div>
-<div class="formgrid">
-<div class="field hidden"><label>Mês</label><input id="cInvDate" min="2022-05" type="month"/></div>
-<div class="field"><label>Componente patrimonial</label><select id="cInvComp"></select></div>
-<div class="field"><label>Saldo (R$)</label><input class="money-input" id="cInvValue" inputmode="decimal" placeholder="0,00"/></div>
-</div>
-<div class="hint">Ao criar um novo mês, o dashboard replica o último fechamento e altera apenas o componente informado.</div>
-<div class="form-actions"><button class="btn green" id="btnSaveInvestment">Salvar</button><button class="btn secondary" id="btnCancelInvestment">Cancelar</button></div>
-</div></div>
-</section>
-<section class="hidden" id="patrimonio"></section>
-<section class="hidden" id="projecao"></section>
-<section class="hidden" id="novo">
-<div class="card form-card"><div class="edit-banner hidden" id="editBanner"></div><div class="chart-head"><div><h3>Novo lançamento</h3><p>Inclua ou edite registros. Categoria e descrição são armazenadas separadamente.</p></div></div>
-<div class="formgrid">
-<div class="field"><label>Tipo</label><select id="nTipo"><option value="fixas">Despesa fixa</option><option value="variaveis">Despesa variável</option><option value="parcelas">Compra parcelada</option><option value="receitas">Receita</option><option value="investimento">Atualização de investimento / patrimônio</option></select></div>
-<div class="field"><label>Data</label><input id="nData" type="date"/></div>
-<div class="field" id="fDescricao"><label>Descrição</label><input id="nDescricao" maxlength="20" placeholder="Ex.: Supermercado, seguro do carro, salário"/></div>
-<div class="field" id="fCategoria"><label>Categoria</label><select id="nCategoria"></select></div>
-<div class="field hidden" id="fPessoa"><label>Pessoa</label><select id="nPessoa"><option>Igor</option><option>Vitória</option><option>Outro</option></select></div>
-<div class="field hidden" id="fComponente"><label>Componente patrimonial</label><select id="nComponente"></select><div class="hint">Ao criar um novo mês, o dashboard replica o último fechamento e atualiza apenas este componente.</div></div>
-<div class="field"><label id="nValorLabel">Valor (R$)</label><input class="money-input" id="nValor" inputmode="decimal" placeholder="0,00"/></div>
-<div class="field hidden" id="fNumParcelas"><label>Número de parcelas</label><input id="nNumParcelas" max="120" min="1" type="number" value="1"/></div>
-</div>
-<div class="form-actions"><button class="btn green" id="btnSaveLaunch">Salvar lançamento</button><button class="btn secondary hidden" id="btnCancelEdit">Cancelar edição</button></div>
-</div>
-<div class="card section"><div class="filterbar"><div><div class="title">Gerenciar lançamentos</div><div class="subtitle">Editar ou excluir individualmente. Toda exclusão pede confirmação.</div></div><div class="filter-group"><select id="manageType"><option value="all">Todos</option><option value="fixas">Fixas</option><option value="variaveis">Variáveis</option><option value="parcelas">Parcelas</option><option value="receitas">Receitas</option><option value="investimento">Investimentos / patrimônio</option></select><input id="manageSearch" placeholder="Buscar descrição..."/></div></div><div class="wrap"><table><thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Categoria / pessoa</th><th class="num">Valor</th><th class="num">Ações</th></tr></thead><tbody id="manageBody"></tbody></table></div></div>
-</section>
+
+
+
+
 <section class="hidden" id="config">
 <div class="grid2">
 <div class="card"><div class="title">Importação e exportação</div><div class="form-actions"><label class="btn green" style="display:inline-flex;align-items:center">Importar dados<input accept=".json,application/json" hidden="" id="jsonImport" type="file"/></label><button class="btn secondary" id="btnExportJson">Exportar dados</button><button class="btn secondary" id="btnUploadCurrent">Enviar versão atual ao OneDrive</button></div><div class="small" id="jsonInfo">Nenhum dado importado.</div></div>
@@ -1378,49 +1241,23 @@ function renderCapitalAllocationChart(id,range){
 
 function renderGeneral(){
  if(!data)return;
- let r=periodRange(),ref=r.ref,
-     avgStart=addMonths(ref,-2);
+ let r=periodRange(),ref=r.ref,avgStart=addMonths(ref,-2);
  if(avgStart<HISTORY_START)avgStart=HISTORY_START;
  let avgMonths=monthsBetween(avgStart,ref),
-     mediaReceita=avgMonths.reduce((s,m)=>s+incomeMonth(m),0)/(avgMonths.length||1),
-     mediaDespesa=avgMonths.reduce((s,m)=>s+expenseMonth(m),0)/(avgMonths.length||1),
-     parcelasFuturo=data.parcelas.filter(x=>monthKey(x.data)>ref).reduce((s,x)=>s+Number(x.valor||0),0),
-     pat=actualSnapshot(ref)||actualSnapshot("9999-12"),
-     meta=pat?metaForMonth(pat.month):null,
-     gap=pat&&Number.isFinite(meta)?pat.semFGTS-meta:null;
+     avgFixas=avgMonths.reduce((s,m)=>s+sumMonth(data.despesas.fixas,m),0)/(avgMonths.length||1),
+     avgVariaveis=avgMonths.reduce((s,m)=>s+sumMonth(data.despesas.variaveis,m),0)/(avgMonths.length||1),
+     avgParcelas=avgMonths.reduce((s,m)=>s+sumMonth(data.parcelas,m),0)/(avgMonths.length||1),
+     parcelasFuturo=data.parcelas.filter(x=>monthKey(x.data)>ref).reduce((s,x)=>s+Number(x.valor||0),0);
 
- $("gMediaReceita3").textContent=brl(mediaReceita);
- $("gMediaReceita3Sub").textContent=`${monthLabel(avgMonths[0])} → ${monthLabel(avgMonths.at(-1))}`;
- $("gMediaDespesa3").textContent=brl(mediaDespesa);
+ $("gMediaFixas3").textContent=brl(avgFixas);
+ $("gMediaVariaveis3").textContent=brl(avgVariaveis);
+ $("gMediaParcelas3").textContent=brl(avgParcelas);
  $("gParcelasFuturo").textContent=brl(parcelasFuturo);
- $("gPat").textContent=pat?brl(pat.total):"—";
- $("gPatData").textContent=pat?`Fechamento ${monthLabel(pat.month)}`:"—";
- $("gPatMetaStatus").textContent=Number.isFinite(gap)
-  ?(gap<0?`Abaixo da meta por ${brl(Math.abs(gap))}`:`Meta atingida • ${brl(gap)} acima`)
-  :"Meta não disponível";
- $("gPatMetaStatus").className=Number.isFinite(gap)?(gap<0?"bad":"good"):"";
- let labels=r.months.map(monthLabel),
- gastos=r.months.map(m=>expenseMonth(m)),
- receitas=r.months.map(m=>incomeMonth(m)),
- sobra=r.months.map((m,i)=>receitas[i]-gastos[i]),
- ds=[
-  {
-   type:"bar",
-   label:"Sobra",
-   data:sobra,
-   backgroundColor:"rgba(111,142,123,.20)",
-   borderColor:"rgba(111,142,123,.46)",
-   borderWidth:1,
-   order:3,
-   barPercentage:.72,
-   categoryPercentage:.86
-  },
-  lineDataset("Gastos",gastos,CHART_EXPENSE,{borderWidth:2.8,pointRadius:2,pointHoverRadius:5,order:1}),
-  lineDataset("Receitas",receitas,CHART_INCOME,{borderWidth:2.8,pointRadius:2,pointHoverRadius:5,order:1})
- ];
- makeChart("chartConsolidado",{type:"bar",data:{labels,datasets:ds},options:chartOpts()});
- renderCapitalAllocationChart("chartCapital",r);
- stackedByCategory("chartFixosOverview",data.despesas.fixas,r);stackedByCategory("chartVariaveisOverview",data.despesas.variaveis,r);stackedByCategory("chartParcelasOverview",data.parcelas,r);}
+
+ stackedByCategory("chartFixosOverview",data.despesas.fixas,r);
+ stackedByCategory("chartVariaveisOverview",data.despesas.variaveis,r);
+ stackedByCategory("chartParcelasOverview",data.parcelas,r);
+}
 
 function actionButtons(kind,id){
  return `<div class="actions">
@@ -1454,11 +1291,11 @@ function clearTableFilters(ids,renderFn){ids.forEach(id=>{let e=$(id);if(!e)retu
 const excelTableFilters={fixas:{},variaveis:{},receitas:{},parcelas:{},investimentos:{}};
 let excelMenuContext=null,excelMenuSort=null;
 const EXCEL_TABLE_CONFIG={
- fixas:{render:()=>renderExpenses(),rows:()=>data.despesas.fixas.filter(x=>monthKey(x.data)===fixedMonth()),columns:{
+ fixas:{render:()=>renderFixed(),rows:()=>data.despesas.fixas.filter(x=>monthKey(x.data)===fixedMonth()),columns:{
   descricao:{label:"Descrição",value:x=>x.descricao||"",type:"text"},
   categoria:{label:"Categoria",value:x=>x.categoria||"Outros",type:"text"},
   valor:{label:"Valor",value:x=>Number(x.valor||0),display:v=>brl(v),type:"number"}}},
- variaveis:{render:()=>renderExpenses(),rows:()=>data.despesas.variaveis.filter(x=>inRange(x,periodRange())),columns:{
+ variaveis:{render:()=>renderVariable(),rows:()=>data.despesas.variaveis.filter(x=>inRange(x,periodRange())),columns:{
   data:{label:"Data",value:x=>x.data,display:v=>dateLabel(v),type:"date"},
   descricao:{label:"Descrição",value:x=>x.descricao||"",type:"text"},
   categoria:{label:"Categoria",value:x=>x.categoria||"Outros",type:"text"},
@@ -1645,7 +1482,7 @@ async function updateFixedDueDay(id,day){
 function bindFixedActions(){
  document.querySelectorAll("[data-fixed-pay]").forEach(b=>b.onclick=()=>toggleFixedPaid(b.dataset.fixedPay));
  document.querySelectorAll("[data-fixed-due]").forEach(i=>i.onchange=()=>updateFixedDueDay(i.dataset.fixedDue,i.value));
- bindActions($("despesas"))
+ bindActions($("fixas"))
 }
 
 function expenseRows(filtered=true){let r=periodRange(),type=$("expenseTypeFilter")?.value||"all",cat=$("expenseCategoryFilter")?.value||"all",rows=[];if(type==="all"||type==="fixas")rows.push(...data.despesas.fixas.map(x=>({...x,_kind:"fixas",_label:"Fixa"})));if(type==="all"||type==="variaveis")rows.push(...data.despesas.variaveis.map(x=>({...x,_kind:"variaveis",_label:"Variável"})));if(filtered)rows=rows.filter(x=>inRange(x,r)&&(cat==="all"||x.categoria===cat));return rows.sort((a,b)=>(b.updatedAt||b.createdAt||"").localeCompare(a.updatedAt||a.createdAt||"")||b.data.localeCompare(a.data))}
@@ -1679,6 +1516,47 @@ function setExpenseTableView(view){
  renderExpenseTableView()
 }
 
+function renderFixed(){
+ if(!data)return;
+ let r=periodRange();syncTableFilterBounds(r);
+ let fxM=fixedMonth(),
+     fxBase=data.despesas.fixas.filter(x=>monthKey(x.data)===fxM),
+     fxAll=excelFilteredRows("fixas",fxBase),
+     fxShown=fixedStatusFilter==="paid"?fxAll.filter(fixedIsPaid):fixedStatusFilter==="pending"?fxAll.filter(x=>!fixedIsPaid(x)):fxAll,
+     fxPaid=fxBase.filter(fixedIsPaid),
+     fxTotal=fxBase.reduce((s,x)=>s+Number(x.valor||0),0),
+     fxPaidValue=fxPaid.reduce((s,x)=>s+Number(x.valor||0),0),
+     fxPendingValue=fxTotal-fxPaidValue,
+     fxPct=fxTotal?fxPaidValue/fxTotal:0;
+
+ $("fxMonthPicker").value=fxM;
+ $("fxMonthSubtitle").textContent=`Acompanhe pagamentos e vencimentos de ${monthLabel(fxM)}.`;
+ $("btnReplicateFixed").textContent=`Replicar para ${monthLabel(addMonths(fxM,1))}`;
+ $("fxMonthTotal").textContent=brl(fxTotal);
+ $("fxMonthCount").textContent=`${fxBase.length} ${fxBase.length===1?"gasto previsto":"gastos previstos"}`;
+ $("fxMonthPaid").textContent=brl(fxPaidValue);
+ $("fxMonthPaidCount").textContent=`${fxPaid.length} ${fxPaid.length===1?"pagamento concluído":"pagamentos concluídos"}`;
+ $("fxMonthPending").textContent=brl(fxPendingValue);
+ $("fxMonthPendingCount").textContent=`${fxBase.length-fxPaid.length} ${fxBase.length-fxPaid.length===1?"pagamento pendente":"pagamentos pendentes"}`;
+ $("fxMonthPct").textContent=(fxPct*100).toLocaleString("pt-BR",{maximumFractionDigits:0})+"%";
+ $("fxProgressText").textContent=`${brl(fxPaidValue)} de ${brl(fxTotal)}`;
+ $("fxProgressBar").style.width=Math.min(100,fxPct*100)+"%";
+ $("recentFixas").innerHTML=fxShown.length?fixedTableHtml(fxShown):`<tr><td colspan="6"><div class="empty">Nenhum gasto fixo neste filtro.</div></td></tr>`;
+ $("fxTableCount").textContent=`${fxShown.length} de ${fxBase.length} em ${monthLabel(fxM)}`;
+ updateExcelFilterHeaders();
+ bindFixedActions()
+}
+function renderVariable(){
+ if(!data)return;
+ let r=periodRange();syncTableFilterBounds(r),
+     varBase=data.despesas.variaveis.filter(x=>inRange(x,r)),
+     varAll=excelFilteredRows("variaveis",varBase),
+     varShown=varAll.map(x=>({...x,_kind:"variaveis",_label:"Variável"}));
+ $("recentVariaveis").innerHTML=varShown.length?variableExpenseTableHtml(varShown):`<tr><td colspan="5"><div class="empty">Nenhuma despesa variável encontrada.</div></td></tr>`;
+ setTableCount("varTableCount",varShown.length,varBase.length,excelTableHasFilters("variaveis"));
+ updateExcelFilterHeaders();
+ bindActions($("variaveis"))
+}
 function renderExpenses(){
  if(!data)return;
  let r=periodRange();syncTableFilterBounds(r);
@@ -1910,16 +1788,19 @@ function renderProjection(){if(!data)return;let n=Number(projectionSettings().ho
 
 function manageRecords(){if(!data)return[];let rows=[];data.despesas.fixas.forEach(x=>rows.push({...x,_kind:"fixas",_label:"Despesa fixa",_detail:x.categoria}));data.despesas.variaveis.forEach(x=>rows.push({...x,_kind:"variaveis",_label:"Despesa variável",_detail:x.categoria}));data.parcelas.forEach(x=>rows.push({...x,_kind:"parcelas",_label:"Parcela",_detail:x.categoria}));data.receitas.forEach(x=>rows.push({...x,_kind:"receitas",_label:"Receita",_detail:x.pessoa}));data.investimentos.historico.forEach(x=>rows.push({...x,_kind:"investimento",_label:"Investimento / patrimônio",_detail:x.classe||investmentClass(x.descricao)}));return rows.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||"")||b.data.localeCompare(a.data))}
 function renderManage(){if(!data)return;let type=$("manageType").value,q=normSearch($("manageSearch").value),rows=manageRecords().filter(x=>(type==="all"||x._kind===type)&&(!q||normSearch(x.descricao).includes(q))).slice(0,250);$("manageBody").innerHTML=rows.length?rows.map(x=>`<tr><td>${dateLabel(x.data)}</td><td>${x._label}</td><td class="desc">${esc(x.descricao)}</td><td>${esc(x._detail||"—")}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons(x._kind,x.id)}</td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">Nenhum lançamento encontrado.</div></td></tr>`;bindActions($("novo"))}
+function bindActions(root){
+ if(!root)return;
+ root.querySelectorAll("[data-edit-kind]").forEach(b=>b.onclick=()=>beginEdit(b.dataset.editKind,b.dataset.id));
+ root.querySelectorAll("[data-del-kind]").forEach(b=>b.onclick=()=>deleteRecord(b.dataset.delKind,b.dataset.id))
+}
 function normSearch(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
 function findRecord(kind,id){let arr=kind==="fixas"?data.despesas.fixas:kind==="variaveis"?data.despesas.variaveis:kind==="parcelas"?data.parcelas:kind==="receitas"?data.receitas:data.investimentos.historico;return{arr,rec:arr.find(x=>String(x.id)===String(id))}}
 async function deleteRecord(kind,id){if(!data)return;let{arr,rec}=findRecord(kind,id);if(!rec)return;let extra=kind==="parcelas"?` Parcela ${rec.parcela||"?"}/${rec.totalParcelas||"?"}.`:"";if(!confirm(`Excluir somente este lançamento?\n\n${rec.descricao}\n${dateLabel(rec.data)}\n${brl(rec.valor)}${extra}\n\nOs gráficos e totais serão recalculados automaticamente.`))return;let i=arr.indexOf(rec);arr.splice(i,1);touch();await afterMutation("Lançamento excluído.")}
 function contextConfig(kind){
  return {
-  fixas:{tab:"despesas",form:"fxForm",title:"fxFormTitle",date:"cFxDate",desc:"cFxDesc",cat:"cFxCat",value:"cFxValue"},
-  variaveis:{tab:"despesas",form:"varForm",title:"varFormTitle",date:"cVarDate",desc:"cVarDesc",cat:"cVarCat",value:"cVarValue"},
-  receitas:{tab:"receitas",form:"revForm",title:"revFormTitle",date:"cRevDate",desc:"cRevDesc",person:"cRevPerson",value:"cRevValue"},
-  parcelas:{tab:"parcelas",form:"parForm",title:"parFormTitle",date:"cParDate",desc:"cParDesc",cat:"cParCat",value:"cParValue",num:"cParNum",valueLabel:"cParValueLabel"},
-  investimento:{tab:"investimentos",form:"invForm",title:"invFormTitle",date:"cInvDate",comp:"cInvComp",value:"cInvValue"}
+  fixas:{tab:"fixas",form:"fxForm",title:"fxFormTitle",date:"cFxDate",desc:"cFxDesc",cat:"cFxCat",value:"cFxValue"},
+  variaveis:{tab:"variaveis",form:"varForm",title:"varFormTitle",date:"cVarDate",desc:"cVarDesc",cat:"cVarCat",value:"cVarValue"},
+  parcelas:{tab:"parcelas",form:"parForm",title:"parFormTitle",date:"cParDate",desc:"cParDesc",cat:"cParCat",value:"cParValue",num:"cParNum",valueLabel:"cParValueLabel"}
  }[kind]
 }
 function defaultContextDate(){
@@ -1934,7 +1815,6 @@ function openContextForm(kind,rec=null){
  let c=contextConfig(kind);if(!c)return;
  contextEditing=rec?{kind,id:rec.id}:null;
  showTab(c.tab);
- if(kind==="fixas"||kind==="variaveis"){expenseTableView=kind;renderExpenseTableView()}
  $(c.form).classList.remove("hidden");
  $(c.title).textContent=contextTitle(kind,!!rec);
 
@@ -2061,54 +1941,54 @@ function ensureInvestmentMonth(ym){let existing=data.investimentos.historico.fil
 async function saveLaunch(){if(!data){toast("Importe dados_financeiros.json primeiro.");return}let t=$("nTipo").value,date=$("nData").value,val=parseMoney($("nValor").value);if(!date||!$("nValor").value.trim()||!Number.isFinite(val)){toast("Preencha data e valor.");return}if(editing){let{rec}=findRecord(editing.kind,editing.id);if(!rec)return;rec.data=editing.kind==="investimento"?monthKey(date)+"-01":date;rec.valor=val;if(editing.kind==="receitas"){rec.descricao=normalizeDescription20($("nDescricao").value)||"Entrada";rec.pessoa=$("nPessoa").value}else if(editing.kind==="investimento"){rec.descricao=$("nComponente").value;let def=componentDefs().find(x=>x.descricao===rec.descricao);rec.classe=def?.classe||"Outros";rec.pessoa=def?.pessoa||""}else{rec.descricao=normalizeDescription20($("nDescricao").value)||$("nCategoria").value;rec.categoria=$("nCategoria").value}rec.updatedAt=new Date().toISOString();touch();cancelEdit();await afterMutation("Lançamento editado.");return}
  let desc=normalizeDescription20($("nDescricao").value),cat=$("nCategoria").value,createdAt=new Date().toISOString();if(t==="fixas"||t==="variaveis"){if(!desc){toast("Informe a descrição do gasto.");return}data.despesas[t].push({id:uid(),data:date,descricao:desc,categoria:cat,valor:val,origem:"app",createdAt})}else if(t==="receitas"){if(!desc){toast("Informe a descrição da receita.");return}data.receitas.push({id:uid(),data:date,descricao:desc,pessoa:$("nPessoa").value,valor:val,origem:"app",createdAt,legado:false})}else if(t==="parcelas"){if(!desc){toast("Informe a descrição da compra.");return}let n=Math.max(1,Number($("nNumParcelas").value)||1),cents=Math.round(val*100),base=Math.floor(cents/n),rest=cents-base*n,gid=uid();for(let i=0;i<n;i++){data.parcelas.push({id:uid(),grupoId:gid,parcela:i+1,totalParcelas:n,data:addMonthsDate(date,i),descricao:desc,categoria:cat,valor:(base+(i===n-1?rest:0))/100,origem:"app",createdAt})}}else{let ym=monthKey(date),comp=$("nComponente").value;ensureInvestmentMonth(ym);let rec=data.investimentos.historico.find(x=>monthKey(x.data)===ym&&x.descricao===comp);if(rec){rec.valor=val;rec.origem="app";rec.updatedAt=createdAt}else{let def=componentDefs().find(x=>x.descricao===comp);data.investimentos.historico.push({id:uid(),data:ym+"-01",descricao:comp,classe:def?.classe||"Outros",pessoa:def?.pessoa||"",valor:val,origem:"app",tipoRegistro:"saldoMensal",createdAt})}}
  touch();$("nDescricao").value="";$("nValor").value="";await afterMutation("Lançamento adicionado.")}
-async function afterMutation(msg){rebuildPatrimonyHistory();renderAll();if(account&&remoteMeta){try{await saveRemoteWithConflictCheck();dirty=false;updateStatus();toast(msg+" Salvo no OneDrive.")}catch(e){handleError(e);toast(msg+" Alteração mantida localmente; exporte o JSON.")}}else toast(msg+" Exporte o JSON para guardar a alteração.")}
+async function afterMutation(msg){
+ renderAll();
+ if(account&&remoteMeta){
+  try{await saveRemoteWithConflictCheck();dirty=false;updateStatus();toast(msg+" Salvo no OneDrive.")}
+  catch(e){handleError(e);toast(msg+" Alteração mantida localmente; exporte o JSON.")}
+ }else toast(msg+" Exporte o JSON para guardar a alteração.")
+}
 
 function refreshSelects(){
  if(!data)return;
  let opts=categories().map(c=>`<option>${esc(c)}</option>`).join("");
- $("nCategoria").innerHTML=opts;
  ["cFxCat","cVarCat","cParCat"].forEach(id=>{if($(id))$(id).innerHTML=opts});
- $("expenseCategoryFilter").innerHTML='<option value="all">Todas as categorias</option>'+opts;
- $("installmentCategoryFilter").innerHTML='<option value="all">Todas as categorias</option>'+opts;
- ["fxTableCategory","varTableCategory","parTableCategory"].forEach(id=>{if($(id))$(id).innerHTML='<option value="all">Todas</option>'+opts});
-
- let people=[...new Set(["Igor","Vitória","Outro",...data.receitas.map(x=>x.pessoa).filter(Boolean)])];
- $("incomePersonFilter").innerHTML='<option value="all">Todas as pessoas</option>'+people.map(x=>`<option>${esc(x)}</option>`).join("");
- if($("cRevPerson"))$("cRevPerson").innerHTML=people.map(x=>`<option>${esc(x)}</option>`).join("");
- if($("revTablePerson"))$("revTablePerson").innerHTML='<option value="all">Todas</option>'+people.map(x=>`<option>${esc(x)}</option>`).join("");
-
- let comps=componentDefs().map(x=>x.descricao);
- $("nComponente").innerHTML=comps.map(x=>`<option>${esc(x)}</option>`).join("");
- if($("cInvComp"))$("cInvComp").innerHTML=comps.map(x=>`<option>${esc(x)}</option>`).join("");
- if($("invTableComponent"))$("invTableComponent").innerHTML='<option value="all">Todos</option>'+comps.map(x=>`<option>${esc(x)}</option>`).join("")
+ if($("installmentCategoryFilter"))$("installmentCategoryFilter").innerHTML='<option value="all">Todas as categorias</option>'+opts
 }
 function renderJsonInfo(){if(!data)return;$("jsonInfo").textContent="Dados carregados com sucesso."}
-function renderAll(){updateStatus();if(!data)return;refreshPeriodUi();renderGeneral();renderExpenses();renderIncome();renderInstallments();renderInvestments();setProjectionInputs();renderProjection();renderManage();renderJsonInfo();updateCloudUi()}
+function renderAll(){
+ updateStatus();
+ if(!data)return;
+ refreshPeriodUi();
+ renderGeneral();
+ renderFixed();
+ renderVariable();
+ renderInstallments();
+ renderJsonInfo();
+ updateCloudUi()
+}
 
 const titles={
- geral:["Visão Geral",""],
- despesas:["Despesas",""],
- receitas:["Receitas",""],
+ resumo:["Resumo",""],
+ fixas:["Despesas Fixas",""],
+ variaveis:["Despesas Variáveis",""],
  parcelas:["Parcelas",""],
- investimentos:["Investimentos",""],
  config:["Configuração / Importação",""]
 };
 function renderVisibleTab(id){
  if(!data)return;
- if(id==="geral")renderGeneral();
- else if(id==="despesas")renderExpenses();
- else if(id==="receitas")renderIncome();
+ if(id==="resumo")renderGeneral();
+ else if(id==="fixas")renderFixed();
+ else if(id==="variaveis")renderVariable();
  else if(id==="parcelas")renderInstallments();
- else if(id==="investimentos"){renderInvestments();setProjectionInputs();renderProjection()}
  else if(id==="config")renderJsonInfo()
 }
 function showTab(id){
- if(!titles[id])id="geral";
+ if(!titles[id])id="resumo";
  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
  Object.keys(titles).forEach(x=>$(x).classList.toggle("hidden",x!==id));
- ["patrimonio","projecao","novo"].forEach(x=>{if($(x))$(x).classList.add("hidden")});
  $("pageTitle").textContent=titles[id][0];$("pageSubtitle").textContent=titles[id][1];
- if($("btnTopAddVariable"))$("btnTopAddVariable").classList.toggle("hidden",id!=="despesas");
+ if($("btnTopAddVariable"))$("btnTopAddVariable").classList.toggle("hidden",id!=="variaveis");
  if($("btnTopAddInstallment"))$("btnTopAddInstallment").classList.toggle("hidden",id!=="parcelas");
  setTimeout(()=>{renderVisibleTab(id);Object.values(charts).forEach(c=>c.resize())},80)
 }
@@ -2117,7 +1997,18 @@ async function saveProjectionSettings(){if(!data)return;let s=data.configuracoes
 async function resetProjection(){if(!data)return;Object.assign(data.configuracoes.projecaoPatrimonial,{rentabilidadeAplicacoesMensal:.01,rentabilidadePrevidenciaFgtsMensal:.005,aportePrevidenciaIgor:1100,aporteFgtsIgor:1100,aporteFgtsVitoria:590,aporteAplicacoesIgor:5000,aporteAplicacoesVitoria:3000,horizonteMeses:24});touch();setProjectionInputs();await afterMutation("Premissas padrão restauradas.")}
 
 function exportJson(){if(!data){toast("Nenhuma base carregada.");return}let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=FILE_NAME;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);dirty=false;updateStatus();toast("Dados exportados.")}
-async function importJson(file){try{let obj=JSON.parse(await file.text());if(!validateData(obj))throw new Error("O arquivo selecionado não é compatível.");data=obj;dirty=false;refreshSelects();let latest=latestOperationalMonth();$("periodEnd").value=latest;$("nData").value=new Date().toISOString().slice(0,10);renderAll();toast("Dados importados com sucesso.")}catch(e){handleError(e)}finally{$("jsonImport").value=""}}
+async function importJson(file){
+ try{
+  let obj=JSON.parse(await file.text());
+  if(!validateData(obj))throw new Error("O arquivo selecionado não é compatível.");
+  data=obj;dirty=false;refreshSelects();
+  let latest=latestOperationalMonth();
+  $("periodEnd").value=latest;
+  renderAll();
+  toast("Dados importados com sucesso.")
+ }catch(e){handleError(e)}
+ finally{$("jsonImport").value=""}
+}
 
 function setSyncStatus(t,state=""){$("syncPill").textContent=t;$("syncPill").className="syncpill "+state}
 function updateCloudUi(){$("accountInfo").textContent=account?`Conectado: ${account.username||account.name||"Conta Microsoft"}`:"Nenhuma conta conectada.";$("remoteInfo").textContent=remoteMeta?"Dados sincronizados com o OneDrive.":"Ainda não sincronizado.";if(account&&remoteMeta&&!dirty)setSyncStatus("OneDrive sincronizado","online");else if(account)setSyncStatus(dirty?"Alterado localmente":"Conectado","warn");else if(data)setSyncStatus("Dados carregados");else setSyncStatus("Sem dados")}
@@ -2135,40 +2026,25 @@ function handleError(e){console.error(e);if(String(e?.message||e)==="CONFLICT_RE
 $("redirectUriBox").textContent=REDIRECT_URI;
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 $("periodPreset").onchange=()=>{refreshPeriodUi();renderAll()};$("periodStart").onchange=renderAll;$("periodEnd").onchange=renderAll;
-["expenseTypeFilter","expenseCategoryFilter"].forEach(id=>$(id).onchange=renderExpenses);$("incomePersonFilter").onchange=renderIncome;$("installmentCategoryFilter").onchange=renderInstallments;
+$("installmentCategoryFilter").onchange=renderInstallments;
 
 $("btnOpenFixed").onclick=()=>openContextForm("fixas");
-$("btnTopAddVariable").onclick=()=>{expenseTableView="variaveis";renderExpenseTableView();openContextForm("variaveis")};
+$("btnTopAddVariable").onclick=()=>openContextForm("variaveis");
 $("btnTopAddInstallment").onclick=()=>openContextForm("parcelas");
-document.querySelectorAll("[data-expense-table-view]").forEach(b=>b.onclick=()=>setExpenseTableView(b.dataset.expenseTableView));
-$("btnOpenRevenue").onclick=()=>openContextForm("receitas");
-$("btnOpenInvestment").onclick=()=>openContextForm("investimento");
 $("btnSaveFixed").onclick=()=>saveContextRecord("fixas");
 $("btnSaveVariable").onclick=()=>saveContextRecord("variaveis");
-$("btnSaveRevenue").onclick=()=>saveContextRecord("receitas");
 $("btnSaveInstallment").onclick=()=>saveContextRecord("parcelas");
-$("btnSaveInvestment").onclick=()=>saveContextRecord("investimento");
 $("btnCancelFixed").onclick=()=>closeContextForm("fixas");
 $("btnCancelVariable").onclick=()=>closeContextForm("variaveis");
-$("btnCancelRevenue").onclick=()=>closeContextForm("receitas");
 $("btnCancelInstallment").onclick=()=>closeContextForm("parcelas");
-$("btnCancelInvestment").onclick=()=>closeContextForm("investimento");
 $("btnReplicateFixed").onclick=replicateFixedPrevious;
-$("btnReplicateRevenue").onclick=replicateRevenueNext;
-$("revMonthPrev").onclick=()=>{revenueMonthSelection=addMonths(revenueMonth(),-1);if(revenueMonthSelection<HISTORY_START)revenueMonthSelection=HISTORY_START;renderIncome()};
-$("revMonthNext").onclick=()=>{revenueMonthSelection=addMonths(revenueMonth(),1);renderIncome()};
-$("revMonthPicker").onchange=e=>{revenueMonthSelection=e.target.value||revenueMonth();renderIncome()};
-$("btnReplicateInvestment").onclick=replicateInvestmentNext;
-$("invMonthPrev").onclick=()=>{investmentMonthSelection=addMonths(investmentMonth(),-1);if(investmentMonthSelection<HISTORY_START)investmentMonthSelection=HISTORY_START;renderInvestments()};
-$("invMonthNext").onclick=()=>{investmentMonthSelection=addMonths(investmentMonth(),1);renderInvestments()};
-$("invMonthPicker").onchange=e=>{investmentMonthSelection=e.target.value||investmentMonth();renderInvestments()};
-$("fxMonthPrev").onclick=()=>{fixedMonthSelection=addMonths(fixedMonth(),-1);if(fixedMonthSelection<HISTORY_START)fixedMonthSelection=HISTORY_START;renderExpenses()};
-$("fxMonthNext").onclick=()=>{fixedMonthSelection=addMonths(fixedMonth(),1);renderExpenses()};
-$("fxMonthPicker").onchange=e=>{fixedMonthSelection=e.target.value||fixedMonth();renderExpenses()};
+$("fxMonthPrev").onclick=()=>{fixedMonthSelection=addMonths(fixedMonth(),-1);if(fixedMonthSelection<HISTORY_START)fixedMonthSelection=HISTORY_START;renderFixed()};
+$("fxMonthNext").onclick=()=>{fixedMonthSelection=addMonths(fixedMonth(),1);renderFixed()};
+$("fxMonthPicker").onchange=e=>{fixedMonthSelection=e.target.value||fixedMonth();renderFixed()};
 document.querySelectorAll("[data-fixed-status]").forEach(b=>b.onclick=()=>{
  fixedStatusFilter=b.dataset.fixedStatus;
  document.querySelectorAll("[data-fixed-status]").forEach(x=>x.classList.toggle("active",x===b));
- renderExpenses()
+ renderFixed()
 });
 
 document.addEventListener("click",e=>{
@@ -2185,7 +2061,6 @@ $("excelFilterApply").onclick=excelApplyCurrent;
 $("excelFilterClear").onclick=excelClearCurrent;
 window.addEventListener("resize",closeExcelFilterMenu);
 window.addEventListener("scroll",closeExcelFilterMenu,true);
-$("manageType").onchange=renderManage;$("manageSearch").oninput=renderManage;$("nTipo").onchange=updateLaunchForm;$("btnSaveLaunch").onclick=saveLaunch;$("btnCancelEdit").onclick=cancelEdit;$("btnSaveProjection").onclick=saveProjectionSettings;$("btnResetProjection").onclick=resetProjection;
 document.querySelectorAll(".money-input").forEach(el=>el.addEventListener("blur",()=>{if(el.value.trim()!=="")el.value=moneyInput(parseMoney(el.value))}));
 $("jsonImport").onchange=()=>{let f=$("jsonImport").files?.[0];if(f)importJson(f)};$("btnExportJson").onclick=exportJson;
 $("btnSaveClient").onclick=async()=>{let id=$("clientIdInput").value.trim();localStorage.setItem(CLIENT_KEY,id);await initPca();toast("Client ID salvo.")};
@@ -2194,7 +2069,7 @@ $("btnLogout").onclick=async()=>{if(pca&&account)await pca.logoutRedirect({accou
 $("btnSync").onclick=$("btnTopSync").onclick=async()=>{try{await syncFromOneDrive()}catch(e){handleError(e)}};
 $("btnUploadCurrent").onclick=async()=>{try{if(!account)throw new Error("Entre com a conta Microsoft primeiro.");let m=await getMeta();if(m&&remoteMeta?.eTag&&m.eTag!==remoteMeta.eTag)throw new Error("CONFLICT_REMOTE");await uploadJson();toast(`${FILE_NAME} salvo no OneDrive.`)}catch(e){handleError(e)}};
 
-await initPca();updateLaunchForm();updateStatus();
+await initPca();updateStatus();
 if(account){try{await syncFromOneDrive()}catch(e){console.warn(e);updateCloudUi()}}
 </script>
 </body>
