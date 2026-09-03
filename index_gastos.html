@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Controle de Gastos</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f4f7fb;--surface:#fff;--surface2:#f8fafc;--text:#172033;--muted:#65748a;--line:#e3e8ef;--nav:#122643;--nav2:#0b1931;--blue:#2563eb;--green:#059669;--orange:#f59e0b;--purple:#8b5cf6;--red:#dc2626;--cyan:#0891b2;--pink:#db2777;--shadow:0 7px 24px rgba(15,35,65,.07)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.app{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh}.sidebar{height:100vh;position:sticky;top:0;background:linear-gradient(180deg,var(--nav),var(--nav2));color:#fff;padding:17px 13px;display:flex;flex-direction:column;z-index:30}.brand{display:flex;gap:10px;align-items:center;padding:5px 7px 18px;border-bottom:1px solid #ffffff17}.brandmark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#12a875,#28c9a0);font-weight:900}.brand b{font-size:14px}.brand small{display:block;color:#9fb1ca;font-size:9px;margin-top:2px}.navlabel{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#8298b8;font-weight:900;margin:18px 9px 7px}.tabs{display:flex;flex-direction:column;gap:3px;overflow:auto;scrollbar-width:none}.tab{border:0;background:transparent;color:#b8c7db;border-radius:9px;padding:9px 10px;text-align:left;font-size:11px;font-weight:700}.tab:hover{background:#ffffff0b;color:#fff}.tab.active{background:#ffffff15;color:#fff;box-shadow:inset 3px 0 0 #20c997}.sidebar-foot{margin-top:auto;color:#859ab8;font-size:9px;line-height:1.45;padding:12px 8px 2px}
+.content-shell{min-width:0}.topbar{height:68px;position:sticky;top:0;z-index:25;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:0 20px}.topbar-inner{height:100%;max-width:1500px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.top-title b{font-size:15px}.top-title small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.top-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.syncpill{font-size:9px;padding:7px 9px;border-radius:999px;background:#eef2f7;color:#536176;font-weight:800}.syncpill.online{background:#e9f9f2;color:#087653}.syncpill.warn{background:#fff4da;color:#92520a}
+main{max-width:1500px;margin:auto;padding:18px 20px 90px}.workspace-head{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:12px}.eyebrow{font-size:8px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;color:#079267}.workspace-head h1{font-size:24px;letter-spacing:-.04em;margin:5px 0 3px}.workspace-head p{font-size:10px;color:var(--muted);margin:0}.periodbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.periodbar select,.periodbar input,.filterbar select,.filterbar input{border:1px solid #d8e0ea;background:#fff;border-radius:9px;padding:7px 9px;min-height:36px;color:var(--text);font-size:10px}.period-summary{font-size:9px;color:var(--muted);font-weight:750}
+.notice{padding:10px 12px;border-radius:10px;font-size:10px;line-height:1.45;margin-bottom:10px}.notice.info{background:#eff6ff;border:1px solid #bfdbfe}.notice.warn{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12}.notice.ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(15,35,65,.025)}.section{margin-top:10px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.grid7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.kpi{position:relative;overflow:hidden}.kpi label{font-size:8px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.035em;display:block}.kpi strong{font-size:19px;font-weight:880;letter-spacing:-.035em;display:block;margin-top:6px}.kpi small{font-size:9px;color:var(--muted);display:block;margin-top:4px}.good{color:var(--green)!important}.bad{color:var(--red)!important}.chart-card{min-width:0}.chart-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}.chart-head h3,.title{font-size:12px;font-weight:850;margin:0 0 3px}.chart-head p,.subtitle{font-size:9px;color:var(--muted);margin:0;line-height:1.4}.chart-wrap{position:relative;height:290px}.chart-wrap.short{height:245px}.chart-wrap.tall{height:330px}.pill{font-size:8px;background:#eef3f8;color:#627086;padding:5px 7px;border-radius:999px;white-space:nowrap}.filterbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:9px}.filter-group{display:flex;gap:7px;flex-wrap:wrap}.btn{border:0;border-radius:9px;padding:8px 11px;min-height:36px;background:var(--blue);color:#fff;font-size:10px;font-weight:800}.btn.secondary{background:#fff;color:#2c3a50;border:1px solid var(--line)}.btn.green{background:var(--green)}.btn.danger{background:#fff;color:var(--red);border:1px solid #fecaca}.btn:disabled{opacity:.45;cursor:not-allowed}
+.wrap{overflow:auto;border:1px solid #edf0f4;border-radius:10px}table{width:100%;border-collapse:collapse;min-width:720px}th,td{padding:8px 9px;border-bottom:1px solid #edf0f4;font-size:10px;text-align:left;vertical-align:middle}th{background:#f8fafc;color:#65758b;text-transform:uppercase;font-size:8px;letter-spacing:.04em;font-weight:850;position:sticky;top:0}tr:last-child td{border-bottom:0}.num{text-align:right;font-variant-numeric:tabular-nums}.desc{font-weight:650;color:#27364b}.muted{color:var(--muted)}.actions{display:flex;gap:5px;justify-content:flex-end}.mini-btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 7px;font-size:8px;font-weight:800;color:#405067}.mini-btn.del{color:#b91c1c;border-color:#fecaca}.empty{padding:17px;text-align:center;color:#94a3b8;font-size:9px}
+.form-card{max-width:960px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field label{display:block;font-size:9px;color:#536277;font-weight:800;margin-bottom:5px}.field input,.field select{width:100%;border:1px solid #d8e0ea;border-radius:9px;background:#fff;padding:8px 9px;min-height:39px;color:var(--text);font-size:10px;outline:0}.field input:focus,.field select:focus{border-color:#7fb9e9;box-shadow:0 0 0 3px #eaf4ff}.hint{font-size:8px;color:#91a0b4;margin-top:4px}.form-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.edit-banner{padding:9px 10px;background:#fff7ed;border:1px solid #fed7aa;border-radius:9px;font-size:9px;color:#7c2d12;margin-bottom:10px}.projection-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.setupgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.step{border:1px solid var(--line);border-radius:11px;background:#fafcfe;padding:11px;font-size:10px;line-height:1.45}.step b{display:block;margin-bottom:4px}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#f7f9fc;border:1px solid var(--line);border-radius:7px;padding:7px;font-size:9px;word-break:break-all}.small{font-size:9px;color:var(--muted);line-height:1.5}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#13233f;color:#fff;border-radius:10px;padding:10px 13px;font-size:10px;opacity:0;pointer-events:none;transition:.2s;z-index:80;box-shadow:var(--shadow)}.toast.show{opacity:1}footer{text-align:center;color:#8b98aa;font-size:8px;padding:18px}.dirty{color:#b45309;font-weight:800}
+@media(max-width:1200px){.grid7{grid-template-columns:repeat(4,1fr)}.grid5{grid-template-columns:repeat(3,1fr)}.grid4{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr}.projection-form{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.app{display:block}.sidebar{height:auto;position:sticky;top:0;padding:8px 9px;display:block}.brand,.navlabel,.sidebar-foot{display:none}.tabs{display:flex;flex-direction:row;overflow:auto;gap:4px}.tab{white-space:nowrap;padding:8px}.tab.active{box-shadow:none}.topbar{top:46px;height:auto;min-height:60px;padding:8px 11px}.topbar-inner{align-items:flex-start}.top-title small{display:none}main{padding:13px 11px 80px}.workspace-head{align-items:flex-start;flex-direction:column}.grid2,.setupgrid{grid-template-columns:1fr}}
+@media(max-width:560px){.grid7,.grid5,.grid4{grid-template-columns:repeat(2,1fr)}.formgrid,.projection-form{grid-template-columns:1fr}.top-actions .syncpill{display:none}.chart-wrap{height:260px}.periodbar{width:100%}.periodbar select{flex:1}.workspace-head h1{font-size:21px}.kpi strong{font-size:16px}}
+
+.context-card{border:1px solid #e6eaf0;background:#fbfcfe;border-radius:12px;padding:12px;margin-top:12px}
+.context-card .context-title{font-size:12px;font-weight:800;margin-bottom:8px}
+.context-toolbar{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin-top:10px}
+.context-toolbar .field{min-width:170px}
+.context-toolbar .btn{margin:0}
+.inline-editor{border-top:1px solid #e8edf3;margin-top:12px;padding-top:12px}
+.inline-editor.hidden{display:none}
+.inline-editor .formgrid{margin-top:4px}
+.section-subtitle{font-size:10px;color:#748297;margin-top:3px}
+.divider-label{margin:20px 0 8px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#55657b}
+.soft-pink{color:#d97994!important}
+.soft-blue{color:#2563eb!important}
+
+
+.table-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:end;padding:10px 0 12px}
+.table-filters .field{min-width:145px;flex:0 1 190px}
+.table-filters .field.search{flex:1 1 240px;min-width:210px}
+.table-filters input,.table-filters select{width:100%}
+.table-filter-count{font-size:9px;color:#7b8798;margin-left:auto;align-self:center;white-space:nowrap}
+@media(max-width:760px){
+ .table-filters .field,.table-filters .field.search{flex:1 1 100%;min-width:0}
+ .table-filter-count{width:100%;margin-left:0}
+}
+
+
+.table-scroll-10{
+  max-height:430px;
+  overflow-y:auto;
+  overflow-x:auto;
+  border:1px solid var(--line,#e5eaf1);
+  border-radius:10px;
+}
+.table-scroll-10 table{margin:0}
+.table-scroll-10 thead th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:#fff;
+  box-shadow:0 1px 0 var(--line,#e5eaf1);
+}
+.table-scroll-10 tbody tr{height:38px}
+.table-scroll-10 tbody td{
+  padding-top:8px;
+  padding-bottom:8px;
+  vertical-align:middle;
+}
+.table-scroll-10 tbody td.desc{
+  max-width:320px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.table-period-note{
+  font-size:9px;
+  color:#7b8798;
+  margin:2px 0 8px;
+}
+
+
+/* ==========================================================
+   v8.12 — refinamento visual inspirado na identidade Bradesco
+   Somente apresentação: sem alterações em dados/funcionalidades.
+   ========================================================== */
+
+:root{
+  --br-red:#CC092F;
+  --br-red-dark:#900F15;
+  --br-magenta:#B81570;
+  --br-indigo:#333B8F;
+  --br-rose:#D63A59;
+  --ink:#2C2528;
+  --muted:#746C70;
+  --paper:#F7F3F1;
+  --paper-2:#FCFAF9;
+  --card:#FFFFFF;
+  --line:#E9E1DF;
+  --line-strong:#DDD1CE;
+  --soft-red:#F9ECEF;
+  --soft-wine:#F4E9EA;
+  --soft-blue:#EEF0F8;
+  --soft-green:#EDF4F0;
+  --shadow:0 10px 30px rgba(78,34,40,.055);
+  --radius:18px;
+  --radius-sm:12px;
+}
+
+*{scrollbar-width:thin;scrollbar-color:#CBBFC1 transparent}
+*::-webkit-scrollbar{width:8px;height:8px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:#CBBFC1;border-radius:99px}
+*::-webkit-scrollbar-thumb:hover{background:#B9AAAD}
+
+html,body{
+  background:
+    radial-gradient(circle at 85% -5%, rgba(204,9,47,.055), transparent 28rem),
+    radial-gradient(circle at -8% 35%, rgba(51,59,143,.035), transparent 26rem),
+    var(--paper);
+  color:var(--ink);
+}
+
+body{
+  font-family:Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing:-.005em;
+}
+
+/* Navegação: mais editorial e menos "app template" */
+.sidebar{
+  background:
+    linear-gradient(160deg, #8F101A 0%, var(--br-red-dark) 38%, #741018 100%);
+  color:#fff;
+  border-right:0;
+  box-shadow:18px 0 45px rgba(91,15,24,.08);
+}
+
+.brand{
+  padding-top:24px;
+  padding-bottom:22px;
+  border-bottom:1px solid rgba(255,255,255,.13);
+}
+.brand-mark{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:none;
+}
+.brand strong{font-weight:720;letter-spacing:-.02em}
+.brand small{color:rgba(255,255,255,.68)}
+
+.tabs{gap:5px;padding-top:14px}
+.tab{
+  border:0;
+  color:rgba(255,255,255,.72);
+  background:transparent;
+  border-radius:10px;
+  padding:11px 12px;
+  font-weight:560;
+  transition:background .16s ease,color .16s ease,transform .16s ease;
+}
+.tab:hover{
+  color:#fff;
+  background:rgba(255,255,255,.075);
+  transform:translateX(2px);
+}
+.tab.active{
+  color:#fff;
+  background:rgba(255,255,255,.13);
+  box-shadow:inset 3px 0 0 #fff;
+}
+
+.sidebar-foot{
+  color:rgba(255,255,255,.62);
+  border-top:1px solid rgba(255,255,255,.13);
+}
+
+/* Topo: menos containerizado, mais "relatório financeiro" */
+.content-shell{background:transparent}
+.topbar{
+  background:rgba(247,243,241,.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(221,209,206,.75);
+}
+.top-title b{
+  color:var(--ink);
+  font-size:13px;
+  font-weight:720;
+}
+.top-title small{color:var(--muted)}
+.syncpill{
+  border-color:var(--line-strong);
+  background:rgba(255,255,255,.72);
+  color:#5E565A;
+}
+.syncpill.online{
+  background:#EEF4F0;
+  color:#34634D;
+  border-color:#D9E8DE;
+}
+.syncpill.warn{
+  background:#FBF2E9;
+  color:#865931;
+  border-color:#F0DDC9;
+}
+
+/* Área de página */
+main{padding-top:28px}
+.workspace-head{
+  align-items:flex-end;
+  margin-bottom:24px;
+}
+.eyebrow{
+  color:var(--br-red);
+  font-size:9px;
+  letter-spacing:.16em;
+  font-weight:800;
+}
+#pageTitle{
+  font-size:31px;
+  line-height:1.05;
+  letter-spacing:-.045em;
+  font-weight:720;
+  color:#2B2427;
+  margin-top:4px;
+}
+#pageSubtitle{
+  color:#80777B;
+  max-width:720px;
+  margin-top:7px;
+  font-size:11px;
+  line-height:1.55;
+}
+
+.periodbar{
+  background:rgba(255,255,255,.78);
+  border:1px solid var(--line);
+  padding:5px;
+  border-radius:13px;
+  box-shadow:0 4px 15px rgba(78,34,40,.025);
+}
+.periodbar select,.periodbar input{
+  background:transparent;
+  border-color:transparent;
+}
+.period-summary{color:#8A7E82!important}
+
+/* Cards: menos "caixinhas iguais"; mais superfícies leves */
+.card{
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(226,216,213,.86);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.card:hover{
+  border-color:#DED0CD;
+}
+.section{margin-top:20px}
+
+/* KPIs — menor altura, mais tipografia, menos borda */
+.kpi{
+  min-height:104px;
+  padding:17px 18px 15px;
+  position:relative;
+  overflow:hidden;
+}
+.kpi::after{
+  content:"";
+  position:absolute;
+  right:-26px;
+  top:-34px;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(204,9,47,.055),rgba(204,9,47,0) 68%);
+  pointer-events:none;
+}
+.kpi label{
+  color:#8A7E82;
+  font-size:9px;
+  font-weight:680;
+  letter-spacing:.025em;
+  text-transform:none;
+}
+.kpi strong{
+  color:#2C2528;
+  font-size:22px;
+  font-weight:710;
+  letter-spacing:-.035em;
+  margin-top:8px;
+}
+.kpi small{
+  color:#94898D;
+  font-size:9px;
+  margin-top:5px;
+}
+.kpi .good,.good{color:#3D7257!important}
+.kpi .bad,.bad{color:var(--br-red)!important}
+
+/* Cabeçalhos dos gráficos com cara de apresentação, não de widget */
+.chart-card{padding:18px 18px 15px}
+.chart-head{
+  margin-bottom:13px;
+  align-items:flex-start;
+}
+.chart-head h3{
+  color:#30282B;
+  font-size:13px;
+  font-weight:710;
+  letter-spacing:-.018em;
+}
+.chart-head p{
+  color:#897D81;
+  font-size:9.5px;
+  line-height:1.45;
+  margin-top:3px;
+  max-width:640px;
+}
+.pill{
+  background:var(--soft-red);
+  color:#8F2E41;
+  border:0;
+  border-radius:999px;
+  font-weight:650;
+  font-size:8px;
+  padding:5px 9px;
+}
+.chart-wrap{
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(252,250,249,.78),rgba(255,255,255,.98));
+}
+
+/* Formulários e filtros: mais próximos de papel/caderno financeiro */
+.filterbar,.context-toolbar,.projection-form{
+  background:transparent;
+}
+.filterbar{
+  padding:0;
+  border:0;
+  margin-bottom:16px;
+}
+.filter-group{
+  gap:7px;
+}
+select,input{
+  border-color:#DED4D1;
+  background:#FFFDFC;
+  border-radius:9px;
+  color:#42393D;
+}
+select:focus,input:focus{
+  border-color:rgba(204,9,47,.52);
+  box-shadow:0 0 0 3px rgba(204,9,47,.075);
+  outline:none;
+}
+
+.table-filters{
+  background:#FAF7F6;
+  border:1px solid #EEE5E2;
+  border-radius:13px;
+  padding:11px;
+  margin-bottom:10px;
+}
+.field label{
+  color:#7C7074;
+  text-transform:none;
+  letter-spacing:.01em;
+  font-weight:650;
+}
+
+/* Botões: menos genéricos; ação primária Bradesco */
+.btn{
+  border-radius:9px;
+  font-weight:650;
+  box-shadow:none;
+  transition:transform .14s ease,box-shadow .14s ease,background .14s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.green,
+.btn.primary{
+  background:var(--br-red);
+  border-color:var(--br-red);
+  color:#fff;
+}
+.btn.green:hover,
+.btn.primary:hover{
+  background:#B5092B;
+  box-shadow:0 7px 18px rgba(204,9,47,.14);
+}
+.btn.secondary{
+  background:#FFFDFC;
+  color:#5A4F53;
+  border-color:#DED4D1;
+}
+.btn.secondary:hover{
+  background:#F8F1EF;
+  border-color:#D5C5C2;
+}
+.mini-btn{
+  border-radius:8px;
+  border-color:#E1D7D4;
+  background:#fff;
+  color:#685C60;
+}
+.mini-btn:hover{
+  border-color:#CDBBBA;
+  background:#FAF6F5;
+}
+.mini-btn.del{
+  color:#A82A40;
+  background:#FFF9FA;
+  border-color:#F0D9DE;
+}
+
+/* Tabelas: leitura de relatório em vez de planilha dentro de card */
+.wrap.table-scroll-10{
+  border-color:#E9DFDC;
+  border-radius:12px;
+  background:#fff;
+}
+table{
+  font-variant-numeric:tabular-nums;
+}
+thead th{
+  background:#F7F2F1!important;
+  color:#75696D;
+  font-size:8.5px;
+  font-weight:720;
+  letter-spacing:.02em;
+  text-transform:none;
+  border-bottom-color:#E8DDDA!important;
+}
+tbody td{
+  color:#51464A;
+  border-bottom-color:#F0E9E7!important;
+}
+tbody tr:hover td{
+  background:#FCF8F7;
+}
+td.num,th.num{
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.01em;
+}
+
+/* Últimos registros: mais "bloco editorial" */
+.context-card,.inline-editor{
+  background:#FAF6F5;
+  border-color:#EAE0DD;
+}
+.context-title{
+  color:#44393D;
+  letter-spacing:-.01em;
+}
+
+/* Notices */
+.notice{
+  border-radius:12px;
+  border-width:1px;
+}
+.notice.warn{
+  background:#FBF3EC;
+  border-color:#F0DDCF;
+  color:#77553C;
+}
+
+/* Micro-elementos */
+.empty{color:#94898D}
+.hint{color:#8C7F83}
+.chart-note{
+  color:#84777B;
+  background:#FAF6F5;
+  border-color:#ECE1DF;
+  border-radius:10px;
+}
+
+/* Pequena assinatura visual orgânica no topo do conteúdo */
+.workspace-head::before{
+  content:"";
+  position:absolute;
+  width:82px;
+  height:4px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--br-red),var(--br-magenta),var(--br-indigo));
+  transform:translateY(-15px);
+  opacity:.9;
+}
+.workspace-head{position:relative}
+.workspace-head::before{display:none!important;content:none!important}
+
+/* Receitas: preserva a identificação solicitada */
+.soft-pink{color:#D97E9B!important}
+.soft-blue{color:#4566A9!important}
+
+/* Menos "blocos perfeitos" em desktop: grids respiram um pouco mais */
+.grid7,.grid5,.grid4,.grid3,.grid2{gap:13px}
+.grid7 .kpi:nth-child(3n+1),
+.grid5 .kpi:nth-child(2n){
+  transform:translateY(2px);
+}
+
+/* Responsividade */
+@media(max-width:1100px){
+  #pageTitle{font-size:27px}
+  .kpi{min-height:98px}
+  .kpi strong{font-size:20px}
+  .grid7 .kpi:nth-child(3n+1),
+  .grid5 .kpi:nth-child(2n){transform:none}
+}
+@media(max-width:760px){
+  body{background:var(--paper)}
+  main{padding-top:20px}
+  .workspace-head::before{width:54px}
+  #pageTitle{font-size:24px}
+  .card{border-radius:15px}
+  .kpi{min-height:auto}
+  .table-filters{padding:9px}
+}
+
+
+/* v8.24 — ajustes finais de identidade e legibilidade */
+.brand{
+  display:block;
+  padding:10px 10px 20px;
+}
+.brand b{
+  font-size:15px;
+  color:#fff;
+  font-weight:720;
+  letter-spacing:-.025em;
+}
+.navlabel{
+  color:rgba(255,255,255,.60)!important;
+  margin-top:18px;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.14em;
+}
+.top-title b{font-size:12px}
+.top-title small{margin-top:2px}
+
+
+#pageSubtitle:empty{display:none}
+
+.excel-th{display:flex;align-items:center;justify-content:space-between;gap:5px;width:100%}
+.excel-filter-btn{width:19px;height:19px;padding:0;border:0;border-radius:5px;background:transparent;color:#8C7F83;font-size:10px;line-height:19px;flex:0 0 19px}
+.excel-filter-btn:hover{background:#EEE6E3;color:#42363A}.excel-filter-btn.active{background:#F5E7EB;color:#A51437}
+.excel-filter-menu{position:fixed;z-index:9999;width:270px;max-width:calc(100vw - 24px);padding:8px;background:#fff;border:1px solid #DCCFCD;border-radius:10px;box-shadow:0 18px 48px rgba(69,35,41,.18)}
+.excel-filter-menu.hidden{display:none!important}.excel-filter-sort{display:grid;gap:2px}
+.excel-filter-sort button{border:0;background:transparent;color:#4D4246;text-align:left;padding:8px 9px;border-radius:7px;font-size:10px}
+.excel-filter-sort button:hover,.excel-filter-sort button.active{background:#F8F1F2;color:#99152F}
+.excel-filter-sep{height:1px;background:#EEE5E3;margin:6px 0 8px}.excel-filter-search{width:100%;margin-bottom:7px;font-size:10px;padding:8px 9px}
+.excel-filter-all,.excel-filter-value{display:flex;align-items:center;gap:7px;min-height:28px;padding:4px 6px;border-radius:6px;color:#4F4448;font-size:10px}
+.excel-filter-all{border-bottom:1px solid #F0E9E7;border-radius:0;font-weight:650}.excel-filter-value:hover{background:#FAF6F5}
+.excel-filter-values{max-height:220px;overflow:auto;margin:3px 0 8px}.excel-filter-value span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.excel-filter-menu input[type="checkbox"]{width:13px;height:13px;accent-color:#CC092F;flex:0 0 auto}
+.excel-filter-actions{display:flex;justify-content:space-between;gap:7px;padding-top:7px;border-top:1px solid #EEE5E3}.excel-filter-actions .btn{flex:1;min-height:30px;padding:6px 8px}
+.table-filter-count{color:#93868A;font-size:9px;margin-left:auto;white-space:nowrap}
+
+
+/* v8.24 — acompanhamento mensal de gastos fixos */
+.fixed-month-card{padding:0;overflow:hidden}
+.fixed-month-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px 18px;border-bottom:1px solid var(--line)}
+.fixed-month-head h3{margin:0;font-size:14px;letter-spacing:-.015em}
+.fixed-month-head p{margin:4px 0 0;color:var(--muted);font-size:9.5px}
+.fixed-month-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.fixed-month-nav{display:flex;align-items:center;gap:3px;background:#faf6f5;border:1px solid var(--line);border-radius:10px;padding:3px}
+.fixed-month-nav button{border:0;background:transparent;width:28px;height:28px;border-radius:7px;color:#75696d;font-size:15px;line-height:1}
+.fixed-month-nav button:hover{background:#efe6e4}
+.fixed-month-nav input{border:0;background:transparent;outline:0;padding:4px 5px;font-size:9px;font-weight:700;color:#4c4145}
+.fixed-month-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-bottom:1px solid var(--line)}
+.fixed-mini-kpi{padding:14px 17px;border-right:1px solid var(--line);min-width:0}
+.fixed-mini-kpi:last-child{border-right:0}
+.fixed-mini-kpi span{display:block;color:#817579;font-size:8px;font-weight:750;text-transform:uppercase;letter-spacing:.035em}
+.fixed-mini-kpi strong{display:block;margin-top:6px;font-size:17px;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.fixed-mini-kpi small{display:block;color:#998d91;font-size:8px;margin-top:3px}
+.fixed-mini-kpi.paid strong{color:#557d67}
+.fixed-mini-kpi.pending strong{color:#cc092f}
+.fixed-progress{padding:12px 18px 13px;border-bottom:1px solid var(--line);background:#fdfbfa}
+.fixed-progress-line{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px;color:#776b6f;font-size:8.5px}
+.fixed-progress-track{height:7px;border-radius:99px;background:#eee6e3;overflow:hidden}
+.fixed-progress-bar{height:100%;width:0;border-radius:inherit;background:#557d67;transition:width .2s ease}
+.fixed-table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;border-bottom:1px solid var(--line)}
+.fixed-status-tabs{display:flex;background:#f2ecea;padding:3px;border-radius:9px}
+.fixed-status-tabs button{border:0;background:transparent;color:#786c70;padding:6px 9px;border-radius:7px;font-size:8.5px;font-weight:750}
+.fixed-status-tabs button.active{background:#fff;color:#3d3337;box-shadow:0 1px 5px rgba(50,25,31,.07)}
+.fixed-pay-status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 8px;font-size:8px;font-weight:800;white-space:nowrap}
+.fixed-pay-status::before{content:"";width:6px;height:6px;border-radius:50%}
+.fixed-pay-status.paid{background:#edf5f0;color:#416851}
+.fixed-pay-status.paid::before{background:#557d67}
+.fixed-pay-status.pending{background:#faecef;color:#a12c43}
+.fixed-pay-status.pending::before{background:#cc092f}
+.fixed-row-paid td:first-child{box-shadow:inset 3px 0 #668b74}
+.fixed-row-pending td:first-child{box-shadow:inset 3px 0 #cc092f}
+.fixed-due-edit{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.fixed-due-edit span{color:#8b7e82;font-size:8px}
+.fixed-due-input{width:48px!important;min-height:28px!important;padding:3px 5px!important;text-align:center;font-size:9px!important;border-radius:7px!important}
+.fixed-month-card .inline-editor{margin:12px 18px 18px}
+@media(max-width:980px){
+ .fixed-month-head{align-items:flex-start;flex-direction:column}
+ .fixed-month-actions{justify-content:flex-start}
+ .fixed-month-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fixed-mini-kpi:nth-child(2){border-right:0}
+ .fixed-mini-kpi:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media(max-width:620px){
+ .fixed-month-kpis{grid-template-columns:1fr}
+ .fixed-mini-kpi{border-right:0;border-bottom:1px solid var(--line)!important}
+ .fixed-mini-kpi:last-child{border-bottom:0!important}
+ .fixed-month-actions{width:100%}
+ .fixed-month-nav{width:100%;justify-content:space-between}
+ .fixed-month-nav input{flex:1}
+}
+
+
+/* v8.24 — despesas: ação no topo + tabela dinâmica */
+.page-period-side{display:flex;flex-direction:column;align-items:flex-end}
+.page-period-row{display:flex;align-items:center;gap:8px}
+.page-add-variable{
+  background:var(--br-red)!important;
+  border-color:var(--br-red)!important;
+  color:#fff!important;
+  min-height:40px;
+  padding:8px 13px;
+  box-shadow:0 6px 15px rgba(204,9,47,.10);
+  white-space:nowrap;
+}
+.page-add-variable:hover{background:#B80B30!important;border-color:#B80B30!important}
+
+.expense-table-switcher{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.expense-table-switcher-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:15px 18px;
+  border-bottom:1px solid var(--line);
+  background:#FDFBFA;
+}
+.expense-table-switcher-head h3{
+  margin:0;
+  font-size:14px;
+  letter-spacing:-.015em;
+}
+.expense-table-switcher-head p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:9.5px;
+}
+.expense-table-toggle{
+  display:flex;
+  padding:3px;
+  gap:3px;
+  background:#F2ECEA;
+  border-radius:10px;
+}
+.expense-table-toggle button{
+  border:0;
+  background:transparent;
+  color:#776B6F;
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:9px;
+  font-weight:780;
+  transition:background .15s ease,color .15s ease,box-shadow .15s ease;
+}
+.expense-table-toggle button.active{
+  background:var(--br-red);
+  color:#fff;
+  box-shadow:0 3px 9px rgba(204,9,47,.14);
+}
+.expense-table-toggle button:not(.active):hover{
+  background:#fff;
+  color:#4A3F43;
+}
+.expense-table-pane{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  margin:0!important;
+}
+.expense-table-pane.fixed-month-card{border:0!important}
+#expenseVariablePane{padding:17px 18px 18px}
+#expenseVariablePane>.chart-head{padding:0 0 12px}
+#expenseVariablePane .inline-editor{margin-top:12px}
+
+@media(max-width:900px){
+ .page-period-side{align-items:stretch}
+ .page-period-row{flex-wrap:wrap;justify-content:flex-end}
+ .expense-table-switcher-head{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:620px){
+ .page-period-row{width:100%;align-items:stretch}
+ .page-add-variable{width:100%}
+ .page-period-row .periodbar{flex:1}
+ .expense-table-toggle{width:100%}
+ .expense-table-toggle button{flex:1}
+}
+
+
+/* v8.24 — painéis mensais de receitas/investimentos e ação de parcelas no topo */
+.monthly-record-card{padding:0;overflow:hidden}
+.monthly-record-card>.inline-editor{margin:12px 18px 18px}
+.monthly-record-card .fixed-table-toolbar .table-period-note{margin:0}
+#btnTopAddInstallment{background:var(--br-red)!important;border-color:var(--br-red)!important;color:#fff!important}
+#btnTopAddInstallment:hover{background:#B80B30!important;border-color:#B80B30!important}
+
+
+/* v8.24 — tabelas compactas e responsivas */
+.compact-data-table{
+  width:100%;
+  table-layout:fixed;
+  min-width:0;
+}
+.compact-data-table th,
+.compact-data-table td{
+  padding-left:6px;
+  padding-right:6px;
+}
+.compact-data-table td{
+  font-size:9px;
+}
+.compact-data-table thead th{
+  font-size:7.8px;
+}
+.compact-data-table .excel-th{
+  gap:2px;
+}
+.compact-data-table .excel-filter-btn{
+  width:16px;
+  height:16px;
+  flex:0 0 16px;
+  line-height:16px;
+  font-size:8px;
+}
+.compact-data-table .actions{
+  gap:3px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.compact-data-table .mini-btn{
+  padding:4px 5px;
+  font-size:7.2px;
+  border-radius:6px;
+  line-height:1.1;
+}
+.compact-data-table td.desc{
+  max-width:none!important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Gastos variáveis: Data | Descrição | Categoria | Valor | Ações */
+.table-variaveis th:nth-child(1),.table-variaveis td:nth-child(1){width:13%}
+.table-variaveis th:nth-child(2),.table-variaveis td:nth-child(2){width:25%}
+.table-variaveis th:nth-child(3),.table-variaveis td:nth-child(3){width:23%}
+.table-variaveis th:nth-child(4),.table-variaveis td:nth-child(4){width:16%}
+.table-variaveis th:nth-child(5),.table-variaveis td:nth-child(5){width:23%}
+
+/* Gastos fixos */
+.table-fixas th:nth-child(1),.table-fixas td:nth-child(1){width:20%}
+.table-fixas th:nth-child(2),.table-fixas td:nth-child(2){width:18%}
+.table-fixas th:nth-child(3),.table-fixas td:nth-child(3){width:13%}
+.table-fixas th:nth-child(4),.table-fixas td:nth-child(4){width:13%}
+.table-fixas th:nth-child(5),.table-fixas td:nth-child(5){width:13%}
+.table-fixas th:nth-child(6),.table-fixas td:nth-child(6){width:23%}
+
+/* Receitas */
+.table-receitas th:nth-child(1),.table-receitas td:nth-child(1){width:20%}
+.table-receitas th:nth-child(2),.table-receitas td:nth-child(2){width:35%}
+.table-receitas th:nth-child(3),.table-receitas td:nth-child(3){width:19%}
+.table-receitas th:nth-child(4),.table-receitas td:nth-child(4){width:26%}
+
+/* Parcelas */
+.table-parcelas th:nth-child(1),.table-parcelas td:nth-child(1){width:12%}
+.table-parcelas th:nth-child(2),.table-parcelas td:nth-child(2){width:22%}
+.table-parcelas th:nth-child(3),.table-parcelas td:nth-child(3){width:20%}
+.table-parcelas th:nth-child(4),.table-parcelas td:nth-child(4){width:12%}
+.table-parcelas th:nth-child(5),.table-parcelas td:nth-child(5){width:14%}
+.table-parcelas th:nth-child(6),.table-parcelas td:nth-child(6){width:20%}
+
+/* Investimentos */
+.table-investimentos th:nth-child(1),.table-investimentos td:nth-child(1){width:28%}
+.table-investimentos th:nth-child(2),.table-investimentos td:nth-child(2){width:18%}
+.table-investimentos th:nth-child(3),.table-investimentos td:nth-child(3){width:15%}
+.table-investimentos th:nth-child(4),.table-investimentos td:nth-child(4){width:17%}
+.table-investimentos th:nth-child(5),.table-investimentos td:nth-child(5){width:22%}
+
+@media(max-width:700px){
+  .table-scroll-10{
+    max-height:390px;
+  }
+  .compact-data-table th,
+  .compact-data-table td{
+    padding:6px 4px!important;
+  }
+  .compact-data-table td{font-size:8px}
+  .compact-data-table thead th{font-size:7px}
+  .compact-data-table .excel-filter-btn{
+    width:14px;
+    height:14px;
+    flex-basis:14px;
+    line-height:14px;
+  }
+  .compact-data-table .mini-btn{
+    padding:3px 4px;
+    font-size:6.7px;
+  }
+  .compact-data-table .actions{
+    gap:2px;
+  }
+  .table-receitas{min-width:390px}
+  .table-variaveis{min-width:485px}
+  .table-investimentos{min-width:485px}
+  .table-fixas{min-width:570px}
+  .table-parcelas{min-width:570px}
+}
+@media(max-width:430px){
+  .table-scroll-10{
+    margin-left:-2px;
+    margin-right:-2px;
+  }
+  .compact-data-table th,
+  .compact-data-table td{
+    padding-left:3px!important;
+    padding-right:3px!important;
+  }
+  .table-receitas{min-width:360px}
+  .table-variaveis{min-width:455px}
+  .table-investimentos{min-width:455px}
+  .table-fixas{min-width:535px}
+  .table-parcelas{min-width:535px}
+}
+
+
+/* v8.24 — investimentos sem coluna Origem */
+.table-investimentos th:nth-child(1),.table-investimentos td:nth-child(1){width:36%}
+.table-investimentos th:nth-child(2),.table-investimentos td:nth-child(2){width:22%}
+.table-investimentos th:nth-child(3),.table-investimentos td:nth-child(3){width:18%}
+.table-investimentos th:nth-child(4),.table-investimentos td:nth-child(4){width:24%}
+@media(max-width:700px){
+  .table-investimentos{min-width:410px}
+}
+@media(max-width:430px){
+  .table-investimentos{min-width:385px}
+}
+
+
+/* v8.24 — ações das tabelas com ícones */
+.icon-btn{
+  width:28px;
+  height:28px;
+  padding:5px!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.icon-btn svg{
+  width:14px;
+  height:14px;
+  display:block;
+  fill:currentColor;
+}
+@media(max-width:700px){
+  .icon-btn{
+    width:24px;
+    height:24px;
+    padding:4px!important;
+  }
+  .icon-btn svg{
+    width:12px;
+    height:12px;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div><b>Controle de Gastos</b></div></div>
+<div class="navlabel">Navegação</div>
+<div class="tabs">
+<button class="tab active" data-tab="geral">Visão Geral</button>
+<button class="tab" data-tab="despesas">Despesas</button>
+<button class="tab" data-tab="receitas">Receitas</button>
+<button class="tab" data-tab="parcelas">Parcelas</button>
+<button class="tab" data-tab="investimentos">Investimentos</button>
+<button class="tab" data-tab="config">Configuração / Importação</button>
+</div>
+</aside>
+<div class="content-shell">
+<header class="topbar"><div class="topbar-inner">
+<div class="top-title"><b>Controle de Gastos</b><small id="dataStatus">Nenhum dado carregado</small></div>
+<div class="top-actions"><span class="period-summary" id="dirtyState"></span><span class="syncpill" id="syncPill">Sem dados</span><button class="btn secondary" id="btnTopSync">Sincronizar</button></div>
+</div></header>
+<main>
+<div class="notice warn" id="noDataNotice"><b>Primeiro acesso:</b> vá em “Configuração / Importação” para carregar seus dados.</div>
+<div class="workspace-head">
+<div><h1 id="pageTitle">Visão Geral</h1><p id="pageSubtitle"></p></div>
+<div class="page-period-side"><div class="page-period-row"><button class="btn page-add-variable hidden" id="btnTopAddVariable" type="button">+ Adicionar despesa variável</button><button class="btn page-add-variable hidden" id="btnTopAddInstallment" type="button">+ Adicionar parcela</button><div class="periodbar"><select id="periodPreset"><option value="current">Mês atual</option><option value="3">Últimos 3 meses</option><option value="6">Últimos 6 meses</option><option selected="" value="12">Últimos 12 meses</option><option value="year">Ano atual</option><option value="custom">Período personalizado</option><option value="all">Histórico completo</option></select><input class="hidden" id="periodStart" min="2022-05" type="month"/><input class="hidden" id="periodEnd" min="2022-05" type="month"/></div></div><div class="period-summary" id="periodSummary" style="margin-top:4px;text-align:right">—</div></div>
+</div>
+<section id="geral">
+<div class="grid4">
+<div class="card kpi">
+<label>Média de receitas • últimos 3 meses</label>
+<strong id="gMediaReceita3">—</strong>
+<small id="gMediaReceita3Sub">—</small>
+</div>
+<div class="card kpi">
+<label>Média de despesas • últimos 3 meses</label>
+<strong id="gMediaDespesa3">—</strong>
+<small>Fixas + variáveis + parcelas</small>
+</div>
+<div class="card kpi">
+<label>Parcelas a pagar no futuro</label>
+<strong id="gParcelasFuturo">—</strong>
+<small>A partir do próximo mês</small>
+</div>
+<div class="card kpi">
+<label>Patrimônio</label>
+<strong id="gPat">—</strong>
+<small id="gPatData">—</small>
+<small id="gPatMetaStatus">—</small>
+</div>
+</div>
+<div class="card chart-card section">
+<div class="chart-head">
+<div><h3>Consolida resultados</h3><p>Receitas e despesas consolidadas em linhas; a sobra mensal aparece como coluna translúcida ao fundo.</p></div>
+</div>
+<div class="chart-wrap tall"><canvas id="chartConsolidado"></canvas></div>
+</div>
+<div class="grid3 section">
+<div class="card chart-card"><div class="chart-head"><div><h3>Gastos fixos</h3><p>Evolução mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartFixosOverview"></canvas></div></div>
+<div class="card chart-card"><div class="chart-head"><div><h3>Gastos variáveis</h3><p>Evolução mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartVariaveisOverview"></canvas></div></div>
+<div class="card chart-card"><div class="chart-head"><div><h3>Parcelas</h3><p>Comprometimento mensal por categoria.</p></div></div><div class="chart-wrap short"><canvas id="chartParcelasOverview"></canvas></div></div>
+</div>
+<div class="card chart-card section">
+<div class="chart-head">
+<div><h3>Alocação de capital</h3><p>Evolução dos componentes do patrimônio e do total.</p></div>
+</div>
+<div class="chart-wrap tall"><canvas id="chartCapital"></canvas></div>
+</div>
+</section>
+<section class="hidden" id="despesas">
+<div class="filterbar"><div class="filter-group"><select id="expenseTypeFilter"><option value="all">Fixas + variáveis</option><option value="fixas">Somente fixas</option><option value="variaveis">Somente variáveis</option></select><select id="expenseCategoryFilter"><option value="all">Todas as categorias</option></select></div></div>
+<div class="grid4">
+<div class="card kpi"><label>Fixas • mês</label><strong id="dFixas">—</strong></div>
+<div class="card kpi"><label>Variáveis • mês</label><strong id="dVariaveis">—</strong></div>
+<div class="card kpi"><label>Total • mês</label><strong id="dTotal">—</strong></div>
+<div class="card kpi"><label>Média no período</label><strong id="dMedia">—</strong></div>
+</div>
+<div class="grid2 section">
+<div class="card chart-card"><div class="chart-head"><div><h3>Evolução das despesas</h3><p>Fixas e variáveis por mês.</p></div></div><div class="chart-wrap"><canvas id="chartDespesasEvolucao"></canvas></div></div>
+<div class="card chart-card"><div class="chart-head"><div><h3>Composição por categoria</h3><p>Total no período selecionado.</p></div></div><div class="chart-wrap"><canvas id="chartDespesasCategoria"></canvas></div></div>
+</div>
+<div class="expense-table-switcher section"><div class="expense-table-switcher-head"><div><h3>Lançamentos de despesas</h3><p>Alterne entre gastos fixos e variáveis na mesma área.</p></div><div class="expense-table-toggle"><button class="active" data-expense-table-view="fixas" type="button">Gastos Fixos</button><button class="" data-expense-table-view="variaveis" type="button">Gastos Variáveis</button></div></div><div class="card fixed-month-card expense-table-pane" id="expenseFixedPane">
+<div class="fixed-month-head">
+<div>
+<h3>Gastos Fixos</h3>
+<p id="fxMonthSubtitle">Acompanhe pagamentos e vencimentos do mês.</p>
+</div>
+<div class="fixed-month-actions">
+<div class="fixed-month-nav">
+<button aria-label="Mês anterior" id="fxMonthPrev" type="button">‹</button>
+<input id="fxMonthPicker" min="2022-05" type="month"/>
+<button aria-label="Mês seguinte" id="fxMonthNext" type="button">›</button>
+</div>
+<button class="btn secondary" id="btnReplicateFixed">Replicar para o mês seguinte</button>
+<button class="btn green" id="btnOpenFixed">Adicionar gasto fixo</button>
+</div>
+</div>
+<div class="fixed-month-kpis">
+<div class="fixed-mini-kpi"><span>Total previsto</span><strong id="fxMonthTotal">—</strong><small id="fxMonthCount">—</small></div>
+<div class="fixed-mini-kpi paid"><span>Já pago</span><strong id="fxMonthPaid">—</strong><small id="fxMonthPaidCount">—</small></div>
+<div class="fixed-mini-kpi pending"><span>Pendente</span><strong id="fxMonthPending">—</strong><small id="fxMonthPendingCount">—</small></div>
+<div class="fixed-mini-kpi"><span>Percentual pago</span><strong id="fxMonthPct">—</strong><small>do total previsto</small></div>
+</div>
+<div class="fixed-progress">
+<div class="fixed-progress-line"><span>Progresso dos pagamentos</span><strong id="fxProgressText">—</strong></div>
+<div class="fixed-progress-track"><div class="fixed-progress-bar" id="fxProgressBar"></div></div>
+</div>
+<div class="fixed-table-toolbar">
+<div class="fixed-status-tabs" id="fxStatusTabs">
+<button class="active" data-fixed-status="all" type="button">Todos</button>
+<button data-fixed-status="pending" type="button">Pendentes</button>
+<button data-fixed-status="paid" type="button">Pagos</button>
+</div>
+<span class="table-filter-count" id="fxTableCount"></span>
+</div>
+<div class="wrap table-scroll-10">
+<table class="compact-data-table table-fixas">
+<thead>
+<tr>
+<th><span class="excel-th"><span>Descrição</span><button aria-label="Filtrar Descrição" class="excel-filter-btn" data-field="descricao" data-table-filter="fixas" type="button">▾</button></span></th>
+<th><span class="excel-th"><span>Categoria</span><button aria-label="Filtrar Categoria" class="excel-filter-btn" data-field="categoria" data-table-filter="fixas" type="button">▾</button></span></th>
+<th>Vencimento</th>
+<th class="num"><span class="excel-th"><span>Valor</span><button aria-label="Filtrar Valor" class="excel-filter-btn" data-field="valor" data-table-filter="fixas" type="button">▾</button></span></th>
+<th>Status</th>
+<th class="num">Ações</th>
+</tr>
+</thead>
+<tbody id="recentFixas"></tbody>
+</table>
+</div>
+<div class="inline-editor hidden" id="fxForm">
+<div class="context-title" id="fxFormTitle">Adicionar gasto fixo</div>
+<div class="formgrid">
+<div class="field"><label>Vencimento</label><input id="cFxDate" type="date"/></div>
+<div class="field"><label>Descrição</label><input id="cFxDesc" maxlength="20" placeholder="Ex.: Condomínio"/></div>
+<div class="field"><label>Categoria</label><select id="cFxCat"></select></div>
+<div class="field"><label>Valor (R$)</label><input class="money-input" id="cFxValue" inputmode="decimal" placeholder="0,00"/></div>
+</div>
+<div class="form-actions"><button class="btn green" id="btnSaveFixed">Salvar</button><button class="btn secondary" id="btnCancelFixed">Cancelar</button></div>
+</div>
+</div><div class="card expense-table-pane hidden" id="expenseVariablePane">
+<div class="chart-head"><div><h3>Gastos Variáveis</h3><p>Lançamentos do período selecionado. Use os filtros no cabeçalho das colunas.</p></div><span class="table-filter-count" id="varTableCount"></span></div>
+<div class="wrap table-scroll-10"><table class="compact-data-table table-variaveis"><thead><tr><th><span class="excel-th"><span>Data</span><button aria-label="Filtrar Data" class="excel-filter-btn" data-field="data" data-table-filter="variaveis" type="button">▾</button></span></th><th><span class="excel-th"><span>Descrição</span><button aria-label="Filtrar Descrição" class="excel-filter-btn" data-field="descricao" data-table-filter="variaveis" type="button">▾</button></span></th><th><span class="excel-th"><span>Categoria</span><button aria-label="Filtrar Categoria" class="excel-filter-btn" data-field="categoria" data-table-filter="variaveis" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Valor</span><button aria-label="Filtrar Valor" class="excel-filter-btn" data-field="valor" data-table-filter="variaveis" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentVariaveis"></tbody></table></div>
+<div class="inline-editor hidden" id="varForm">
+<div class="context-title" id="varFormTitle">Adicionar nova despesa variável</div>
+<div class="formgrid">
+<div class="field"><label>Data</label><input id="cVarDate" type="date"/></div>
+<div class="field"><label>Descrição</label><input id="cVarDesc" maxlength="20" placeholder="Ex.: Supermercado"/></div>
+<div class="field"><label>Categoria</label><select id="cVarCat"></select></div>
+<div class="field"><label>Valor (R$)</label><input class="money-input" id="cVarValue" inputmode="decimal" placeholder="0,00"/></div>
+</div>
+<div class="form-actions"><button class="btn green" id="btnSaveVariable">Salvar</button><button class="btn secondary" id="btnCancelVariable">Cancelar</button></div>
+</div>
+</div></div>
+</section>
+<section class="hidden" id="receitas">
+<div class="filterbar"><div class="filter-group"><select id="incomePersonFilter"><option value="all">Todas as pessoas</option></select></div></div>
+<div class="grid4">
+<div class="card kpi"><label>Igor • mês</label><strong class="soft-blue" id="rIgor">—</strong></div>
+<div class="card kpi"><label>Vitória • mês</label><strong class="soft-pink" id="rVitoria">—</strong></div>
+<div class="card kpi"><label>Total • mês</label><strong id="rTotal">—</strong></div>
+<div class="card kpi"><label>Média no período</label><strong id="rMedia">—</strong></div>
+</div>
+<div class="grid2 section">
+<div class="card chart-card"><div class="chart-head"><div><h3>Receitas mensais</h3><p>Igor em azul e Vitória em rosa pastel.</p></div></div><div class="chart-wrap"><canvas id="chartReceitas"></canvas></div></div>
+<div class="card chart-card"><div class="chart-head"><div><h3>Composição da receita</h3><p>Participação percentual pela média do período selecionado.</p></div></div><div class="chart-wrap"><canvas id="chartReceitasDonut"></canvas></div></div>
+</div>
+<div class="card section monthly-record-card" id="revenueMonthCard"><div class="fixed-month-head"><div><h3>Receitas do mês</h3><p id="revMonthSubtitle">Acompanhe e atualize as receitas do mês.</p></div><div class="fixed-month-actions"><div class="fixed-month-nav"><button aria-label="Mês anterior" id="revMonthPrev" type="button">‹</button><input id="revMonthPicker" min="2022-05" type="month"/><button aria-label="Mês seguinte" id="revMonthNext" type="button">›</button></div><button class="btn secondary" id="btnReplicateRevenue" type="button">Replicar para o mês seguinte</button><button class="btn green" id="btnOpenRevenue">Adicionar receita</button></div></div><div class="fixed-month-kpis"><div class="fixed-mini-kpi"><span>Total do mês</span><strong id="revMonthTotal">—</strong><small id="revMonthCount">—</small></div><div class="fixed-mini-kpi"><span>Igor</span><strong id="revMonthIgor">—</strong><small>receitas no mês</small></div><div class="fixed-mini-kpi"><span>Vitória</span><strong id="revMonthVitoria">—</strong><small>receitas no mês</small></div><div class="fixed-mini-kpi"><span>Média por lançamento</span><strong id="revMonthAverage">—</strong><small>no mês selecionado</small></div></div><div class="fixed-table-toolbar"><div class="table-period-note">Use os filtros no cabeçalho das colunas.</div><span class="table-filter-count" id="revTableCount"></span></div><div class="wrap table-scroll-10"><table class="compact-data-table table-receitas"><thead><tr><th><span class="excel-th"><span>Pessoa</span><button aria-label="Filtrar Pessoa" class="excel-filter-btn" data-field="pessoa" data-table-filter="receitas" type="button">▾</button></span></th><th><span class="excel-th"><span>Descrição</span><button aria-label="Filtrar Descrição" class="excel-filter-btn" data-field="descricao" data-table-filter="receitas" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Valor</span><button aria-label="Filtrar Valor" class="excel-filter-btn" data-field="valor" data-table-filter="receitas" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentReceitas"></tbody></table></div><div class="inline-editor hidden" id="revForm">
+<div class="context-title" id="revFormTitle">Adicionar nova receita</div>
+<div class="formgrid">
+<div class="field hidden"><label>Data</label><input id="cRevDate" type="date"/></div>
+<div class="field"><label>Pessoa</label><select id="cRevPerson"></select></div>
+<div class="field"><label>Descrição</label><input id="cRevDesc" maxlength="20" placeholder="Ex.: Salário"/></div>
+<div class="field"><label>Valor (R$)</label><input class="money-input" id="cRevValue" inputmode="decimal" placeholder="0,00"/></div>
+</div>
+<div class="form-actions"><button class="btn green" id="btnSaveRevenue">Salvar</button><button class="btn secondary" id="btnCancelRevenue">Cancelar</button></div>
+</div></div>
+</section>
+<section class="hidden" id="parcelas">
+<div class="filterbar"><div class="filter-group"><select id="installmentCategoryFilter"><option value="all">Todas as categorias</option></select></div></div>
+<div class="grid4">
+<div class="card kpi"><label>Parcelas • mês</label><strong id="pMes">—</strong></div>
+<div class="card kpi"><label>Próximos 3 meses</label><strong id="p3">—</strong></div>
+<div class="card kpi"><label>Próximos 6 meses</label><strong id="p6">—</strong></div>
+<div class="card kpi"><label>Total futuro</label><strong id="pFuture">—</strong></div>
+</div>
+<div class="grid2 section">
+<div class="card chart-card"><div class="chart-head"><div><h3>Histórico e projeção das parcelas</h3><p>Histórico no período selecionado e comprometimento futuro dos próximos 12 meses.</p></div></div><div class="chart-wrap"><canvas id="chartParcelasFuturo"></canvas></div></div>
+<div class="card chart-card"><div class="chart-head"><div><h3>Parcelas por categoria</h3><p>Total no período selecionado.</p></div></div><div class="chart-wrap"><canvas id="chartParcelasCategoria"></canvas></div></div>
+</div>
+<div class="card section">
+<div class="chart-head"><div><h3>Últimos lançamentos</h3><p>Use o filtro no cabeçalho das colunas.</p></div><span class="table-filter-count" id="parTableCount"></span></div>
+<div class="wrap table-scroll-10"><table class="compact-data-table table-parcelas"><thead><tr><th><span class="excel-th"><span>Data</span><button aria-label="Filtrar Data" class="excel-filter-btn" data-field="data" data-table-filter="parcelas" type="button">▾</button></span></th><th><span class="excel-th"><span>Descrição</span><button aria-label="Filtrar Descrição" class="excel-filter-btn" data-field="descricao" data-table-filter="parcelas" type="button">▾</button></span></th><th><span class="excel-th"><span>Categoria</span><button aria-label="Filtrar Categoria" class="excel-filter-btn" data-field="categoria" data-table-filter="parcelas" type="button">▾</button></span></th><th><span class="excel-th"><span>Parcela</span><button aria-label="Filtrar Parcela" class="excel-filter-btn" data-field="parcela" data-table-filter="parcelas" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Valor</span><button aria-label="Filtrar Valor" class="excel-filter-btn" data-field="valor" data-table-filter="parcelas" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentParcelas"></tbody></table></div>
+<div class="inline-editor hidden" id="parForm">
+<div class="context-title" id="parFormTitle">Adicionar nova compra parcelada</div>
+<div class="formgrid">
+<div class="field"><label>Data da primeira parcela</label><input id="cParDate" type="date"/></div>
+<div class="field"><label>Descrição</label><input id="cParDesc" maxlength="20" placeholder="Ex.: Passagem aérea"/></div>
+<div class="field"><label>Categoria</label><select id="cParCat"></select></div>
+<div class="field"><label id="cParValueLabel">Valor total da compra (R$)</label><input class="money-input" id="cParValue" inputmode="decimal" placeholder="0,00"/></div>
+<div class="field"><label>Número de parcelas</label><input id="cParNum" max="120" min="1" type="number" value="1"/></div>
+</div>
+<div class="form-actions"><button class="btn green" id="btnSaveInstallment">Salvar</button><button class="btn secondary" id="btnCancelInstallment">Cancelar</button></div>
+</div>
+</div>
+</section>
+<section class="hidden" id="investimentos">
+<div class="grid5">
+<div class="card kpi"><label>Igor • aplicações</label><strong id="iIgorApl">—</strong></div>
+<div class="card kpi"><label>Vitória • aplicações</label><strong id="iVitApl">—</strong></div>
+<div class="card kpi"><label>Previdência</label><strong id="iPrev">—</strong></div>
+<div class="card kpi"><label>FGTS total</label><strong id="iFgts">—</strong></div>
+<div class="card kpi"><label>Patrimônio total</label><strong id="iTotal">—</strong></div>
+</div>
+<div class="grid3 section">
+<div class="card kpi"><label>Patrimônio sem FGTS</label><strong id="iSemFgts">—</strong></div>
+<div class="card kpi"><label>Meta sem FGTS</label><strong id="iMeta">—</strong></div>
+<div class="card kpi"><label>Diferença para meta</label><strong id="iGap">—</strong></div>
+</div>
+<div class="card chart-card section">
+<div class="chart-head"><div><h3>Alocação de capital ao longo do tempo</h3><p>Evolução histórica da composição patrimonial.</p></div><span class="pill">Histórico</span></div>
+<div class="chart-wrap tall"><canvas id="chartInvestAllocation"></canvas></div>
+</div>
+<div class="grid4 section">
+<div class="card kpi"><label>Total no fim</label><strong id="projEndTotal">—</strong></div>
+<div class="card kpi"><label>Sem FGTS no fim</label><strong id="projEndSem">—</strong></div>
+<div class="card kpi"><label>Meta no fim</label><strong id="projEndMeta">—</strong></div>
+<div class="card kpi"><label>Diferença p/ meta</label><strong id="projEndGap">—</strong></div>
+</div>
+<div class="card chart-card section">
+<div class="chart-head"><div><h3>Projeção patrimonial</h3><p>Histórico real desde mai/2022, continuação projetada e Meta sem FGTS mensal.</p></div><span class="pill">Real + projeção + meta</span></div>
+<div class="chart-wrap tall"><canvas id="chartProjectionDetail"></canvas></div>
+</div>
+<div class="card section">
+<div class="chart-head"><div><h3>Premissas da projeção</h3><p>Ajuste os parâmetros utilizados na projeção.</p></div><span class="pill">Premissas</span></div>
+<div class="projection-form">
+<div class="field"><label>Rentabilidade aplicações (% a.m.)</label><input class="money-input" id="projRentApl" inputmode="decimal"/></div>
+<div class="field"><label>Rentabilidade Previdência/FGTS (% a.m.)</label><input class="money-input" id="projRentPrev" inputmode="decimal"/></div>
+<div class="field"><label>Aporte Previdência Igor</label><input class="money-input" id="projPrevIgor" inputmode="decimal"/></div>
+<div class="field"><label>Aporte FGTS Igor</label><input class="money-input" id="projFgtsIgor" inputmode="decimal"/></div>
+<div class="field"><label>Aporte FGTS Vitória</label><input class="money-input" id="projFgtsVit" inputmode="decimal"/></div>
+<div class="field"><label>Aporte Aplicações Igor</label><input class="money-input" id="projAplIgor" inputmode="decimal"/></div>
+<div class="field"><label>Aporte Aplicações Vitória</label><input class="money-input" id="projAplVit" inputmode="decimal"/></div>
+<div class="field"><label>Horizonte da projeção</label>
+<select id="projHorizon">
+<option value="24">2 anos</option>
+<option value="60">5 anos</option>
+<option value="120">10 anos</option>
+<option value="180">15 anos</option>
+<option value="240">20 anos</option>
+</select>
+</div>
+</div>
+<div class="form-actions"><button class="btn green" id="btnSaveProjection">Salvar premissas</button><button class="btn secondary" id="btnResetProjection">Restaurar premissas padrão</button></div>
+</div>
+<div class="card section monthly-record-card" id="investmentMonthCard"><div class="fixed-month-head"><div><h3>Investimentos do mês</h3><p id="invMonthSubtitle">Acompanhe e atualize a composição patrimonial do mês.</p></div><div class="fixed-month-actions"><div class="fixed-month-nav"><button aria-label="Mês anterior" id="invMonthPrev" type="button">‹</button><input id="invMonthPicker" min="2022-05" type="month"/><button aria-label="Mês seguinte" id="invMonthNext" type="button">›</button></div><button class="btn secondary" id="btnReplicateInvestment" type="button">Replicar para o mês seguinte</button><button class="btn green" id="btnOpenInvestment">Adicionar registro</button></div></div><div class="fixed-month-kpis"><div class="fixed-mini-kpi"><span>Patrimônio total</span><strong id="invMonthTotal">—</strong><small>soma dos componentes</small></div><div class="fixed-mini-kpi"><span>Sem FGTS</span><strong id="invMonthSem">—</strong><small>no mês selecionado</small></div><div class="fixed-mini-kpi"><span>FGTS total</span><strong id="invMonthFgts">—</strong><small>no mês selecionado</small></div><div class="fixed-mini-kpi"><span>Registros</span><strong id="invMonthCount">—</strong><small>componentes no mês</small></div></div><div class="fixed-table-toolbar"><div class="table-period-note">Use os filtros no cabeçalho das colunas.</div><span class="table-filter-count" id="invTableCount"></span></div><div class="wrap table-scroll-10"><table class="compact-data-table table-investimentos"><thead><tr><th><span class="excel-th"><span>Componente</span><button aria-label="Filtrar Componente" class="excel-filter-btn" data-field="descricao" data-table-filter="investimentos" type="button">▾</button></span></th><th><span class="excel-th"><span>Classe</span><button aria-label="Filtrar Classe" class="excel-filter-btn" data-field="classe" data-table-filter="investimentos" type="button">▾</button></span></th><th class="num"><span class="excel-th"><span>Saldo</span><button aria-label="Filtrar Saldo" class="excel-filter-btn" data-field="valor" data-table-filter="investimentos" type="button">▾</button></span></th><th class="num">Ações</th></tr></thead><tbody id="recentInvestimentos"></tbody></table></div><div class="inline-editor hidden" id="invForm">
+<div class="context-title" id="invFormTitle">Adicionar novo registro de investimento</div>
+<div class="formgrid">
+<div class="field hidden"><label>Mês</label><input id="cInvDate" min="2022-05" type="month"/></div>
+<div class="field"><label>Componente patrimonial</label><select id="cInvComp"></select></div>
+<div class="field"><label>Saldo (R$)</label><input class="money-input" id="cInvValue" inputmode="decimal" placeholder="0,00"/></div>
+</div>
+<div class="hint">Ao criar um novo mês, o dashboard replica o último fechamento e altera apenas o componente informado.</div>
+<div class="form-actions"><button class="btn green" id="btnSaveInvestment">Salvar</button><button class="btn secondary" id="btnCancelInvestment">Cancelar</button></div>
+</div></div>
+</section>
+<section class="hidden" id="patrimonio"></section>
+<section class="hidden" id="projecao"></section>
+<section class="hidden" id="novo">
+<div class="card form-card"><div class="edit-banner hidden" id="editBanner"></div><div class="chart-head"><div><h3>Novo lançamento</h3><p>Inclua ou edite registros. Categoria e descrição são armazenadas separadamente.</p></div></div>
+<div class="formgrid">
+<div class="field"><label>Tipo</label><select id="nTipo"><option value="fixas">Despesa fixa</option><option value="variaveis">Despesa variável</option><option value="parcelas">Compra parcelada</option><option value="receitas">Receita</option><option value="investimento">Atualização de investimento / patrimônio</option></select></div>
+<div class="field"><label>Data</label><input id="nData" type="date"/></div>
+<div class="field" id="fDescricao"><label>Descrição</label><input id="nDescricao" maxlength="20" placeholder="Ex.: Supermercado, seguro do carro, salário"/></div>
+<div class="field" id="fCategoria"><label>Categoria</label><select id="nCategoria"></select></div>
+<div class="field hidden" id="fPessoa"><label>Pessoa</label><select id="nPessoa"><option>Igor</option><option>Vitória</option><option>Outro</option></select></div>
+<div class="field hidden" id="fComponente"><label>Componente patrimonial</label><select id="nComponente"></select><div class="hint">Ao criar um novo mês, o dashboard replica o último fechamento e atualiza apenas este componente.</div></div>
+<div class="field"><label id="nValorLabel">Valor (R$)</label><input class="money-input" id="nValor" inputmode="decimal" placeholder="0,00"/></div>
+<div class="field hidden" id="fNumParcelas"><label>Número de parcelas</label><input id="nNumParcelas" max="120" min="1" type="number" value="1"/></div>
+</div>
+<div class="form-actions"><button class="btn green" id="btnSaveLaunch">Salvar lançamento</button><button class="btn secondary hidden" id="btnCancelEdit">Cancelar edição</button></div>
+</div>
+<div class="card section"><div class="filterbar"><div><div class="title">Gerenciar lançamentos</div><div class="subtitle">Editar ou excluir individualmente. Toda exclusão pede confirmação.</div></div><div class="filter-group"><select id="manageType"><option value="all">Todos</option><option value="fixas">Fixas</option><option value="variaveis">Variáveis</option><option value="parcelas">Parcelas</option><option value="receitas">Receitas</option><option value="investimento">Investimentos / patrimônio</option></select><input id="manageSearch" placeholder="Buscar descrição..."/></div></div><div class="wrap"><table><thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Categoria / pessoa</th><th class="num">Valor</th><th class="num">Ações</th></tr></thead><tbody id="manageBody"></tbody></table></div></div>
+</section>
+<section class="hidden" id="config">
+<div class="grid2">
+<div class="card"><div class="title">Importação e exportação</div><div class="form-actions"><label class="btn green" style="display:inline-flex;align-items:center">Importar dados<input accept=".json,application/json" hidden="" id="jsonImport" type="file"/></label><button class="btn secondary" id="btnExportJson">Exportar dados</button><button class="btn secondary" id="btnUploadCurrent">Enviar versão atual ao OneDrive</button></div><div class="small" id="jsonInfo">Nenhum dado importado.</div></div>
+<div class="card"><div class="title">Microsoft OneDrive</div><div class="subtitle">Sincronização com sua conta Microsoft.</div><div class="field section"><label>Application (client) ID</label><input id="clientIdInput" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"/></div><div class="form-actions"><button class="btn secondary" id="btnSaveClient">Salvar Client ID</button><button class="btn green" id="btnLogin">Entrar com Microsoft</button><button class="btn secondary" id="btnLogout">Sair</button><button class="btn secondary" id="btnSync">Sincronizar OneDrive</button></div><div class="small section" id="accountInfo">Nenhuma conta conectada.</div><pre class="mono" id="remoteInfo">Ainda não sincronizado.</pre></div>
+</div>
+<div class="setupgrid section"><div class="step"><b>Redirect URI da SPA</b><div class="mono" id="redirectUriBox"></div></div><div class="step"><b>Permissão Microsoft Graph</b>Delegated permission: <b>Files.ReadWrite.AppFolder</b>. Não use Client Secret no HTML.</div></div>
+</section>
+</main>
+</div></div>
+<div aria-label="Filtro da coluna" class="excel-filter-menu hidden" id="excelFilterMenu" role="dialog">
+<div class="excel-filter-sort"><button id="excelSortAsc" type="button"></button><button id="excelSortDesc" type="button"></button></div>
+<div class="excel-filter-sep"></div>
+<input class="excel-filter-search" id="excelFilterSearch" placeholder="Pesquisar..."/>
+<label class="excel-filter-all"><input id="excelFilterSelectAll" type="checkbox"/><span>Selecionar tudo</span></label>
+<div class="excel-filter-values" id="excelFilterValues"></div>
+<div class="excel-filter-actions"><button class="btn secondary" id="excelFilterClear" type="button">Limpar</button><button class="btn green" id="excelFilterApply" type="button">Aplicar</button></div>
+</div><div class="toast" id="toast"></div>
+<script type="module">
+function normalizeDescription20(value){
+ return String(value||"")
+  .replace(/^\s*Ajuste\s+do\s+resumo\s+Excel\s*[-–—:]\s*/i,"")
+  .replace(/\s+/g," ")
+  .trim()
+  .slice(0,20)
+}
+
+import { PublicClientApplication, InteractionRequiredAuthError } from "https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.19.0/+esm";
+
+const $=id=>document.getElementById(id);
+const FILE_NAME="dados_financeiros.json", CLIENT_KEY="financeOneDriveClientIdV1", SCOPES=["Files.ReadWrite.AppFolder"], REDIRECT_URI=location.origin+location.pathname;
+const COLORS=["#900F15","#CC092F","#B81570","#333B8F","#5B6EB4","#7D4D7B","#6F8E7B","#C58A2B","#654E57","#D66A7D","#41596C"];
+const CATEGORY_COLORS={
+ "Alimentação":"#CC092F",
+ "Aplicação":"#333B8F",
+ "Assinatura":"#B81570",
+ "Casa / Bens Pessoais":"#900F15",
+ "Educação":"#5B6EB4",
+ "Lazer":"#D66A7D",
+ "Saúde":"#7D4D7B",
+ "Trabalho":"#41596C",
+ "Transporte":"#C58A2B",
+ "Vestuário / Maquiagem":"#6F8E7B",
+ "Viagem":"#A64A60",
+ "Outros":"#786B70"
+};
+const INVESTMENT_COMPONENT_COLORS={
+ "Igor: Conta Corrente":"#333B8F",
+ "Igor: Previdência":"#5B6EB4",
+ "Igor: FGTS":"#900F15",
+ "Igor: Aplicações":"#CC092F",
+ "Vitória: Conta Corrente":"#7D4D7B",
+ "Vitória: Aplicações":"#B81570",
+ "Vitória: FGTS":"#D66A7D",
+ "Dinheiro":"#6F8E7B"
+};
+const INCOME_COLORS={"Igor":"#46649D","Vitória":"#D789A2"};
+const CHART_INCOME="#46649D",CHART_EXPENSE="#CC092F",CHART_BALANCE="#6F8E7B",CHART_META="#B81570",CHART_TOTAL="#333B8F";
+function categoryColor(name){return CATEGORY_COLORS[name]||CATEGORY_COLORS["Outros"]}
+function investmentColor(name){return INVESTMENT_COMPONENT_COLORS[name]||"#786B70"}
+const fmtMoney=new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtNumber=new Intl.NumberFormat("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:2});
+const fmtPct=new Intl.NumberFormat("pt-BR",{style:"percent",minimumFractionDigits:1,maximumFractionDigits:2});
+const fmtDateLong=new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"UTC"});
+const fmtMonthLong=new Intl.DateTimeFormat("pt-BR",{month:"short",year:"numeric",timeZone:"UTC"});
+let data=null, charts={}, dirty=false, editing=null, contextEditing=null, pca=null, account=null, appRoot=null, remoteMeta=null, accessToken=null;
+let fixedMonthSelection=null, fixedStatusFilter="all";
+let expenseTableView="fixas";
+let revenueMonthSelection=null, investmentMonthSelection=null;
+
+function brl(v){return fmtMoney.format(Number(v)||0)}
+function num(v){return fmtNumber.format(Number(v)||0)}
+function pct(v){return fmtPct.format(Number(v)||0)}
+function axisMoney(v){let n=Number(v)||0,a=Math.abs(n);if(a>=1e6)return "R$ "+(n/1e6).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mi";if(a>=1e3)return "R$ "+(n/1e3).toLocaleString("pt-BR",{maximumFractionDigits:0})+" mil";return "R$ "+n.toLocaleString("pt-BR",{maximumFractionDigits:0})}
+function parseMoney(v){let s=String(v??"").trim().replace(/R\$\s?/g,"").replace(/\s/g,"");if(!s)return 0;if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");return Number(s)||0}
+function moneyInput(v){return (Number(v)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function dateObj(s){return new Date((s||"1970-01-01")+"T00:00:00Z")}
+function dateLabel(s){return fmtDateLong.format(dateObj(s))}
+function monthLabel(s){let x=(s.length===7?s+"-01":s);return fmtMonthLong.format(dateObj(x)).replace(". de ","/").replace(" de ","/")}
+const HISTORY_START="2022-05";
+function monthKey(s){return String(s||"").slice(0,7)}
+function addMonths(ym,delta){let[y,m]=ym.split("-").map(Number),d=new Date(Date.UTC(y,m-1+delta,1));return d.toISOString().slice(0,7)}
+function addMonthsDate(iso,delta){let d=dateObj(iso),day=d.getUTCDate(),base=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+delta,1)),last=new Date(Date.UTC(base.getUTCFullYear(),base.getUTCMonth()+1,0)).getUTCDate();base.setUTCDate(Math.min(day,last));return base.toISOString().slice(0,10)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function uid(){return crypto.randomUUID?crypto.randomUUID():"id-"+Date.now()+"-"+Math.random().toString(36).slice(2)}
+function toast(msg){let e=$("toast");e.textContent=msg;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),2700)}
+function validateData(o){return !!(o&&Number(o.schemaVersion)>=8&&o.despesas&&Array.isArray(o.despesas.fixas)&&Array.isArray(o.despesas.variaveis)&&Array.isArray(o.parcelas)&&Array.isArray(o.receitas)&&o.investimentos&&Array.isArray(o.investimentos.historico)&&o.patrimonio&&Array.isArray(o.patrimonio.historico)&&o.metas&&Array.isArray(o.metas.semFGTS))}
+function touch(){if(!data)return;data.revision=(Number(data.revision)||0)+1;data.updatedAt=new Date().toISOString();dirty=true;updateStatus()}
+function updateStatus(){if(!data){$("dataStatus").textContent="Nenhum dado carregado";$("syncPill").textContent=account?"OneDrive conectado":"Sem dados";$("dirtyState").textContent="";$("noDataNotice").classList.remove("hidden");return}$("noDataNotice").classList.add("hidden");$("dataStatus").textContent=`Dados até ${monthLabel(latestOperationalMonth())}`;$("dirtyState").textContent=dirty?"Alterações pendentes":"";$("dirtyState").className="period-summary "+(dirty?"dirty":"");if(account&&remoteMeta){$("syncPill").textContent=dirty?"Alterado localmente":"OneDrive sincronizado";$("syncPill").className="syncpill "+(dirty?"warn":"online")}else{$("syncPill").textContent=data?"Dados carregados":"Sem dados";$("syncPill").className="syncpill"}}
+
+function currentCalendarMonth(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}
+function latestOperationalMonth(){if(!data)return currentCalendarMonth();let arr=[...data.despesas.fixas,...data.despesas.variaveis,...data.receitas];let ms=arr.map(x=>monthKey(x.data)).filter(Boolean).sort();return ms.at(-1)||currentCalendarMonth()}
+function allHistoryMonths(){if(!data)return[];let latest=latestOperationalMonth(),s=new Set();[...data.despesas.fixas,...data.despesas.variaveis,...data.parcelas,...data.receitas,...data.investimentos.historico].forEach(x=>{let m=monthKey(x.data);if(m&&m>=HISTORY_START&&m<=latest)s.add(m)});return[...s].sort()}
+function monthsBetween(start,end){let a=[];for(let m=start,guard=0;m<=end&&guard<1000;m=addMonths(m,1),guard++)a.push(m);return a}
+function periodRange(){let latest=latestOperationalMonth(),current=currentCalendarMonth(),preset=$("periodPreset").value,start,end;if(preset==="current")start=end=current;else if(["3","6","12"].includes(preset)){end=current;start=addMonths(end,-(+preset-1))}else if(preset==="year"){end=current;start=current.slice(0,4)+"-01"}else if(preset==="all"){let a=allHistoryMonths();start=a[0]||HISTORY_START;end=a.at(-1)||latest}else{start=$("periodStart").value||latest;end=$("periodEnd").value||latest;if(start>end)[start,end]=[end,start]}if(start<HISTORY_START)start=HISTORY_START;if(end<HISTORY_START)end=HISTORY_START;return{start,end,months:monthsBetween(start,end),ref:end}}
+function refreshPeriodUi(){let custom=$("periodPreset").value==="custom";$("periodStart").classList.toggle("hidden",!custom);$("periodEnd").classList.toggle("hidden",!custom);if(custom&&!$("periodStart").value){let a=allHistoryMonths();$("periodStart").value=a[0]||latestOperationalMonth();$("periodEnd").value=a.at(-1)||latestOperationalMonth()}let r=periodRange();$("periodSummary").textContent=`${monthLabel(r.start)} → ${monthLabel(r.end)} • ${r.months.length} ${r.months.length===1?"mês":"meses"}`}
+function inRange(x,r=periodRange()){let m=monthKey(x.data);return m>=r.start&&m<=r.end}
+function untilRef(x,r=periodRange()){return monthKey(x.data)<=r.ref}
+function sum(arr){return arr.reduce((s,x)=>s+(Number(x.valor)||0),0)}
+function sumMonth(arr,ym,filter=null){return arr.filter(x=>monthKey(x.data)===ym&&(!filter||filter(x))).reduce((s,x)=>s+Number(x.valor||0),0)}
+function incomeMonth(ym,pessoa=null){return sumMonth(data.receitas,ym,x=>!pessoa||x.pessoa===pessoa)}
+function expenseMonth(ym){return sumMonth(data.despesas.fixas,ym)+sumMonth(data.despesas.variaveis,ym)+sumMonth(data.parcelas,ym)}
+function categoryTotals(arr,range=periodRange(),filter=null){let o={};arr.filter(x=>inRange(x,range)&&(!filter||filter(x))).forEach(x=>o[x.categoria||"Outros"]=(o[x.categoria||"Outros"]||0)+Number(x.valor||0));return o}
+function categories(){return data?.configuracoes?.categorias||[]}
+function componentDefs(){return data?.investimentos?.componentes||[]}
+function actualSnapshot(ref=periodRange().ref){if(!data)return null;let months=[...new Set(data.investimentos.historico.map(x=>monthKey(x.data)))].filter(m=>m<=ref).sort();let m=months.at(-1);if(!m)return null;let rows=data.investimentos.historico.filter(x=>monthKey(x.data)===m),map={};rows.forEach(x=>map[x.descricao]=Number(x.valor)||0);let total=Object.values(map).reduce((a,b)=>a+b,0),fgts=Object.entries(map).filter(([k])=>k.includes("FGTS")).reduce((s,[k,v])=>s+v,0);return{month:m,rows,map,total,fgts,semFGTS:total-fgts}}
+function metaForMonth(ym){let x=data?.metas?.semFGTS?.find(x=>monthKey(x.data)===ym);return x?Number(x.valor):null}
+function actualPatrimonySeries(){
+ if(!data)return[];
+ let months=[...new Set(data.investimentos.historico.map(x=>monthKey(x.data)))].filter(m=>m&&m>=HISTORY_START).sort();
+ return months.map(m=>{let s=actualSnapshot(m);return s&&s.month===m?s:null}).filter(Boolean)
+}
+
+function rebuildPatrimonyHistory(){if(!data)return;let old=new Map((data.patrimonio?.historico||[]).map(x=>[monthKey(x.data),x])),months=[...new Set(data.investimentos.historico.map(x=>monthKey(x.data)))].filter(Boolean).sort();data.patrimonio=data.patrimonio||{};data.patrimonio.historico=months.map(m=>{let rows=data.investimentos.historico.filter(x=>monthKey(x.data)===m),total=sum(rows),fgts=sum(rows.filter(x=>investmentClass(x.descricao)==="FGTS")),prev=old.get(m)||{};return{data:m+"-01",total,semFGTS:total-fgts,fgts,...(Number.isFinite(Number(prev.totalExcel))?{totalExcel:Number(prev.totalExcel)}:{})}})}
+function investmentClass(desc){return componentDefs().find(x=>x.descricao===desc)?.classe||"Outros"}
+function projectionSettings(){return data.configuracoes.projecaoPatrimonial}
+function projectPatrimony(horizon=null){let base=actualSnapshot("9999-12");if(!base)return[];let s=projectionSettings(),n=horizon||Number(s.horizonteMeses)||24,state={...base.map},out=[];for(let i=1;i<=n;i++){let ym=addMonths(base.month,i);state["Igor: Previdência"]=(state["Igor: Previdência"]||0)*(1+Number(s.rentabilidadePrevidenciaFgtsMensal||0))+Number(s.aportePrevidenciaIgor||0);state["Igor: FGTS"]=(state["Igor: FGTS"]||0)*(1+Number(s.rentabilidadePrevidenciaFgtsMensal||0))+Number(s.aporteFgtsIgor||0);state["Vitória: FGTS"]=(state["Vitória: FGTS"]||0)*(1+Number(s.rentabilidadePrevidenciaFgtsMensal||0))+Number(s.aporteFgtsVitoria||0);state["Igor: Aplicações"]=((state["Igor: Aplicações"]||0)+Number(s.aporteAplicacoesIgor||0))*(1+Number(s.rentabilidadeAplicacoesMensal||0));state["Vitória: Aplicações"]=((state["Vitória: Aplicações"]||0)+Number(s.aporteAplicacoesVitoria||0))*(1+Number(s.rentabilidadeAplicacoesMensal||0));let total=Object.values(state).reduce((a,b)=>a+b,0),fgts=(state["Igor: FGTS"]||0)+(state["Vitória: FGTS"]||0);out.push({month:ym,componentes:{...state},total,semFGTS:total-fgts,meta:metaForMonth(ym)})}return out}
+
+function chartOpts({stacked=false,indexMode=true}={}){return{responsive:true,maintainAspectRatio:false,interaction:{mode:indexMode?"index":"nearest",intersect:false},plugins:{legend:{position:"bottom",labels:{color:"#6F6367",boxWidth:9,boxHeight:9,usePointStyle:true,padding:14,font:{size:9}}},tooltip:{backgroundColor:"#392F33",titleColor:"#FFFFFF",bodyColor:"#F7F1F2",borderColor:"rgba(255,255,255,.10)",borderWidth:1,padding:10,cornerRadius:8,callbacks:{title:items=>items?.[0]?.label||"",label:ctx=>`${ctx.dataset.label||"Valor"}: ${brl(ctx.raw)}`}}},scales:{x:{stacked,grid:{display:false},ticks:{color:"#7C7074",font:{size:8},maxRotation:0,autoSkip:true,maxTicksLimit:12}},y:{stacked,grid:{color:"#EEE6E3"},ticks:{color:"#7C7074",font:{size:8},callback:v=>axisMoney(v)}}}}}
+function makeChart(id,config){if(charts[id])charts[id].destroy();let el=$(id);if(!el||typeof Chart==="undefined")return;charts[id]=new Chart(el,config)}
+function lineDataset(label,data,color,extra={}){return{type:"line",label,data,borderColor:color,backgroundColor:color,borderWidth:2,pointRadius:1.5,pointHoverRadius:4,tension:.2,fill:false,stack:`line:${label}`,...extra}}
+function stackedByCategory(id,records,range){let cats=[...new Set(records.filter(x=>inRange(x,range)).map(x=>x.categoria||"Outros"))].sort(),labels=range.months,datasets=cats.map(c=>({type:"bar",label:c,data:labels.map(m=>sumMonth(records,m,x=>(x.categoria||"Outros")===c)),backgroundColor:categoryColor(c),borderColor:categoryColor(c),borderWidth:0,stack:"total"}));datasets.push(lineDataset("Total",labels.map(m=>sumMonth(records,m)),"#42363A",{borderWidth:2.3}));makeChart(id,{type:"bar",data:{labels:labels.map(monthLabel),datasets},options:chartOpts({stacked:true})})}
+function donut(id,obj,colorMap=null){let entries=Object.entries(obj).filter(([,v])=>Number(v)>0);makeChart(id,{type:"doughnut",data:{labels:entries.map(x=>x[0]),datasets:[{data:entries.map(x=>x[1]),backgroundColor:entries.map((x,i)=>colorMap?.[x[0]]||COLORS[i%COLORS.length]),borderWidth:2,borderColor:"#FCFAF9"}]},options:{responsive:true,maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"bottom",labels:{boxWidth:9,boxHeight:9,usePointStyle:true,font:{size:9}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${brl(ctx.raw)}`}}}}})}
+function donutPercent(id,obj,colorMap=null,showDataLabels=false){
+ let entries=Object.entries(obj).filter(([,v])=>Number(v)>0);
+ const inlineLabels={
+  id:`inlineLabels-${id}`,
+  afterDatasetsDraw(chart){
+   if(!showDataLabels)return;
+   const {ctx}=chart,meta=chart.getDatasetMeta(0),vals=chart.data.datasets[0]?.data||[];
+   ctx.save();
+   ctx.textAlign="center";ctx.textBaseline="middle";ctx.font='700 10px Inter, "Segoe UI", sans-serif';
+   meta.data.forEach((arc,i)=>{
+    let v=Number(vals[i]||0);if(v<=0)return;
+    let a=(arc.startAngle+arc.endAngle)/2,
+        radius=(arc.innerRadius+arc.outerRadius)/2,
+        x=arc.x+Math.cos(a)*radius,y=arc.y+Math.sin(a)*radius,
+        label=v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+    ctx.lineWidth=3;ctx.strokeStyle="rgba(44,37,40,.28)";ctx.strokeText(label,x,y);
+    ctx.fillStyle="#fff";ctx.fillText(label,x,y)
+   });
+   ctx.restore()
+  }
+ };
+ makeChart(id,{
+  type:"doughnut",
+  data:{
+   labels:entries.map(x=>x[0]),
+   datasets:[{
+    data:entries.map(x=>x[1]),
+    backgroundColor:entries.map((x,i)=>colorMap?.[x[0]]||COLORS[i%COLORS.length]),
+    borderWidth:2,
+    borderColor:"#FCFAF9"
+   }]
+  },
+  plugins:showDataLabels?[inlineLabels]:[],
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   cutout:"58%",
+   plugins:{
+    legend:{position:"bottom",labels:{boxWidth:9,boxHeight:9,usePointStyle:true,font:{size:9}}},
+    tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${Number(ctx.raw).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})}%`}}
+   }
+  }
+ })
+}
+
+function horizontalBar(id,obj){let e=Object.entries(obj).sort((a,b)=>b[1]-a[1]);makeChart(id,{type:"bar",data:{labels:e.map(x=>x[0]),datasets:[{label:"Valor",data:e.map(x=>x[1]),backgroundColor:e.map(x=>categoryColor(x[0])),borderColor:e.map(x=>categoryColor(x[0])),borderWidth:0}]},options:{...chartOpts({indexMode:false}),indexAxis:"y",plugins:{...chartOpts().plugins,legend:{display:false}},scales:{x:{grid:{color:"#EEE6E3"},ticks:{color:"#7D7175",font:{size:8},callback:v=>axisMoney(v)}},y:{grid:{display:false},ticks:{color:"#675C60",font:{size:8}}}}}})}
+
+function investmentChartComponents(){
+ return componentDefs().map(x=>x.descricao).filter(x=>x!=="Dinheiro")
+}
+function investmentValueForChart(month,component){
+ let value=data.investimentos.historico
+  .filter(x=>monthKey(x.data)===month&&x.descricao===component)
+  .reduce((s,x)=>s+Number(x.valor||0),0);
+ if(component==="Vitória: Conta Corrente"){
+  value+=data.investimentos.historico
+   .filter(x=>monthKey(x.data)===month&&x.descricao==="Dinheiro")
+   .reduce((s,x)=>s+Number(x.valor||0),0)
+ }
+ return value
+}
+function investmentHistoryDatasets(range,filter="all"){
+ let components=investmentChartComponents();
+ if(filter!=="all"){
+  if(filter==="Dinheiro")filter="Vitória: Conta Corrente";
+  components=components.filter(x=>x===filter)
+ }
+ return components.map((c,i)=>lineDataset(
+  c,
+  range.months.map(m=>investmentValueForChart(m,c)),
+  COLORS[i%COLORS.length],
+  {spanGaps:true}
+ ))
+}
+function renderInvestmentHistoryChart(id,range,filter="all"){
+ makeChart(id,{
+  type:"line",
+  data:{labels:range.months.map(monthLabel),datasets:investmentHistoryDatasets(range,filter)},
+  options:chartOpts()
+ })
+}
+
+
+function renderCapitalAllocationChart(id,range){
+ let months=range.months,compNames=componentDefs().map(x=>x.descricao),
+     datasets=compNames.map((c,i)=>({
+      type:"bar",label:c,
+      data:months.map(m=>{let x=data.investimentos.historico.find(x=>monthKey(x.data)===m&&x.descricao===c);return x?Number(x.valor):0}),
+      backgroundColor:investmentColor(c),borderColor:investmentColor(c),borderWidth:0,stack:"capital"
+     }));
+ datasets.push(lineDataset("Total Geral",months.map(m=>{let p=actualSnapshot(m);return p&&p.month===m?p.total:null}),"#3D3337",{spanGaps:true,borderWidth:2.5}));
+ makeChart(id,{type:"bar",data:{labels:months.map(monthLabel),datasets},options:chartOpts({stacked:true})})
+}
+
+function renderGeneral(){
+ if(!data)return;
+ let r=periodRange(),ref=r.ref,
+     avgStart=addMonths(ref,-2);
+ if(avgStart<HISTORY_START)avgStart=HISTORY_START;
+ let avgMonths=monthsBetween(avgStart,ref),
+     mediaReceita=avgMonths.reduce((s,m)=>s+incomeMonth(m),0)/(avgMonths.length||1),
+     mediaDespesa=avgMonths.reduce((s,m)=>s+expenseMonth(m),0)/(avgMonths.length||1),
+     parcelasFuturo=data.parcelas.filter(x=>monthKey(x.data)>ref).reduce((s,x)=>s+Number(x.valor||0),0),
+     pat=actualSnapshot(ref)||actualSnapshot("9999-12"),
+     meta=pat?metaForMonth(pat.month):null,
+     gap=pat&&Number.isFinite(meta)?pat.semFGTS-meta:null;
+
+ $("gMediaReceita3").textContent=brl(mediaReceita);
+ $("gMediaReceita3Sub").textContent=`${monthLabel(avgMonths[0])} → ${monthLabel(avgMonths.at(-1))}`;
+ $("gMediaDespesa3").textContent=brl(mediaDespesa);
+ $("gParcelasFuturo").textContent=brl(parcelasFuturo);
+ $("gPat").textContent=pat?brl(pat.total):"—";
+ $("gPatData").textContent=pat?`Fechamento ${monthLabel(pat.month)}`:"—";
+ $("gPatMetaStatus").textContent=Number.isFinite(gap)
+  ?(gap<0?`Abaixo da meta por ${brl(Math.abs(gap))}`:`Meta atingida • ${brl(gap)} acima`)
+  :"Meta não disponível";
+ $("gPatMetaStatus").className=Number.isFinite(gap)?(gap<0?"bad":"good"):"";
+ let labels=r.months.map(monthLabel),
+ gastos=r.months.map(m=>expenseMonth(m)),
+ receitas=r.months.map(m=>incomeMonth(m)),
+ sobra=r.months.map((m,i)=>receitas[i]-gastos[i]),
+ ds=[
+  {
+   type:"bar",
+   label:"Sobra",
+   data:sobra,
+   backgroundColor:"rgba(111,142,123,.20)",
+   borderColor:"rgba(111,142,123,.46)",
+   borderWidth:1,
+   order:3,
+   barPercentage:.72,
+   categoryPercentage:.86
+  },
+  lineDataset("Gastos",gastos,CHART_EXPENSE,{borderWidth:2.8,pointRadius:2,pointHoverRadius:5,order:1}),
+  lineDataset("Receitas",receitas,CHART_INCOME,{borderWidth:2.8,pointRadius:2,pointHoverRadius:5,order:1})
+ ];
+ makeChart("chartConsolidado",{type:"bar",data:{labels,datasets:ds},options:chartOpts()});
+ renderCapitalAllocationChart("chartCapital",r);
+ stackedByCategory("chartFixosOverview",data.despesas.fixas,r);stackedByCategory("chartVariaveisOverview",data.despesas.variaveis,r);stackedByCategory("chartParcelasOverview",data.parcelas,r);}
+
+function actionButtons(kind,id){
+ return `<div class="actions">
+  <button class="mini-btn icon-btn" data-edit-kind="${esc(kind)}" data-id="${esc(id)}" title="Editar" aria-label="Editar">
+   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16.5V20h3.5L18.6 8.9l-3.5-3.5L4 16.5Zm16.7-10.3a1 1 0 0 0 0-1.4l-1.5-1.5a1 1 0 0 0-1.4 0l-1.6 1.6 3.5 3.5 1.6-1.6Z"/></svg>
+  </button>
+  <button class="mini-btn del icon-btn" data-del-kind="${esc(kind)}" data-id="${esc(id)}" title="Excluir" aria-label="Excluir">
+   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21a2 2 0 0 1-2-2V7h14v12a2 2 0 0 1-2 2H7Zm1-3h2V10H8v8Zm6 0h2V10h-2v8ZM4 4h5l1-1h4l1 1h5v2H4V4Z"/></svg>
+  </button>
+ </div>`
+}
+function tableDatePass(rec,start,end){
+ let d=String(rec.data||"").slice(0,10),m=monthKey(rec.data);
+ if(start){let s=start.length===7?start:start.slice(0,10);if((start.length===7?m:d)<s)return false}
+ if(end){let e=end.length===7?end:end.slice(0,10);if((end.length===7?m:d)>e)return false}
+ return true
+}
+function filterTableRows(rows,{startId,endId,searchId,selectId,selectField}){
+ let start=$(startId)?.value||"",end=$(endId)?.value||"",q=normSearch($(searchId)?.value||""),sel=$(selectId)?.value||"all";
+ return rows.filter(x=>
+  tableDatePass(x,start,end)&&
+  (!q||normSearch(x.descricao||"").includes(q))&&
+  (sel==="all"||String(x[selectField]||"")===sel)
+ )
+}
+function sortTableRows(rows){return [...rows].sort((a,b)=>(b.updatedAt||b.createdAt||"").localeCompare(a.updatedAt||a.createdAt||"")||String(b.data||"").localeCompare(String(a.data||"")))}
+function tableSlice(rows,filterIds){return rows}
+function setTableCount(id,shown,total,filtered){if($(id))$(id).textContent=`${shown} ${shown===1?"registro":"registros"} no período selecionado${filtered?" após os filtros da tabela":""}`}
+function clearTableFilters(ids,renderFn){ids.forEach(id=>{let e=$(id);if(!e)return;e.value=e.tagName==="SELECT"?"all":""});renderFn()}
+
+const excelTableFilters={fixas:{},variaveis:{},receitas:{},parcelas:{},investimentos:{}};
+let excelMenuContext=null,excelMenuSort=null;
+const EXCEL_TABLE_CONFIG={
+ fixas:{render:()=>renderExpenses(),rows:()=>data.despesas.fixas.filter(x=>monthKey(x.data)===fixedMonth()),columns:{
+  descricao:{label:"Descrição",value:x=>x.descricao||"",type:"text"},
+  categoria:{label:"Categoria",value:x=>x.categoria||"Outros",type:"text"},
+  valor:{label:"Valor",value:x=>Number(x.valor||0),display:v=>brl(v),type:"number"}}},
+ variaveis:{render:()=>renderExpenses(),rows:()=>data.despesas.variaveis.filter(x=>inRange(x,periodRange())),columns:{
+  data:{label:"Data",value:x=>x.data,display:v=>dateLabel(v),type:"date"},
+  descricao:{label:"Descrição",value:x=>x.descricao||"",type:"text"},
+  categoria:{label:"Categoria",value:x=>x.categoria||"Outros",type:"text"},
+  valor:{label:"Valor",value:x=>Number(x.valor||0),display:v=>brl(v),type:"number"}}},
+ receitas:{render:()=>renderIncome(),rows:()=>data.receitas.filter(x=>monthKey(x.data)===revenueMonth()),columns:{
+  pessoa:{label:"Pessoa",value:x=>x.pessoa||"—",type:"text"},
+  descricao:{label:"Descrição",value:x=>x.descricao||"",type:"text"},
+  valor:{label:"Valor",value:x=>Number(x.valor||0),display:v=>brl(v),type:"number"}}},
+ parcelas:{render:()=>renderInstallments(),rows:()=>data.parcelas.filter(x=>inRange(x,periodRange())),columns:{
+  data:{label:"Data",value:x=>x.data,display:v=>dateLabel(v),type:"date"},
+  descricao:{label:"Descrição",value:x=>x.descricao||"",type:"text"},
+  categoria:{label:"Categoria",value:x=>x.categoria||"Outros",type:"text"},
+  parcela:{label:"Parcela",value:x=>`${x.parcela||"—"}/${x.totalParcelas||"—"}`,type:"text"},
+  valor:{label:"Valor",value:x=>Number(x.valor||0),display:v=>brl(v),type:"number"}}},
+ investimentos:{render:()=>renderInvestments(),rows:()=>data.investimentos.historico.filter(x=>monthKey(x.data)===investmentMonth()),columns:{
+  descricao:{label:"Componente",value:x=>x.descricao||"",type:"text"},
+  classe:{label:"Classe",value:x=>x.classe||investmentClass(x.descricao),type:"text"},
+  valor:{label:"Saldo",value:x=>Number(x.valor||0),display:v=>brl(v),type:"number"}}}
+};
+function excelRawKey(v){return typeof v==="number"?`n:${v}`:`s:${String(v)}`}
+function excelCompare(a,b,type){if(type==="number")return Number(a)-Number(b);if(type==="date")return String(a).localeCompare(String(b));return String(a).localeCompare(String(b),"pt-BR",{sensitivity:"base",numeric:true})}
+function excelTableHasFilters(key){return Object.values(excelTableFilters[key]||{}).some(s=>s&&(s.sort||s.selected instanceof Set))}
+function excelFilteredRows(key,rows){
+ let cfg=EXCEL_TABLE_CONFIG[key],states=excelTableFilters[key]||{},out=[...rows];
+ for(let [field,state] of Object.entries(states)){let col=cfg.columns[field];if(!col||!state)continue;if(state.selected instanceof Set)out=out.filter(x=>state.selected.has(excelRawKey(col.value(x))))}
+ let sortField=Object.keys(states).find(f=>states[f]?.sort);
+ if(sortField){let state=states[sortField],col=cfg.columns[sortField],dir=state.sort==="asc"?1:-1;out.sort((a,b)=>excelCompare(col.value(a),col.value(b),col.type)*dir)}else out=sortTableRows(out);
+ return out
+}
+function excelUniqueValues(key,field){
+ let cfg=EXCEL_TABLE_CONFIG[key],col=cfg.columns[field],map=new Map();
+ cfg.rows().forEach(x=>{let raw=col.value(x),k=excelRawKey(raw);if(!map.has(k))map.set(k,{key:k,raw,display:col.display?col.display(raw):String(raw||"—")})});
+ return [...map.values()].sort((a,b)=>excelCompare(a.raw,b.raw,col.type))
+}
+function excelSortLabels(type){if(type==="number")return["Ordenar do menor para o maior","Ordenar do maior para o menor"];if(type==="date")return["Ordenar do mais antigo para o mais recente","Ordenar do mais recente para o mais antigo"];return["Ordenar de A a Z","Ordenar de Z a A"]}
+function closeExcelFilterMenu(){let menu=$("excelFilterMenu");if(menu)menu.classList.add("hidden");excelMenuContext=null}
+function excelRefreshValueSearch(){let q=normSearch($("excelFilterSearch").value);$("excelFilterValues").querySelectorAll(".excel-filter-value").forEach(el=>el.classList.toggle("hidden",q&&!normSearch(el.dataset.display).includes(q)))}
+function excelSyncSelectAll(){let visible=[...$("excelFilterValues").querySelectorAll(".excel-filter-value:not(.hidden) input")];$("excelFilterSelectAll").checked=visible.length>0&&visible.every(x=>x.checked);$("excelFilterSelectAll").indeterminate=visible.some(x=>x.checked)&&!$("excelFilterSelectAll").checked}
+function openExcelFilterMenu(button){
+ let key=button.dataset.tableFilter,field=button.dataset.field,cfg=EXCEL_TABLE_CONFIG[key],col=cfg?.columns?.[field];if(!cfg||!col)return;
+ excelMenuContext={key,field,button};let state=excelTableFilters[key][field]||{},values=excelUniqueValues(key,field);excelMenuSort=state.sort||null;
+ let labels=excelSortLabels(col.type);$("excelSortAsc").textContent="↕  "+labels[0];$("excelSortDesc").textContent="↕  "+labels[1];
+ $("excelSortAsc").classList.toggle("active",excelMenuSort==="asc");$("excelSortDesc").classList.toggle("active",excelMenuSort==="desc");$("excelFilterSearch").value="";
+ $("excelFilterValues").innerHTML=values.map(v=>{let checked=!(state.selected instanceof Set)||state.selected.has(v.key);return `<label class="excel-filter-value" data-display="${esc(v.display)}"><input type="checkbox" data-filter-value="${esc(v.key)}" ${checked?"checked":""}><span title="${esc(v.display)}">${esc(v.display)}</span></label>`}).join("");
+ $("excelFilterValues").querySelectorAll('input[type="checkbox"]').forEach(x=>x.onchange=excelSyncSelectAll);excelSyncSelectAll();
+ let r=button.getBoundingClientRect(),menu=$("excelFilterMenu");menu.classList.remove("hidden");let left=Math.min(r.left,window.innerWidth-282),top=Math.min(r.bottom+4,window.innerHeight-430);menu.style.left=Math.max(8,left)+"px";menu.style.top=Math.max(8,top)+"px";
+}
+function excelApplyCurrent(){
+ if(!excelMenuContext)return;let {key,field}=excelMenuContext,cfg=EXCEL_TABLE_CONFIG[key],values=excelUniqueValues(key,field),checked=[...$("excelFilterValues").querySelectorAll('input[data-filter-value]:checked')].map(x=>x.dataset.filterValue),selected=checked.length===values.length?null:new Set(checked);
+ if(!selected&&!excelMenuSort)delete excelTableFilters[key][field];else excelTableFilters[key][field]={selected,sort:excelMenuSort};
+ if(excelMenuSort)Object.keys(excelTableFilters[key]).forEach(f=>{if(f!==field&&excelTableFilters[key][f])excelTableFilters[key][f].sort=null});
+ closeExcelFilterMenu();cfg.render();updateExcelFilterHeaders()
+}
+function excelClearCurrent(){if(!excelMenuContext)return;let {key,field}=excelMenuContext,cfg=EXCEL_TABLE_CONFIG[key];delete excelTableFilters[key][field];closeExcelFilterMenu();cfg.render();updateExcelFilterHeaders()}
+function updateExcelFilterHeaders(){document.querySelectorAll(".excel-filter-btn").forEach(btn=>{let state=excelTableFilters[btn.dataset.tableFilter]?.[btn.dataset.field];btn.classList.toggle("active",!!(state&&(state.sort||state.selected instanceof Set)));btn.textContent=state&&(state.selected instanceof Set)?"◆":"▾"})}
+
+
+function latestRevenueMonth(){
+ let months=data?.receitas?.map(x=>monthKey(x.data)).filter(Boolean).sort()||[];
+ return months.at(-1)||latestOperationalMonth()
+}
+function revenueMonth(){
+ if(!revenueMonthSelection)revenueMonthSelection=latestRevenueMonth();
+ if(revenueMonthSelection<HISTORY_START)revenueMonthSelection=HISTORY_START;
+ return revenueMonthSelection
+}
+function latestInvestmentMonth(){
+ let months=data?.investimentos?.historico?.map(x=>monthKey(x.data)).filter(Boolean).sort()||[];
+ return months.at(-1)||latestOperationalMonth()
+}
+function investmentMonth(){
+ if(!investmentMonthSelection)investmentMonthSelection=latestInvestmentMonth();
+ if(investmentMonthSelection<HISTORY_START)investmentMonthSelection=HISTORY_START;
+ return investmentMonthSelection
+}
+async function replicateRevenueNext(){
+ if(!data)return;
+ let source=revenueMonth(),target=addMonths(source,1),
+     sourceRows=data.receitas.filter(x=>monthKey(x.data)===source),
+     targetRows=data.receitas.filter(x=>monthKey(x.data)===target);
+ if(!sourceRows.length){toast(`Não há receitas em ${monthLabel(source)} para replicar.`);return}
+ let key=x=>`${normSearch(x.pessoa)}|${normSearch(x.descricao)}`,
+     existing=new Set(targetRows.map(key)),seen=new Set(existing),toCopy=[];
+ sourceRows.forEach(x=>{let k=key(x);if(!seen.has(k)){toCopy.push(x);seen.add(k)}});
+ if(!toCopy.length){toast(`As receitas de ${monthLabel(source)} já estão em ${monthLabel(target)}.`);return}
+ let skipped=sourceRows.length-toCopy.length;
+ if(!confirm(`Replicar receitas de ${monthLabel(source)} para ${monthLabel(target)}?\n\nSerão criados ${toCopy.length} lançamentos.${skipped?`\n${skipped} equivalentes já existentes serão ignorados.`:""}`))return;
+ let now=new Date().toISOString();
+ toCopy.forEach(x=>{
+  let day=Number(String(x.data||"").slice(8,10))||1;
+  data.receitas.push({
+   id:uid(),data:fixedDateWithDay(target,day),descricao:x.descricao,pessoa:x.pessoa,
+   valor:Number(x.valor),origem:"app",createdAt:now,replicadoDe:x.id,replicadoDeMes:source
+  })
+ });
+ revenueMonthSelection=target;
+ touch();await afterMutation(`${toCopy.length} receitas replicadas para ${monthLabel(target)}.`)
+}
+async function replicateInvestmentNext(){
+ if(!data)return;
+ let source=investmentMonth(),target=addMonths(source,1),
+     sourceRows=data.investimentos.historico.filter(x=>monthKey(x.data)===source),
+     targetRows=data.investimentos.historico.filter(x=>monthKey(x.data)===target);
+ if(!sourceRows.length){toast(`Não há registros de investimentos em ${monthLabel(source)} para replicar.`);return}
+ let existing=new Set(targetRows.map(x=>normSearch(x.descricao))),toCopy=sourceRows.filter(x=>!existing.has(normSearch(x.descricao)));
+ if(!toCopy.length){toast(`A composição de ${monthLabel(source)} já está em ${monthLabel(target)}.`);return}
+ let skipped=sourceRows.length-toCopy.length;
+ if(!confirm(`Replicar a composição de investimentos de ${monthLabel(source)} para ${monthLabel(target)}?\n\nSerão criados ${toCopy.length} registros com os mesmos saldos.${skipped?`\n${skipped} componentes já existentes serão preservados.`:""}`))return;
+ let now=new Date().toISOString();
+ toCopy.forEach(x=>data.investimentos.historico.push({
+  id:uid(),data:target+"-01",descricao:x.descricao,classe:x.classe||investmentClass(x.descricao),
+  pessoa:x.pessoa||"",valor:Number(x.valor),origem:"app",tipoRegistro:"saldoMensal",
+  createdAt:now,replicadoDe:x.id,replicadoDeMes:source
+ }));
+ investmentMonthSelection=target;
+ touch();await afterMutation(`${toCopy.length} registros de investimentos replicados para ${monthLabel(target)}.`)
+}
+
+function fixedMonth(){
+ if(!fixedMonthSelection)fixedMonthSelection=latestOperationalMonth();
+ if(fixedMonthSelection<HISTORY_START)fixedMonthSelection=HISTORY_START;
+ return fixedMonthSelection
+}
+function fixedDueDay(rec){
+ let d=Number(String(rec?.data||"").slice(8,10));
+ return Number.isFinite(d)&&d>0?d:1
+}
+function fixedDateWithDay(ym,day){
+ let[y,m]=ym.split("-").map(Number),
+     last=new Date(Date.UTC(y,m,0)).getUTCDate(),
+     d=Math.max(1,Math.min(last,Number(day)||1));
+ return `${ym}-${String(d).padStart(2,"0")}`
+}
+function fixedIsPaid(rec){
+ if(rec?.pago===true)return true;
+ if(rec?.pago===false)return false;
+ return monthKey(rec?.data)<currentCalendarMonth()
+}
+function fixedMonthRows(){
+ let m=fixedMonth(),
+     rows=data.despesas.fixas.filter(x=>monthKey(x.data)===m);
+ rows=excelFilteredRows("fixas",rows);
+ if(fixedStatusFilter==="paid")rows=rows.filter(fixedIsPaid);
+ else if(fixedStatusFilter==="pending")rows=rows.filter(x=>!fixedIsPaid(x));
+ return rows
+}
+function fixedActionButtons(rec){
+ let paid=fixedIsPaid(rec);
+ return `<div class="actions">
+  <button class="mini-btn ${paid?"":"pay"}" data-fixed-pay="${esc(rec.id)}">${paid?"Desfazer":"Marcar pago"}</button>
+  <button class="mini-btn icon-btn" data-edit-kind="fixas" data-id="${esc(rec.id)}" title="Editar" aria-label="Editar">
+   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16.5V20h3.5L18.6 8.9l-3.5-3.5L4 16.5Zm16.7-10.3a1 1 0 0 0 0-1.4l-1.5-1.5a1 1 0 0 0-1.4 0l-1.6 1.6 3.5 3.5 1.6-1.6Z"/></svg>
+  </button>
+  <button class="mini-btn del icon-btn" data-del-kind="fixas" data-id="${esc(rec.id)}" title="Excluir" aria-label="Excluir">
+   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21a2 2 0 0 1-2-2V7h14v12a2 2 0 0 1-2 2H7Zm1-3h2V10H8v8Zm6 0h2V10h-2v8ZM4 4h5l1-1h4l1 1h5v2H4V4Z"/></svg>
+  </button>
+ </div>`
+}
+function fixedTableHtml(rows){
+ return rows.map(x=>{
+  let paid=fixedIsPaid(x),day=fixedDueDay(x);
+  return `<tr class="${paid?"fixed-row-paid":"fixed-row-pending"}">
+   <td class="desc">${esc(x.descricao)}</td>
+   <td>${esc(x.categoria)}</td>
+   <td><div class="fixed-due-edit"><span>dia</span><input class="fixed-due-input" type="number" min="1" max="31" value="${day}" data-fixed-due="${esc(x.id)}" title="Editar dia do vencimento"></div></td>
+   <td class="num">${brl(x.valor)}</td>
+   <td><span class="fixed-pay-status ${paid?"paid":"pending"}">${paid?"Pago":"Pendente"}</span></td>
+   <td class="num">${fixedActionButtons(x)}</td>
+  </tr>`
+ }).join("")
+}
+async function toggleFixedPaid(id){
+ let{rec}=findRecord("fixas",id);if(!rec)return;
+ rec.pago=!fixedIsPaid(rec);rec.origem="app";rec.updatedAt=new Date().toISOString();
+ touch();await afterMutation(rec.pago?"Pagamento marcado como pago.":"Pagamento voltou para pendente.")
+}
+async function updateFixedDueDay(id,day){
+ let{rec}=findRecord("fixas",id);if(!rec)return;
+ let m=monthKey(rec.data),next=fixedDateWithDay(m,day);
+ if(next===rec.data)return;
+ rec.data=next;rec.vencimentoDia=fixedDueDay(rec);rec.origem="app";rec.updatedAt=new Date().toISOString();
+ touch();await afterMutation(`Vencimento atualizado para o dia ${fixedDueDay(rec)}.`)
+}
+function bindFixedActions(){
+ document.querySelectorAll("[data-fixed-pay]").forEach(b=>b.onclick=()=>toggleFixedPaid(b.dataset.fixedPay));
+ document.querySelectorAll("[data-fixed-due]").forEach(i=>i.onchange=()=>updateFixedDueDay(i.dataset.fixedDue,i.value));
+ bindActions($("despesas"))
+}
+
+function expenseRows(filtered=true){let r=periodRange(),type=$("expenseTypeFilter")?.value||"all",cat=$("expenseCategoryFilter")?.value||"all",rows=[];if(type==="all"||type==="fixas")rows.push(...data.despesas.fixas.map(x=>({...x,_kind:"fixas",_label:"Fixa"})));if(type==="all"||type==="variaveis")rows.push(...data.despesas.variaveis.map(x=>({...x,_kind:"variaveis",_label:"Variável"})));if(filtered)rows=rows.filter(x=>inRange(x,r)&&(cat==="all"||x.categoria===cat));return rows.sort((a,b)=>(b.updatedAt||b.createdAt||"").localeCompare(a.updatedAt||a.createdAt||"")||b.data.localeCompare(a.data))}
+function expenseTableHtml(rows){return rows.map(x=>`<tr><td>${dateLabel(x.data)}</td><td>${x._label}</td><td class="desc">${esc(x.descricao)}</td><td>${esc(x.categoria)}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons(x._kind,x.id)}</td></tr>`).join("")}
+function variableExpenseTableHtml(rows){return rows.map(x=>`<tr><td>${dateLabel(x.data)}</td><td class="desc">${esc(x.descricao)}</td><td>${esc(x.categoria)}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons("variaveis",x.id)}</td></tr>`).join("")}
+
+
+function syncTableFilterBounds(range){
+ let startDate=range.start+"-01",
+     endObj=new Date(Date.UTC(Number(range.end.slice(0,4)),Number(range.end.slice(5,7)),0)),
+     endDate=endObj.toISOString().slice(0,10);
+ ["fxTableStart","fxTableEnd","varTableStart","varTableEnd","revTableStart","revTableEnd","parTableStart","parTableEnd"].forEach(id=>{
+   let e=$(id);if(!e)return;
+   e.min=startDate;e.max=endDate;
+   if(e.value&&(e.value<startDate||e.value>endDate))e.value=""
+ });
+ ["invTableStart","invTableEnd"].forEach(id=>{
+   let e=$(id);if(!e)return;
+   e.min=range.start;e.max=range.end;
+   if(e.value&&(e.value<range.start||e.value>range.end))e.value=""
+ })
+}
+function renderExpenseTableView(){
+ let fixed=expenseTableView==="fixas";
+ if($("expenseFixedPane"))$("expenseFixedPane").classList.toggle("hidden",!fixed);
+ if($("expenseVariablePane"))$("expenseVariablePane").classList.toggle("hidden",fixed);
+ document.querySelectorAll("[data-expense-table-view]").forEach(b=>b.classList.toggle("active",b.dataset.expenseTableView===expenseTableView))
+}
+function setExpenseTableView(view){
+ expenseTableView=view==="variaveis"?"variaveis":"fixas";
+ renderExpenseTableView()
+}
+
+function renderExpenses(){
+ if(!data)return;
+ let r=periodRange();syncTableFilterBounds(r);
+ let ref=r.ref,cat=$("expenseCategoryFilter").value,type=$("expenseTypeFilter").value,
+     filter=x=>cat==="all"||x.categoria===cat,
+     fix=sumMonth(data.despesas.fixas,ref,filter),
+     vr=sumMonth(data.despesas.variaveis,ref,filter),
+     tot=(type==="fixas"?fix:type==="variaveis"?vr:fix+vr),
+     monthly=r.months.map(m=>(type==="fixas"?sumMonth(data.despesas.fixas,m,filter):type==="variaveis"?sumMonth(data.despesas.variaveis,m,filter):sumMonth(data.despesas.fixas,m,filter)+sumMonth(data.despesas.variaveis,m,filter)));
+
+ $("dFixas").textContent=brl(fix);$("dVariaveis").textContent=brl(vr);$("dTotal").textContent=brl(tot);$("dMedia").textContent=brl(monthly.reduce((a,b)=>a+b,0)/(monthly.length||1));
+
+ makeChart("chartDespesasEvolucao",{type:"bar",data:{labels:r.months.map(monthLabel),datasets:[
+  {label:"Fixas",data:r.months.map(m=>sumMonth(data.despesas.fixas,m,filter)),backgroundColor:"#A61729"},
+  {label:"Variáveis",data:r.months.map(m=>sumMonth(data.despesas.variaveis,m,filter)),backgroundColor:"#D65B6D"}
+ ]},options:chartOpts({stacked:true})});
+
+ let recs=[];if(type==="all"||type==="fixas")recs.push(...data.despesas.fixas);if(type==="all"||type==="variaveis")recs.push(...data.despesas.variaveis);
+ horizontalBar("chartDespesasCategoria",categoryTotals(recs,r,filter));
+
+ let rows=expenseRows(true);
+
+ let fxM=fixedMonth(),
+     fxBase=data.despesas.fixas.filter(x=>monthKey(x.data)===fxM),
+     fxAll=excelFilteredRows("fixas",fxBase),
+     fxShown=fixedStatusFilter==="paid"?fxAll.filter(fixedIsPaid):fixedStatusFilter==="pending"?fxAll.filter(x=>!fixedIsPaid(x)):fxAll,
+     fxPaid=fxBase.filter(fixedIsPaid),
+     fxTotal=fxBase.reduce((s,x)=>s+Number(x.valor||0),0),
+     fxPaidValue=fxPaid.reduce((s,x)=>s+Number(x.valor||0),0),
+     fxPendingValue=fxTotal-fxPaidValue,
+     fxPct=fxTotal?fxPaidValue/fxTotal:0;
+
+ $("fxMonthPicker").value=fxM;
+ $("fxMonthSubtitle").textContent=`Acompanhe pagamentos e vencimentos de ${monthLabel(fxM)}.`;
+ $("btnReplicateFixed").textContent=`Replicar para ${monthLabel(addMonths(fxM,1))}`;
+ $("fxMonthTotal").textContent=brl(fxTotal);
+ $("fxMonthCount").textContent=`${fxBase.length} ${fxBase.length===1?"gasto previsto":"gastos previstos"}`;
+ $("fxMonthPaid").textContent=brl(fxPaidValue);
+ $("fxMonthPaidCount").textContent=`${fxPaid.length} ${fxPaid.length===1?"pagamento concluído":"pagamentos concluídos"}`;
+ $("fxMonthPending").textContent=brl(fxPendingValue);
+ $("fxMonthPendingCount").textContent=`${fxBase.length-fxPaid.length} ${fxBase.length-fxPaid.length===1?"pagamento pendente":"pagamentos pendentes"}`;
+ $("fxMonthPct").textContent=(fxPct*100).toLocaleString("pt-BR",{maximumFractionDigits:0})+"%";
+ $("fxProgressText").textContent=`${brl(fxPaidValue)} de ${brl(fxTotal)}`;
+ $("fxProgressBar").style.width=Math.min(100,fxPct*100)+"%";
+ $("recentFixas").innerHTML=fxShown.length?fixedTableHtml(fxShown):`<tr><td colspan="6"><div class="empty">Nenhum gasto fixo neste filtro.</div></td></tr>`;
+ $("fxTableCount").textContent=`${fxShown.length} de ${fxBase.length} em ${monthLabel(fxM)}`;
+
+ let varAll=excelFilteredRows("variaveis",data.despesas.variaveis.filter(x=>inRange(x,r))),
+     varShown=varAll.map(x=>({...x,_kind:"variaveis",_label:"Variável"}));
+
+ $("recentVariaveis").innerHTML=varShown.length?variableExpenseTableHtml(varShown):`<tr><td colspan="5"><div class="empty">Nenhuma despesa variável encontrada.</div></td></tr>`;
+ setTableCount("varTableCount",varShown.length,varAll.length,excelTableHasFilters("variaveis"));
+ updateExcelFilterHeaders();
+
+ if($("allDespesas"))$("allDespesas").innerHTML=rows.length?expenseTableHtml(rows.slice(0,300)):`<tr><td colspan="6"><div class="empty">Sem lançamentos no período.</div></td></tr>`;
+ renderExpenseTableView();
+ bindFixedActions()
+}
+function renderIncome(){
+ if(!data)return;
+ let r=periodRange();syncTableFilterBounds(r);
+ let ref=r.ref,person=$("incomePersonFilter").value,
+     filter=x=>(person==="all"||x.pessoa===person),
+     rows=data.receitas.filter(filter),
+     ig=incomeMonth(ref,"Igor"),vi=incomeMonth(ref,"Vitória"),
+     total=rows.filter(x=>monthKey(x.data)===ref).reduce((s,x)=>s+Number(x.valor),0),
+     monthly=r.months.map(m=>rows.filter(x=>monthKey(x.data)===m).reduce((s,x)=>s+Number(x.valor),0));
+
+ $("rIgor").textContent=brl(ig);$("rVitoria").textContent=brl(vi);$("rTotal").textContent=brl(total);$("rMedia").textContent=brl(monthly.reduce((a,b)=>a+b,0)/(monthly.length||1));
+
+ let people=[...new Set(data.receitas.map(x=>x.pessoa).filter(Boolean))].sort(),
+     incomeColors=INCOME_COLORS;
+
+ makeChart("chartReceitas",{type:"line",data:{labels:r.months.map(monthLabel),datasets:people.filter(p=>person==="all"||p===person).map((p,i)=>lineDataset(p,r.months.map(m=>incomeMonth(m,p)),incomeColors[p]||COLORS[i%COLORS.length]))},options:chartOpts()});
+ let avgByPerson={};
+ people.forEach(p=>avgByPerson[p]=r.months.reduce((s,m)=>s+incomeMonth(m,p),0)/(r.months.length||1));
+ let avgTotal=Object.values(avgByPerson).reduce((a,b)=>a+b,0),comp={};
+ people.forEach(p=>comp[p]=avgTotal?avgByPerson[p]/avgTotal*100:0);
+ donutPercent("chartReceitasDonut",comp,incomeColors,true);
+
+ let rm=revenueMonth(),
+     base=data.receitas.filter(x=>monthKey(x.data)===rm),
+     all=excelFilteredRows("receitas",base),
+     totalM=base.reduce((s,x)=>s+Number(x.valor||0),0),
+     igM=base.filter(x=>x.pessoa==="Igor").reduce((s,x)=>s+Number(x.valor||0),0),
+     viM=base.filter(x=>x.pessoa==="Vitória").reduce((s,x)=>s+Number(x.valor||0),0);
+
+ $("revMonthPicker").value=rm;
+ $("revMonthSubtitle").textContent=`Acompanhe e atualize as receitas de ${monthLabel(rm)}.`;
+ $("btnReplicateRevenue").textContent=`Replicar para ${monthLabel(addMonths(rm,1))}`;
+ $("revMonthTotal").textContent=brl(totalM);
+ $("revMonthCount").textContent=`${base.length} ${base.length===1?"lançamento":"lançamentos"}`;
+ $("revMonthIgor").textContent=brl(igM);
+ $("revMonthVitoria").textContent=brl(viM);
+ $("revMonthAverage").textContent=brl(base.length?totalM/base.length:0);
+
+ $("recentReceitas").innerHTML=all.length?all.map(x=>`<tr><td>${esc(x.pessoa)}</td><td class="desc">${esc(x.descricao)}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons("receitas",x.id)}</td></tr>`).join(""):`<tr><td colspan="4"><div class="empty">Nenhuma receita neste mês.</div></td></tr>`;
+ $("revTableCount").textContent=`${all.length} de ${base.length} em ${monthLabel(rm)}`;
+ updateExcelFilterHeaders();
+ bindActions($("receitas"))
+}
+function renderInstallments(){
+ if(!data)return;
+ let r=periodRange();syncTableFilterBounds(r);
+ let ref=r.ref,cat=$("installmentCategoryFilter").value,
+     filter=x=>cat==="all"||x.categoria===cat,
+     arr=data.parcelas.filter(filter),
+     sumFuture=(n)=>monthsBetween(addMonths(ref,1),addMonths(ref,n)).reduce((s,m)=>s+sumMonth(arr,m),0),
+     future=arr.filter(x=>monthKey(x.data)>ref).reduce((s,x)=>s+Number(x.valor),0);
+
+ $("pMes").textContent=brl(sumMonth(arr,ref));$("p3").textContent=brl(sumFuture(3));$("p6").textContent=brl(sumFuture(6));$("pFuture").textContent=brl(future);
+
+ let historicalMonths=r.months.filter(m=>m<=ref),futureMonths=monthsBetween(addMonths(ref,1),addMonths(ref,12)),
+     labels=[...historicalMonths,...futureMonths],hLen=historicalMonths.length,fLen=futureMonths.length,
+     histValues=historicalMonths.map(m=>sumMonth(arr,m)).concat(Array(fLen).fill(null)),
+     futureValues=Array(hLen).fill(null).concat(futureMonths.map(m=>sumMonth(arr,m)));
+
+ let installmentOpts=chartOpts();
+ installmentOpts.plugins.tooltip.callbacks.label=ctx=>ctx.raw==null?"":`Total: ${brl(ctx.raw)}`;
+ installmentOpts.plugins.tooltip.callbacks.afterBody=items=>{
+  let idx=items?.[0]?.dataIndex;
+  if(idx==null)return[];
+  let m=labels[idx],totals={};
+  arr.filter(x=>monthKey(x.data)===m).forEach(x=>{
+   let c=x.categoria||"Outros";
+   totals[c]=(totals[c]||0)+Number(x.valor||0)
+  });
+  return Object.entries(totals)
+   .filter(([,v])=>v>0)
+   .sort((a,b)=>b[1]-a[1])
+   .map(([c,v])=>`${c}: ${brl(v)}`)
+ };
+
+ makeChart("chartParcelasFuturo",{type:"bar",data:{labels:labels.map(monthLabel),datasets:[
+  {label:"Parcelas — histórico",data:histValues,backgroundColor:"rgba(184,21,112,.78)",borderColor:"#9D145F",borderWidth:1,barPercentage:.96,categoryPercentage:.92,maxBarThickness:46},
+  {label:"Parcelas — futuro",data:futureValues,backgroundColor:"rgba(184,21,112,.22)",borderColor:"rgba(144,15,21,.55)",borderWidth:1,barPercentage:.96,categoryPercentage:.92,maxBarThickness:46}
+ ]},options:installmentOpts});
+ horizontalBar("chartParcelasCategoria",categoryTotals(arr,r));
+
+ let all=excelFilteredRows("parcelas",data.parcelas.filter(x=>inRange(x,r))),
+     shown=all;
+
+ $("recentParcelas").innerHTML=shown.length?shown.map(x=>`<tr><td>${dateLabel(x.data)}</td><td class="desc">${esc(x.descricao)}</td><td>${esc(x.categoria)}</td><td>${x.parcela||"—"}/${x.totalParcelas||"—"}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons("parcelas",x.id)}</td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">Nenhuma parcela encontrada.</div></td></tr>`;
+ setTableCount("parTableCount",shown.length,all.length,excelTableHasFilters("parcelas"));
+ updateExcelFilterHeaders();
+ bindActions($("parcelas"))
+}
+function renderInvestments(){
+ if(!data)return;
+ let r=periodRange();syncTableFilterBounds(r);
+ let snap=actualSnapshot(r.ref)||actualSnapshot("9999-12"),
+     meta=snap?metaForMonth(snap.month):null,
+     gap=snap&&Number.isFinite(meta)?snap.semFGTS-meta:null;
+
+ $("iIgorApl").textContent=snap?brl(snap.map["Igor: Aplicações"]||0):"—";
+ $("iVitApl").textContent=snap?brl(snap.map["Vitória: Aplicações"]||0):"—";
+ $("iPrev").textContent=snap?brl(snap.map["Igor: Previdência"]||0):"—";
+ $("iFgts").textContent=snap?brl((snap.map["Igor: FGTS"]||0)+(snap.map["Vitória: FGTS"]||0)):"—";
+ $("iTotal").textContent=snap?brl(snap.total):"—";
+ $("iSemFgts").textContent=snap?brl(snap.semFGTS):"—";
+ $("iMeta").textContent=Number.isFinite(meta)?brl(meta):"—";
+ $("iGap").textContent=Number.isFinite(gap)?brl(gap):"—";
+ $("iGap").className=Number.isFinite(gap)?(gap>=0?"good":"bad"):"";
+
+ renderCapitalAllocationChart("chartInvestAllocation",r);
+
+ let im=investmentMonth(),
+     base=data.investimentos.historico.filter(x=>monthKey(x.data)===im),
+     all=excelFilteredRows("investimentos",base),
+     totalM=base.reduce((s,x)=>s+Number(x.valor||0),0),
+     fgtsM=base.filter(x=>/FGTS/i.test(x.descricao||"")).reduce((s,x)=>s+Number(x.valor||0),0);
+
+ $("invMonthPicker").value=im;
+ $("invMonthSubtitle").textContent=`Acompanhe e atualize a composição patrimonial de ${monthLabel(im)}.`;
+ $("btnReplicateInvestment").textContent=`Replicar para ${monthLabel(addMonths(im,1))}`;
+ $("invMonthTotal").textContent=brl(totalM);
+ $("invMonthSem").textContent=brl(totalM-fgtsM);
+ $("invMonthFgts").textContent=brl(fgtsM);
+ $("invMonthCount").textContent=String(base.length);
+
+ $("recentInvestimentos").innerHTML=all.length
+  ?all.map(x=>`<tr><td class="desc">${esc(x.descricao)}</td><td>${esc(x.classe||investmentClass(x.descricao))}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons("investimento",x.id)}</td></tr>`).join("")
+  :`<tr><td colspan="4"><div class="empty">Nenhum registro de investimento neste mês.</div></td></tr>`;
+
+ $("invTableCount").textContent=`${all.length} de ${base.length} em ${monthLabel(im)}`;
+ updateExcelFilterHeaders();
+ bindActions($("investimentos"))
+}
+function projectionHistory(){
+ if(!data)return[];
+ return [...(data.patrimonio?.historico||[])]
+  .filter(x=>monthKey(x.data)>=HISTORY_START)
+  .sort((a,b)=>monthKey(a.data).localeCompare(monthKey(b.data)))
+  .map(x=>({month:monthKey(x.data),total:Number(x.total)||0,semFGTS:Number(x.semFGTS)||0,fgts:Number(x.fgts)||0}))
+}
+function xMonth(x){return monthKey(x.data||x.month)}
+function renderProjectionChart(id,horizon){
+ let hist=projectionHistory(),base=hist.at(-1),proj=projectPatrimony(horizon);
+ if(!base){makeChart(id,{type:"line",data:{labels:[],datasets:[]},options:chartOpts()});return}
+ let labels=[...hist.map(x=>x.month),...proj.map(x=>x.month)];
+ let total=[...hist.map(x=>x.total),...proj.map(x=>x.total)];
+ let sem=[...hist.map(x=>x.semFGTS),...proj.map(x=>x.semFGTS)];
+ let meta=labels.map(metaForMonth);
+ let lastActualIndex=hist.length-1;
+ let segmentDash=ctx=>ctx.p0DataIndex>=lastActualIndex?[7,4]:undefined;
+ let totalDs=lineDataset("Patrimônio total",total,CHART_TOTAL,{
+   borderWidth:2.6,pointRadius:1.8,pointHoverRadius:5,spanGaps:false,
+   segment:{borderDash:segmentDash}
+ });
+ let semDs=lineDataset("Patrimônio sem FGTS",sem,CHART_META,{
+   borderWidth:2.6,pointRadius:1.8,pointHoverRadius:5,spanGaps:false,
+   segment:{borderDash:segmentDash}
+ });
+ let metaDs=lineDataset("Meta sem FGTS",meta,"#111111",{
+   borderDash:[3,4],spanGaps:false,borderWidth:1.8,pointRadius:0,pointHoverRadius:4
+ });
+ let opts=chartOpts();
+ opts.plugins.tooltip.callbacks.label=ctx=>{
+   let suffix=ctx.dataIndex<=lastActualIndex?"real":"projetado";
+   if(ctx.dataset.label==="Meta sem FGTS")suffix="meta";
+   return `${ctx.dataset.label} (${suffix}): ${brl(ctx.raw)}`
+ };
+ makeChart(id,{type:"line",data:{labels:labels.map(monthLabel),datasets:[totalDs,semDs,metaDs]},options:opts})
+}
+function renderPatrimony(){if(!data)return;let r=periodRange(),snap=actualSnapshot(r.ref)||actualSnapshot("9999-12"),meta=metaForMonth(r.ref),gap=snap&&Number.isFinite(meta)?snap.semFGTS-meta:null;$("patTotal").textContent=snap?brl(snap.total):"—";$("patSemFgts").textContent=snap?brl(snap.semFGTS):"—";$("patFgts").textContent=snap?brl(snap.fgts):"—";$("patMeta").textContent=Number.isFinite(meta)?brl(meta):"—";$("patGap").textContent=Number.isFinite(gap)?brl(gap):"—";$("patGap").className=Number.isFinite(gap)?(gap>=0?"good":"bad"):"";$("patDate").textContent=snap?`Fechamento ${monthLabel(snap.month)}`:"—";renderProjectionChart("chartPatProjection",Math.min(24,Number(projectionSettings().horizonteMeses)||24));let comps=componentDefs().map(x=>x.descricao);makeChart("chartPatComponents",{type:"line",data:{labels:r.months.map(monthLabel),datasets:comps.map((c,i)=>lineDataset(c,r.months.map(m=>{let x=data.investimentos.historico.find(x=>monthKey(x.data)===m&&x.descricao===c);return x?Number(x.valor):null}),COLORS[i%COLORS.length],{spanGaps:true}))},options:chartOpts()});if(snap)donut("chartPatDonut",snap.map);let recent=data.investimentos.historico.filter(x=>untilRef(x)).sort((a,b)=>(b.updatedAt||b.createdAt||"").localeCompare(a.updatedAt||a.createdAt||"")||b.data.localeCompare(a.data)).slice(0,10);$("recentPatrimonio").innerHTML=recent.length?recent.map(x=>`<tr><td>${dateLabel(x.data)}</td><td class="desc">${esc(x.descricao)}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons("investimento",x.id)}</td></tr>`).join(""):`<tr><td colspan="4"><div class="empty">Sem registros.</div></td></tr>`;bindActions($("patrimonio"))}
+
+function setProjectionInputs(){if(!data)return;let s=projectionSettings();$("projRentApl").value=moneyInput(Number(s.rentabilidadeAplicacoesMensal)*100);$("projRentPrev").value=moneyInput(Number(s.rentabilidadePrevidenciaFgtsMensal)*100);$("projPrevIgor").value=moneyInput(s.aportePrevidenciaIgor);$("projFgtsIgor").value=moneyInput(s.aporteFgtsIgor);$("projFgtsVit").value=moneyInput(s.aporteFgtsVitoria);$("projAplIgor").value=moneyInput(s.aporteAplicacoesIgor);$("projAplVit").value=moneyInput(s.aporteAplicacoesVitoria);$("projHorizon").value=[24,60,120,180,240].includes(Number(s.horizonteMeses))?Number(s.horizonteMeses):24||24}
+function renderProjection(){if(!data)return;let n=Number(projectionSettings().horizonteMeses)||24,proj=projectPatrimony(n),end=proj.at(-1);renderProjectionChart("chartProjectionDetail",n);if(end){$("projEndTotal").textContent=brl(end.total);$("projEndSem").textContent=brl(end.semFGTS);$("projEndMeta").textContent=Number.isFinite(end.meta)?brl(end.meta):"—";let gap=Number.isFinite(end.meta)?end.semFGTS-end.meta:null;$("projEndGap").textContent=Number.isFinite(gap)?brl(gap):"—";$("projEndGap").className=Number.isFinite(gap)?(gap>=0?"good":"bad"):""}}
+
+function manageRecords(){if(!data)return[];let rows=[];data.despesas.fixas.forEach(x=>rows.push({...x,_kind:"fixas",_label:"Despesa fixa",_detail:x.categoria}));data.despesas.variaveis.forEach(x=>rows.push({...x,_kind:"variaveis",_label:"Despesa variável",_detail:x.categoria}));data.parcelas.forEach(x=>rows.push({...x,_kind:"parcelas",_label:"Parcela",_detail:x.categoria}));data.receitas.forEach(x=>rows.push({...x,_kind:"receitas",_label:"Receita",_detail:x.pessoa}));data.investimentos.historico.forEach(x=>rows.push({...x,_kind:"investimento",_label:"Investimento / patrimônio",_detail:x.classe||investmentClass(x.descricao)}));return rows.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||"")||b.data.localeCompare(a.data))}
+function renderManage(){if(!data)return;let type=$("manageType").value,q=normSearch($("manageSearch").value),rows=manageRecords().filter(x=>(type==="all"||x._kind===type)&&(!q||normSearch(x.descricao).includes(q))).slice(0,250);$("manageBody").innerHTML=rows.length?rows.map(x=>`<tr><td>${dateLabel(x.data)}</td><td>${x._label}</td><td class="desc">${esc(x.descricao)}</td><td>${esc(x._detail||"—")}</td><td class="num">${brl(x.valor)}</td><td class="num">${actionButtons(x._kind,x.id)}</td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">Nenhum lançamento encontrado.</div></td></tr>`;bindActions($("novo"))}
+function normSearch(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+function findRecord(kind,id){let arr=kind==="fixas"?data.despesas.fixas:kind==="variaveis"?data.despesas.variaveis:kind==="parcelas"?data.parcelas:kind==="receitas"?data.receitas:data.investimentos.historico;return{arr,rec:arr.find(x=>String(x.id)===String(id))}}
+async function deleteRecord(kind,id){if(!data)return;let{arr,rec}=findRecord(kind,id);if(!rec)return;let extra=kind==="parcelas"?` Parcela ${rec.parcela||"?"}/${rec.totalParcelas||"?"}.`:"";if(!confirm(`Excluir somente este lançamento?\n\n${rec.descricao}\n${dateLabel(rec.data)}\n${brl(rec.valor)}${extra}\n\nOs gráficos e totais serão recalculados automaticamente.`))return;let i=arr.indexOf(rec);arr.splice(i,1);touch();await afterMutation("Lançamento excluído.")}
+function contextConfig(kind){
+ return {
+  fixas:{tab:"despesas",form:"fxForm",title:"fxFormTitle",date:"cFxDate",desc:"cFxDesc",cat:"cFxCat",value:"cFxValue"},
+  variaveis:{tab:"despesas",form:"varForm",title:"varFormTitle",date:"cVarDate",desc:"cVarDesc",cat:"cVarCat",value:"cVarValue"},
+  receitas:{tab:"receitas",form:"revForm",title:"revFormTitle",date:"cRevDate",desc:"cRevDesc",person:"cRevPerson",value:"cRevValue"},
+  parcelas:{tab:"parcelas",form:"parForm",title:"parFormTitle",date:"cParDate",desc:"cParDesc",cat:"cParCat",value:"cParValue",num:"cParNum",valueLabel:"cParValueLabel"},
+  investimento:{tab:"investimentos",form:"invForm",title:"invFormTitle",date:"cInvDate",comp:"cInvComp",value:"cInvValue"}
+ }[kind]
+}
+function defaultContextDate(){
+ let ref=periodRange().ref,current=currentCalendarMonth();
+ return ref===current?new Date().toISOString().slice(0,10):ref+"-01"
+}
+function contextTitle(kind,editingMode=false){
+ let base={fixas:"despesa fixa",variaveis:"despesa variável",receitas:"receita",parcelas:"parcela",investimento:"registro de investimento"}[kind];
+ return `${editingMode?"Editar":"Adicionar novo"} ${base}`
+}
+function openContextForm(kind,rec=null){
+ let c=contextConfig(kind);if(!c)return;
+ contextEditing=rec?{kind,id:rec.id}:null;
+ showTab(c.tab);
+ if(kind==="fixas"||kind==="variaveis"){expenseTableView=kind;renderExpenseTableView()}
+ $(c.form).classList.remove("hidden");
+ $(c.title).textContent=contextTitle(kind,!!rec);
+
+ if(kind==="investimento"){
+  $(c.date).value=rec?monthKey(rec.data):investmentMonth();
+  $(c.comp).value=rec?.descricao||componentDefs()[0]?.descricao||"";
+  $(c.value).value=rec?moneyInput(rec.valor):"";
+ }else{
+  $(c.date).value=rec?.data||(kind==="fixas"?fixedDateWithDay(fixedMonth(),10):kind==="receitas"?revenueMonth()+"-01":defaultContextDate());
+  if(c.desc)$(c.desc).value=rec?.descricao||"";
+  if(c.cat)$(c.cat).value=rec?.categoria||categories()[0]||"";
+  if(c.person)$(c.person).value=rec?.pessoa||"Igor";
+  $(c.value).value=rec?moneyInput(rec.valor):"";
+  if(kind==="parcelas"){
+   $(c.num).value=rec?.totalParcelas||1;
+   $(c.num).disabled=!!rec;
+   $(c.valueLabel).textContent=rec?"Valor desta parcela (R$)":"Valor total da compra (R$)";
+  }
+ }
+ setTimeout(()=>$(c.form).scrollIntoView({behavior:"smooth",block:"nearest"}),120)
+}
+function closeContextForm(kind){
+ let c=contextConfig(kind);if(!c)return;
+ $(c.form).classList.add("hidden");
+ contextEditing=null;
+ if(c.desc)$(c.desc).value="";
+ if(c.value)$(c.value).value="";
+ if(kind==="parcelas"){$(c.num).disabled=false;$(c.num).value=1;$(c.valueLabel).textContent="Valor total da compra (R$)"}
+}
+function beginEdit(kind,id){
+ let{rec}=findRecord(kind,id);if(!rec)return;
+ openContextForm(kind,rec)
+}
+async function saveContextRecord(kind){
+ if(!data){toast("Importe dados_financeiros.json primeiro.");return}
+ let c=contextConfig(kind),val=parseMoney($(c.value).value),isEdit=contextEditing?.kind===kind&&contextEditing?.id;
+ if(!$(c.value).value.trim()||!Number.isFinite(val)){toast("Informe um valor válido.");return}
+
+ let createdAt=new Date().toISOString();
+
+ if(isEdit){
+  let{rec}=findRecord(kind,contextEditing.id);if(!rec)return;
+  if(kind==="investimento"){
+   let ym=$(c.date).value,comp=$(c.comp).value;
+   if(!ym||!comp){toast("Informe mês e componente.");return}
+   let collision=data.investimentos.historico.find(x=>x.id!==rec.id&&monthKey(x.data)===ym&&x.descricao===comp);
+   if(collision){toast("Já existe um registro desse componente nesse mês.");return}
+   rec.data=ym+"-01";rec.descricao=comp;rec.valor=val;
+   let def=componentDefs().find(x=>x.descricao===comp);rec.classe=def?.classe||"Outros";rec.pessoa=def?.pessoa||"";
+  }else{
+   let date=$(c.date).value,desc=normalizeDescription20($(c.desc).value);
+   if(!date||!desc){toast("Preencha data e descrição.");return}
+   rec.data=date;rec.descricao=desc;rec.valor=val;
+   if(kind==="receitas")rec.pessoa=$(c.person).value;
+   else{rec.categoria=$(c.cat).value;if(kind==="fixas")rec.vencimentoDia=Number(date.slice(8,10))||1}
+  }
+  rec.origem="app";rec.updatedAt=createdAt;
+  touch();closeContextForm(kind);await afterMutation("Lançamento editado.");return
+ }
+
+ if(kind==="fixas"||kind==="variaveis"){
+  let date=$(c.date).value,desc=normalizeDescription20($(c.desc).value),cat=$(c.cat).value;
+  if(!date||!desc){toast("Preencha data e descrição.");return}
+  data.despesas[kind].push({id:uid(),data:date,descricao:desc,categoria:cat,valor:val,origem:"app",createdAt,...(kind==="fixas"?{pago:false,vencimentoDia:Number(date.slice(8,10))||1}:{})})
+ }else if(kind==="receitas"){
+  let date=$(c.date).value,desc=normalizeDescription20($(c.desc).value);
+  if(!date||!desc){toast("Preencha data e descrição.");return}
+  data.receitas.push({id:uid(),data:date,descricao:desc,pessoa:$(c.person).value,valor:val,origem:"app",createdAt})
+ }else if(kind==="parcelas"){
+  let date=$(c.date).value,desc=normalizeDescription20($(c.desc).value),cat=$(c.cat).value,n=Math.max(1,Number($(c.num).value)||1);
+  if(!date||!desc){toast("Preencha data e descrição.");return}
+  let cents=Math.round(val*100),base=Math.floor(cents/n),rest=cents-base*n,gid=uid();
+  for(let i=0;i<n;i++)data.parcelas.push({id:uid(),grupoId:gid,parcela:i+1,totalParcelas:n,data:addMonthsDate(date,i),descricao:desc,categoria:cat,valor:(base+(i===n-1?rest:0))/100,origem:"app",createdAt})
+ }else if(kind==="investimento"){
+  let ym=$(c.date).value,comp=$(c.comp).value;
+  if(!ym||!comp){toast("Informe mês e componente.");return}
+  let existedBefore=data.investimentos.historico.some(x=>monthKey(x.data)===ym&&x.descricao===comp);
+  ensureInvestmentMonth(ym);
+  let rec=data.investimentos.historico.find(x=>monthKey(x.data)===ym&&x.descricao===comp);
+  if(rec){
+   if(existedBefore&&!confirm(`Já existe saldo para ${comp} em ${monthLabel(ym)}.\n\nDeseja atualizar esse registro para ${brl(val)}?`))return;
+   rec.valor=val;rec.origem="app";rec.updatedAt=createdAt
+  }else{
+   let def=componentDefs().find(x=>x.descricao===comp);
+   data.investimentos.historico.push({id:uid(),data:ym+"-01",descricao:comp,classe:def?.classe||"Outros",pessoa:def?.pessoa||"",valor:val,origem:"app",tipoRegistro:"saldoMensal",createdAt})
+  }
+ }
+ touch();closeContextForm(kind);await afterMutation("Lançamento adicionado.")
+}
+async function replicateFixedPrevious(){
+ if(!data)return;
+ let source=fixedMonth(),target=addMonths(source,1),
+     sourceRows=data.despesas.fixas.filter(x=>monthKey(x.data)===source),
+     targetRows=data.despesas.fixas.filter(x=>monthKey(x.data)===target);
+
+ if(!sourceRows.length){toast(`Não há gastos fixos em ${monthLabel(source)} para replicar.`);return}
+
+ let key=x=>`${normSearch(x.descricao)}|${normSearch(x.categoria)}`,
+     existing=new Set(targetRows.map(key)),
+     seen=new Set(existing),toCopy=[];
+ sourceRows.forEach(x=>{let k=key(x);if(!seen.has(k)){toCopy.push(x);seen.add(k)}});
+
+ if(!toCopy.length){toast(`Os gastos de ${monthLabel(source)} já estão em ${monthLabel(target)}.`);return}
+
+ let skipped=sourceRows.length-toCopy.length;
+ let msg=`Replicar gastos fixos de ${monthLabel(source)} para ${monthLabel(target)}?\n\nSerão criados ${toCopy.length} lançamentos como pendentes.${skipped?`\n${skipped} equivalentes já existentes serão ignorados.`:""}`;
+ if(!confirm(msg))return;
+
+ let now=new Date().toISOString();
+ toCopy.forEach(x=>{
+  let day=fixedDueDay(x),newDate=fixedDateWithDay(target,day);
+  data.despesas.fixas.push({
+   id:uid(),data:newDate,descricao:x.descricao,categoria:x.categoria,valor:Number(x.valor),
+   pago:false,vencimentoDia:day,origem:"app",createdAt:now,replicadoDe:x.id,replicadoDeMes:source
+  })
+ });
+ fixedMonthSelection=target;
+ touch();await afterMutation(`${toCopy.length} gastos fixos replicados para ${monthLabel(target)}.`)
+}
+function cancelEdit(){editing=null;$("editBanner").classList.add("hidden");$("btnCancelEdit").classList.add("hidden");$("nTipo").disabled=false;$("nDescricao").value="";$("nValor").value="";updateLaunchForm()}
+function updateLaunchForm(){let t=$("nTipo").value;$("fCategoria").classList.toggle("hidden",!['fixas','variaveis','parcelas'].includes(t));$("fPessoa").classList.toggle("hidden",t!=="receitas");$("fComponente").classList.toggle("hidden",t!=="investimento");$("fNumParcelas").classList.toggle("hidden",t!=="parcelas"||!!editing);$("fDescricao").classList.toggle("hidden",t==="investimento");$("nValorLabel").textContent=t==="parcelas"&&!editing?"Valor total da compra (R$)":t==="investimento"?"Saldo do componente (R$)":"Valor (R$)"}
+function prevSnapshotBefore(ym){let months=[...new Set(data.investimentos.historico.map(x=>monthKey(x.data)))].filter(m=>m<ym).sort(),m=months.at(-1);if(!m)return{};let o={};data.investimentos.historico.filter(x=>monthKey(x.data)===m).forEach(x=>o[x.descricao]=Number(x.valor)||0);return o}
+function ensureInvestmentMonth(ym){let existing=data.investimentos.historico.filter(x=>monthKey(x.data)===ym);if(existing.length)return;let prev=prevSnapshotBefore(ym);componentDefs().forEach(c=>data.investimentos.historico.push({id:uid(),data:ym+"-01",descricao:c.descricao,classe:c.classe,pessoa:c.pessoa,valor:Number(prev[c.descricao]||0),origem:"app",tipoRegistro:"saldoMensal",createdAt:new Date().toISOString()}))}
+async function saveLaunch(){if(!data){toast("Importe dados_financeiros.json primeiro.");return}let t=$("nTipo").value,date=$("nData").value,val=parseMoney($("nValor").value);if(!date||!$("nValor").value.trim()||!Number.isFinite(val)){toast("Preencha data e valor.");return}if(editing){let{rec}=findRecord(editing.kind,editing.id);if(!rec)return;rec.data=editing.kind==="investimento"?monthKey(date)+"-01":date;rec.valor=val;if(editing.kind==="receitas"){rec.descricao=normalizeDescription20($("nDescricao").value)||"Entrada";rec.pessoa=$("nPessoa").value}else if(editing.kind==="investimento"){rec.descricao=$("nComponente").value;let def=componentDefs().find(x=>x.descricao===rec.descricao);rec.classe=def?.classe||"Outros";rec.pessoa=def?.pessoa||""}else{rec.descricao=normalizeDescription20($("nDescricao").value)||$("nCategoria").value;rec.categoria=$("nCategoria").value}rec.updatedAt=new Date().toISOString();touch();cancelEdit();await afterMutation("Lançamento editado.");return}
+ let desc=normalizeDescription20($("nDescricao").value),cat=$("nCategoria").value,createdAt=new Date().toISOString();if(t==="fixas"||t==="variaveis"){if(!desc){toast("Informe a descrição do gasto.");return}data.despesas[t].push({id:uid(),data:date,descricao:desc,categoria:cat,valor:val,origem:"app",createdAt})}else if(t==="receitas"){if(!desc){toast("Informe a descrição da receita.");return}data.receitas.push({id:uid(),data:date,descricao:desc,pessoa:$("nPessoa").value,valor:val,origem:"app",createdAt,legado:false})}else if(t==="parcelas"){if(!desc){toast("Informe a descrição da compra.");return}let n=Math.max(1,Number($("nNumParcelas").value)||1),cents=Math.round(val*100),base=Math.floor(cents/n),rest=cents-base*n,gid=uid();for(let i=0;i<n;i++){data.parcelas.push({id:uid(),grupoId:gid,parcela:i+1,totalParcelas:n,data:addMonthsDate(date,i),descricao:desc,categoria:cat,valor:(base+(i===n-1?rest:0))/100,origem:"app",createdAt})}}else{let ym=monthKey(date),comp=$("nComponente").value;ensureInvestmentMonth(ym);let rec=data.investimentos.historico.find(x=>monthKey(x.data)===ym&&x.descricao===comp);if(rec){rec.valor=val;rec.origem="app";rec.updatedAt=createdAt}else{let def=componentDefs().find(x=>x.descricao===comp);data.investimentos.historico.push({id:uid(),data:ym+"-01",descricao:comp,classe:def?.classe||"Outros",pessoa:def?.pessoa||"",valor:val,origem:"app",tipoRegistro:"saldoMensal",createdAt})}}
+ touch();$("nDescricao").value="";$("nValor").value="";await afterMutation("Lançamento adicionado.")}
+async function afterMutation(msg){rebuildPatrimonyHistory();renderAll();if(account&&remoteMeta){try{await saveRemoteWithConflictCheck();dirty=false;updateStatus();toast(msg+" Salvo no OneDrive.")}catch(e){handleError(e);toast(msg+" Alteração mantida localmente; exporte o JSON.")}}else toast(msg+" Exporte o JSON para guardar a alteração.")}
+
+function refreshSelects(){
+ if(!data)return;
+ let opts=categories().map(c=>`<option>${esc(c)}</option>`).join("");
+ $("nCategoria").innerHTML=opts;
+ ["cFxCat","cVarCat","cParCat"].forEach(id=>{if($(id))$(id).innerHTML=opts});
+ $("expenseCategoryFilter").innerHTML='<option value="all">Todas as categorias</option>'+opts;
+ $("installmentCategoryFilter").innerHTML='<option value="all">Todas as categorias</option>'+opts;
+ ["fxTableCategory","varTableCategory","parTableCategory"].forEach(id=>{if($(id))$(id).innerHTML='<option value="all">Todas</option>'+opts});
+
+ let people=[...new Set(["Igor","Vitória","Outro",...data.receitas.map(x=>x.pessoa).filter(Boolean)])];
+ $("incomePersonFilter").innerHTML='<option value="all">Todas as pessoas</option>'+people.map(x=>`<option>${esc(x)}</option>`).join("");
+ if($("cRevPerson"))$("cRevPerson").innerHTML=people.map(x=>`<option>${esc(x)}</option>`).join("");
+ if($("revTablePerson"))$("revTablePerson").innerHTML='<option value="all">Todas</option>'+people.map(x=>`<option>${esc(x)}</option>`).join("");
+
+ let comps=componentDefs().map(x=>x.descricao);
+ $("nComponente").innerHTML=comps.map(x=>`<option>${esc(x)}</option>`).join("");
+ if($("cInvComp"))$("cInvComp").innerHTML=comps.map(x=>`<option>${esc(x)}</option>`).join("");
+ if($("invTableComponent"))$("invTableComponent").innerHTML='<option value="all">Todos</option>'+comps.map(x=>`<option>${esc(x)}</option>`).join("")
+}
+function renderJsonInfo(){if(!data)return;$("jsonInfo").textContent="Dados carregados com sucesso."}
+function renderAll(){updateStatus();if(!data)return;refreshPeriodUi();renderGeneral();renderExpenses();renderIncome();renderInstallments();renderInvestments();setProjectionInputs();renderProjection();renderManage();renderJsonInfo();updateCloudUi()}
+
+const titles={
+ geral:["Visão Geral",""],
+ despesas:["Despesas",""],
+ receitas:["Receitas",""],
+ parcelas:["Parcelas",""],
+ investimentos:["Investimentos",""],
+ config:["Configuração / Importação",""]
+};
+function renderVisibleTab(id){
+ if(!data)return;
+ if(id==="geral")renderGeneral();
+ else if(id==="despesas")renderExpenses();
+ else if(id==="receitas")renderIncome();
+ else if(id==="parcelas")renderInstallments();
+ else if(id==="investimentos"){renderInvestments();setProjectionInputs();renderProjection()}
+ else if(id==="config")renderJsonInfo()
+}
+function showTab(id){
+ if(!titles[id])id="geral";
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+ Object.keys(titles).forEach(x=>$(x).classList.toggle("hidden",x!==id));
+ ["patrimonio","projecao","novo"].forEach(x=>{if($(x))$(x).classList.add("hidden")});
+ $("pageTitle").textContent=titles[id][0];$("pageSubtitle").textContent=titles[id][1];
+ if($("btnTopAddVariable"))$("btnTopAddVariable").classList.toggle("hidden",id!=="despesas");
+ if($("btnTopAddInstallment"))$("btnTopAddInstallment").classList.toggle("hidden",id!=="parcelas");
+ setTimeout(()=>{renderVisibleTab(id);Object.values(charts).forEach(c=>c.resize())},80)
+}
+
+async function saveProjectionSettings(){if(!data)return;let s=data.configuracoes.projecaoPatrimonial;s.rentabilidadeAplicacoesMensal=parseMoney($("projRentApl").value)/100;s.rentabilidadePrevidenciaFgtsMensal=parseMoney($("projRentPrev").value)/100;s.aportePrevidenciaIgor=parseMoney($("projPrevIgor").value);s.aporteFgtsIgor=parseMoney($("projFgtsIgor").value);s.aporteFgtsVitoria=parseMoney($("projFgtsVit").value);s.aporteAplicacoesIgor=parseMoney($("projAplIgor").value);s.aporteAplicacoesVitoria=parseMoney($("projAplVit").value);s.horizonteMeses=Math.max(1,Math.min(240,Number($("projHorizon").value)||24));touch();await afterMutation("Premissas atualizadas.")}
+async function resetProjection(){if(!data)return;Object.assign(data.configuracoes.projecaoPatrimonial,{rentabilidadeAplicacoesMensal:.01,rentabilidadePrevidenciaFgtsMensal:.005,aportePrevidenciaIgor:1100,aporteFgtsIgor:1100,aporteFgtsVitoria:590,aporteAplicacoesIgor:5000,aporteAplicacoesVitoria:3000,horizonteMeses:24});touch();setProjectionInputs();await afterMutation("Premissas padrão restauradas.")}
+
+function exportJson(){if(!data){toast("Nenhuma base carregada.");return}let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=FILE_NAME;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);dirty=false;updateStatus();toast("Dados exportados.")}
+async function importJson(file){try{let obj=JSON.parse(await file.text());if(!validateData(obj))throw new Error("O arquivo selecionado não é compatível.");data=obj;dirty=false;refreshSelects();let latest=latestOperationalMonth();$("periodEnd").value=latest;$("nData").value=new Date().toISOString().slice(0,10);renderAll();toast("Dados importados com sucesso.")}catch(e){handleError(e)}finally{$("jsonImport").value=""}}
+
+function setSyncStatus(t,state=""){$("syncPill").textContent=t;$("syncPill").className="syncpill "+state}
+function updateCloudUi(){$("accountInfo").textContent=account?`Conectado: ${account.username||account.name||"Conta Microsoft"}`:"Nenhuma conta conectada.";$("remoteInfo").textContent=remoteMeta?"Dados sincronizados com o OneDrive.":"Ainda não sincronizado.";if(account&&remoteMeta&&!dirty)setSyncStatus("OneDrive sincronizado","online");else if(account)setSyncStatus(dirty?"Alterado localmente":"Conectado","warn");else if(data)setSyncStatus("Dados carregados");else setSyncStatus("Sem dados")}
+function clientId(){return localStorage.getItem(CLIENT_KEY)||""}
+async function initPca(){let id=clientId();$("clientIdInput").value=id;if(!id){pca=null;return}pca=new PublicClientApplication({auth:{clientId:id,authority:"https://login.microsoftonline.com/consumers",redirectUri:REDIRECT_URI},cache:{cacheLocation:"localStorage"}});await pca.initialize();let resp=await pca.handleRedirectPromise();account=resp?.account||pca.getAllAccounts()[0]||null;if(account)pca.setActiveAccount(account);updateCloudUi()}
+async function token(){if(!pca||!account)throw new Error("Entre com a conta Microsoft primeiro.");try{let r=await pca.acquireTokenSilent({scopes:SCOPES,account});accessToken=r.accessToken;return accessToken}catch(e){if(e instanceof InteractionRequiredAuthError){await pca.acquireTokenRedirect({scopes:SCOPES,account,redirectUri:REDIRECT_URI});return null}throw e}}
+async function graph(path,opts={}){let t=await token();return fetch("https://graph.microsoft.com/v1.0"+path,{...opts,headers:{Authorization:`Bearer ${t}`,...(opts.headers||{})}})}
+async function ensureAppRoot(){let r=await graph("/me/drive/special/approot");if(!r.ok)throw new Error(`Não foi possível acessar a pasta do aplicativo (${r.status}).`);appRoot=await r.json();return appRoot}
+async function getMeta(){await ensureAppRoot();let r=await graph(`/me/drive/items/${encodeURIComponent(appRoot.id)}:/${FILE_NAME}`);if(r.status===404)return null;if(!r.ok)throw new Error(`Erro ao ler metadados de ${FILE_NAME} (${r.status}).`);return r.json()}
+async function uploadJson(){if(!data)throw new Error("Importe o JSON consolidado primeiro.");await ensureAppRoot();let r=await graph(`/me/drive/items/${encodeURIComponent(appRoot.id)}:/${FILE_NAME}:/content`,{method:"PUT",headers:{"Content-Type":"application/json; charset=utf-8"},body:JSON.stringify(data,null,2)});if(!r.ok)throw new Error(`Falha ao gravar ${FILE_NAME} no OneDrive (${r.status}).`);remoteMeta=await r.json();dirty=false;updateCloudUi();return remoteMeta}
+async function syncFromOneDrive(){if(!account)throw new Error("Faça login primeiro.");setSyncStatus("Sincronizando…","warn");let meta=await getMeta();if(!meta){remoteMeta=null;setSyncStatus(`${FILE_NAME} não existe`,"warn");toast("Primeiro uso: importe dados_financeiros.json e envie ao OneDrive.");updateCloudUi();return}let r=await graph(`/me/drive/items/${encodeURIComponent(meta.id)}/content`);if(!r.ok)throw new Error(`Falha ao baixar ${FILE_NAME} (${r.status}).`);let obj=JSON.parse(await r.text());if(!validateData(obj))throw new Error("Os dados remotos têm formato incompatível.");data=obj;remoteMeta=meta;dirty=false;refreshSelects();renderAll();toast("Base sincronizada do OneDrive.")}
+async function saveRemoteWithConflictCheck(){let current=await getMeta();if(current&&remoteMeta?.eTag&&current.eTag!==remoteMeta.eTag)throw new Error("CONFLICT_REMOTE");await uploadJson()}
+function handleError(e){console.error(e);if(String(e?.message||e)==="CONFLICT_REMOTE"){toast("Conflito: existe uma versão mais nova no OneDrive. Sincronize antes de salvar.");return}toast(e?.message||String(e))}
+
+$("redirectUriBox").textContent=REDIRECT_URI;
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+$("periodPreset").onchange=()=>{refreshPeriodUi();renderAll()};$("periodStart").onchange=renderAll;$("periodEnd").onchange=renderAll;
+["expenseTypeFilter","expenseCategoryFilter"].forEach(id=>$(id).onchange=renderExpenses);$("incomePersonFilter").onchange=renderIncome;$("installmentCategoryFilter").onchange=renderInstallments;
+
+$("btnOpenFixed").onclick=()=>openContextForm("fixas");
+$("btnTopAddVariable").onclick=()=>{expenseTableView="variaveis";renderExpenseTableView();openContextForm("variaveis")};
+$("btnTopAddInstallment").onclick=()=>openContextForm("parcelas");
+document.querySelectorAll("[data-expense-table-view]").forEach(b=>b.onclick=()=>setExpenseTableView(b.dataset.expenseTableView));
+$("btnOpenRevenue").onclick=()=>openContextForm("receitas");
+$("btnOpenInvestment").onclick=()=>openContextForm("investimento");
+$("btnSaveFixed").onclick=()=>saveContextRecord("fixas");
+$("btnSaveVariable").onclick=()=>saveContextRecord("variaveis");
+$("btnSaveRevenue").onclick=()=>saveContextRecord("receitas");
+$("btnSaveInstallment").onclick=()=>saveContextRecord("parcelas");
+$("btnSaveInvestment").onclick=()=>saveContextRecord("investimento");
+$("btnCancelFixed").onclick=()=>closeContextForm("fixas");
+$("btnCancelVariable").onclick=()=>closeContextForm("variaveis");
+$("btnCancelRevenue").onclick=()=>closeContextForm("receitas");
+$("btnCancelInstallment").onclick=()=>closeContextForm("parcelas");
+$("btnCancelInvestment").onclick=()=>closeContextForm("investimento");
+$("btnReplicateFixed").onclick=replicateFixedPrevious;
+$("btnReplicateRevenue").onclick=replicateRevenueNext;
+$("revMonthPrev").onclick=()=>{revenueMonthSelection=addMonths(revenueMonth(),-1);if(revenueMonthSelection<HISTORY_START)revenueMonthSelection=HISTORY_START;renderIncome()};
+$("revMonthNext").onclick=()=>{revenueMonthSelection=addMonths(revenueMonth(),1);renderIncome()};
+$("revMonthPicker").onchange=e=>{revenueMonthSelection=e.target.value||revenueMonth();renderIncome()};
+$("btnReplicateInvestment").onclick=replicateInvestmentNext;
+$("invMonthPrev").onclick=()=>{investmentMonthSelection=addMonths(investmentMonth(),-1);if(investmentMonthSelection<HISTORY_START)investmentMonthSelection=HISTORY_START;renderInvestments()};
+$("invMonthNext").onclick=()=>{investmentMonthSelection=addMonths(investmentMonth(),1);renderInvestments()};
+$("invMonthPicker").onchange=e=>{investmentMonthSelection=e.target.value||investmentMonth();renderInvestments()};
+$("fxMonthPrev").onclick=()=>{fixedMonthSelection=addMonths(fixedMonth(),-1);if(fixedMonthSelection<HISTORY_START)fixedMonthSelection=HISTORY_START;renderExpenses()};
+$("fxMonthNext").onclick=()=>{fixedMonthSelection=addMonths(fixedMonth(),1);renderExpenses()};
+$("fxMonthPicker").onchange=e=>{fixedMonthSelection=e.target.value||fixedMonth();renderExpenses()};
+document.querySelectorAll("[data-fixed-status]").forEach(b=>b.onclick=()=>{
+ fixedStatusFilter=b.dataset.fixedStatus;
+ document.querySelectorAll("[data-fixed-status]").forEach(x=>x.classList.toggle("active",x===b));
+ renderExpenses()
+});
+
+document.addEventListener("click",e=>{
+ let btn=e.target.closest(".excel-filter-btn");
+ if(btn){e.stopPropagation();openExcelFilterMenu(btn);return}
+ if(!e.target.closest("#excelFilterMenu"))closeExcelFilterMenu()
+});
+$("excelFilterMenu").onclick=e=>e.stopPropagation();
+$("excelFilterSearch").oninput=()=>{excelRefreshValueSearch();excelSyncSelectAll()};
+$("excelFilterSelectAll").onchange=()=>{$("excelFilterValues").querySelectorAll(".excel-filter-value:not(.hidden) input").forEach(x=>x.checked=$("excelFilterSelectAll").checked);excelSyncSelectAll()};
+$("excelSortAsc").onclick=()=>{excelMenuSort=excelMenuSort==="asc"?null:"asc";$("excelSortAsc").classList.toggle("active",excelMenuSort==="asc");$("excelSortDesc").classList.remove("active")};
+$("excelSortDesc").onclick=()=>{excelMenuSort=excelMenuSort==="desc"?null:"desc";$("excelSortDesc").classList.toggle("active",excelMenuSort==="desc");$("excelSortAsc").classList.remove("active")};
+$("excelFilterApply").onclick=excelApplyCurrent;
+$("excelFilterClear").onclick=excelClearCurrent;
+window.addEventListener("resize",closeExcelFilterMenu);
+window.addEventListener("scroll",closeExcelFilterMenu,true);
+$("manageType").onchange=renderManage;$("manageSearch").oninput=renderManage;$("nTipo").onchange=updateLaunchForm;$("btnSaveLaunch").onclick=saveLaunch;$("btnCancelEdit").onclick=cancelEdit;$("btnSaveProjection").onclick=saveProjectionSettings;$("btnResetProjection").onclick=resetProjection;
+document.querySelectorAll(".money-input").forEach(el=>el.addEventListener("blur",()=>{if(el.value.trim()!=="")el.value=moneyInput(parseMoney(el.value))}));
+$("jsonImport").onchange=()=>{let f=$("jsonImport").files?.[0];if(f)importJson(f)};$("btnExportJson").onclick=exportJson;
+$("btnSaveClient").onclick=async()=>{let id=$("clientIdInput").value.trim();localStorage.setItem(CLIENT_KEY,id);await initPca();toast("Client ID salvo.")};
+$("btnLogin").onclick=async()=>{try{if(location.protocol==="file:")throw new Error("Publique o HTML em HTTPS para usar o login Microsoft.");if(!pca)throw new Error("Salve o Client ID primeiro.");await pca.loginRedirect({scopes:SCOPES,redirectUri:REDIRECT_URI})}catch(e){handleError(e)}};
+$("btnLogout").onclick=async()=>{if(pca&&account)await pca.logoutRedirect({account,postLogoutRedirectUri:REDIRECT_URI})};
+$("btnSync").onclick=$("btnTopSync").onclick=async()=>{try{await syncFromOneDrive()}catch(e){handleError(e)}};
+$("btnUploadCurrent").onclick=async()=>{try{if(!account)throw new Error("Entre com a conta Microsoft primeiro.");let m=await getMeta();if(m&&remoteMeta?.eTag&&m.eTag!==remoteMeta.eTag)throw new Error("CONFLICT_REMOTE");await uploadJson();toast(`${FILE_NAME} salvo no OneDrive.`)}catch(e){handleError(e)}};
+
+await initPca();updateLaunchForm();updateStatus();
+if(account){try{await syncFromOneDrive()}catch(e){console.warn(e);updateCloudUi()}}
+</script>
+</body>
+</html>
